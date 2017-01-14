@@ -35,6 +35,37 @@ get_header( 'shop' ); ?>
 		<?php while ( have_posts() ) : the_post(); ?>
 
 			<?php wc_get_template_part( 'content', 'single-product' ); ?>
+
+			<h1>Main details</h1>
+
+			<?php 
+
+				$html = '';
+
+				$html .= '<h2>Address 1 - ' . get_field('course_address_1', $post->ID) . '</h2>';
+				$html .= '<h2>Address 2 - ' . get_field('course_address_2', $post->ID) . '</h2>';
+				$html .= '<h2>City - ' . get_field('course_city', $post->ID) . '</h2>';
+				$html .= '<h2>County - ' . get_field('course_county', $post->ID) . '</h2>';
+				$html .= '<h2>Postcode - ' . get_field('course_postcode', $post->ID) . '</h2>';
+				$html .= '<h2>Country - ' . get_field('course_country', $post->ID) . '</h2>';
+				$html .= '<h2>Latitude - ' . get_field('course_latitude', $post->ID) . '</h2>';
+				$html .= '<h2>Longitude - ' . get_field('course_longitude', $post->ID) . '</h2>';
+				$html .= '<h2>Telephone - ' . get_field('course_telephone', $post->ID) . '</h2>';
+				$html .= '<h2>Fax - ' . get_field('course_fax', $post->ID) . '</h2>';
+				$html .= '<h2>Email - ' . get_field('course_email', $post->ID) . '</h2>';
+				$html .= '<h2>Website - ' . get_field('course_website', $post->ID) . '</h2>';
+				$html .= '<h2>Holes - ' . get_field('course_holes', $post->ID) . '</h2>';
+				$html .= '<h2>Yards - ' . get_field('course_yards', $post->ID) . '</h2>';
+				$html .= '<h2>Par - ' . get_field('course_par', $post->ID) . '</h2>';
+				$html .= '<h2>Scratch score - ' . get_field('course_standard_scratch_score', $post->ID) . '</h2>';
+				$html .= '<h2>Record - ' . get_field('course_coruse_record', $post->ID) . '</h2>';
+				$html .= '<h2>Founded - ' . get_field('course_year_founded', $post->ID) . '</h2>';
+				$html .= '<h2>Course pro - ' . get_field('course_professional', $post->ID) . '</h2>';
+				$html .= '<h2>Course designer - ' . get_field('course_course_designer', $post->ID) . '</h2>';
+
+				echo $html;
+			?>
+
 			<?php echo do_shortcode('[rwp-review id="-1" template="rwp_template_5872271b8991c"]'); ?>
 			<?php //echo do_shortcode('[rwp-review-recap id="-1" template="rwp_template_5872271b8991c"]'); ?>
 

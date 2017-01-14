@@ -13,10 +13,8 @@ require_once('inc/global/helpers.php');
 // Get custom post types
 require_once('inc/global/custom-post-types.php');
 
-// Get mailer   
-require_once('inc/global/mailer.php');
-
 require_once('functions/admin.php');
+require_once('functions/woocommerce.php');
 
 /*------------------------------------*\
 	Theme Support
