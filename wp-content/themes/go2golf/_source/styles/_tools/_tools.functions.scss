@@ -1,0 +1,5 @@
+@each $color-name, $color in $color-palette {
+    [class*="--background-color-#{$color-name}"] {
+        background-color: $color;
+    }
+}

@@ -401,7 +401,7 @@ if (JQUERY_V == '') {
 // Enqueue scripts and styles
 function enqueue_theme_scripts_and_styles() 
 {
-    wp_enqueue_style( 'global', get_template_directory_uri() . '/dist/css/style.css', null, '', '' );
+    wp_enqueue_style( 'global', get_template_directory_uri() . '/dist/styles/main.css', null, '', '' );
 
     // Enqueue page specific scripts and styles
 

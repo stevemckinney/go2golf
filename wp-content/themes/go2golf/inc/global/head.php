@@ -24,6 +24,3 @@
 <script>var getThemePath = '<?php echo getThemePath(); ?>';</script>
 
 </head>
-
-<!-- Make the SASS nav breakpoint variable accessible in Javascript -->
-<span aria-hidden="true" class="js-access-nav-breakpoint-variable"></span>

@@ -1,0 +1,13 @@
+p {
+  color: #e4edeb; }
+
+[class*="--background-color-mystic"] {
+  background-color: #e4edeb; }
+
+[class*="--background-color-blue-zodiac"] {
+  background-color: #102540; }
+
+[class*="--background-color-bondi-blue"] {
+  background-color: #00adb5; }
+
+/*# sourceMappingURL=main.css.map */
