@@ -1,0 +1,20 @@
+{
+  "name": "go2golf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass_watch": "sass --watch wp-content/themes/go2golf/_source/styles/main.scss:wp-content/themes/go2golf/dist/styles/main.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jtuds/go2golf.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jtuds/go2golf/issues"
+  },
+  "homepage": "https://github.com/jtuds/go2golf#readme"
+}

@@ -1,0 +1,40 @@
+//Layout - styles for all layout and or grid system
+
+.o-wrapper {
+	max-width: map-get($dimensions-map, site-max-width);
+	margin: 0 auto;
+	padding: 0 map-get($dimensions-map, base-spacing-unit);
+}
+
+.o-grid {
+	font-size: 0;
+	margin-left: - map-get($dimensions-map, grid-gutter-size);
+}
+
+.o-grid__col {
+	display: inline-block;
+	font-size: $base-font-size;
+	padding-left: map-get($dimensions-map, grid-gutter-size);
+	width: 100%;
+	vertical-align: top;
+}
+
+// Output grid columns via a mixin
+// Output columns with modifiers at different breakpoints
+@include widths(12);
+
+@include respond-to-min(map-get($breakpoints-map, small)) {
+	@include widths(12, '--small');
+}
+
+@include respond-to-min(map-get($breakpoints-map, med)) {
+	@include widths(12, '--med');
+}
+
+@include respond-to-min(map-get($breakpoints-map, large)) {
+	@include widths(12, '--large');
+}
+
+@include respond-to-min(map-get($breakpoints-map, x-large)) {
+	@include widths(12, '--x-large');
+}

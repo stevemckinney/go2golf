@@ -1,0 +1,29 @@
+@mixin respond-to-max($width) {
+    @media screen and (max-width: $width) {
+        @content;
+    }
+}
+
+@mixin respond-to-min($width) {
+    @media screen and (min-width: $width) {
+        @content;
+    }
+}
+
+@function gcd($a, $b) {
+  @if $b == 0 {
+    @return $a;
+  }
+  @return gcd($b, $a % $b);
+}
+
+@mixin widths($cols, $modifier: "") {
+  @for $i from 1 through $cols - 1 {
+    $gcd: gcd($i, $cols);
+    $numerator: $i / $gcd;
+    $denominator: $cols / $gcd;
+    .o-grid__col--#{$numerator}\/#{$denominator}#{$modifier} {
+      width: $i / $cols * 100%;
+    }
+  }
+}

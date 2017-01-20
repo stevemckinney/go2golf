@@ -1,10 +1,13 @@
 $color-palette: (
-  mystic: #e4edeb, 
-  blue-zodiac: #102540,
-  bondi-blue: #00adb5,
+	white: #ffffff, // developer not insane. This is here incase "white" needs to be a slight variation of pure white
+	mystic: #e4edeb, 
+	blue-zodiac: #102540,
+	bondi-blue: #00adb5
 );
 
-$brand-color-primary: map-get($color-palette, bondi-blue);
+$color-definitions: (
+	brand-color-primary: map-get($color-palette, bondi-blue)
+);
 
 p {
 	color:map-get($color-palette, mystic);

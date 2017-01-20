@@ -1,0 +1,18 @@
+// Constant absolute values
+$dimensions-constant: (
+
+	// Base
+	base-spacing-unit: 40px,
+
+	// Layout
+	site-max-width: 1800px
+);
+
+// Variable values using vlaues defined elsewhere
+$dimensions-variable: (
+
+	// Grid
+	grid-gutter-size: map-get($dimensions-constant, base-spacing-unit)
+);
+
+$dimensions-map: map-merge($dimensions-variable, $dimensions-constant);

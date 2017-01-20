@@ -1,0 +1,14 @@
+.c-course-result-item {
+	position: relative;
+	width:100%;
+	margin-bottom: map-get($dimensions-map, base-spacing-unit);
+	background-color: map-get($color-palette, white);
+}
+
+.c-course-result-item__cta {
+	position: absolute;
+	bottom:0;
+	right:0;
+	color: map-get($color-palette, white);
+	background-color: map-get($color-definitions, brand-color-primary);
+}
