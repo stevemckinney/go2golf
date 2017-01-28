@@ -13,7 +13,7 @@
 
 .o-grid__col {
 	display: inline-block;
-	font-size: $base-font-size;
+	font-size: map-get($typography-map, base-font-size);
 	padding-left: map-get($dimensions-map, grid-gutter-size);
 	width: 100%;
 	vertical-align: top;

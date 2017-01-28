@@ -224,7 +224,7 @@ class RWP_Review_Shortcode
 		$post_type 	= get_post_type( $this->post_id );
 		$auto_id 	= $this->auto_review_id;
 
-		$review_id 	= md5( 'rwp-'. $template .'-'. $post_type . '-' . $this->post_id . '-' . $auto_id );
+		$review_id 	= md5('rwp-'. $template .'-'. $post_type . '-' . $this->post_id . '-' . $auto_id);
 
 		$review = array(
 			'review_id' 		=> $review_id,

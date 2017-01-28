@@ -1,4 +1,4 @@
-@each $color-name, $color in $color-palette {
+@each $color-name, $color in $colors-map {
     [class*="--background-color-#{$color-name}"] {
         background-color: $color;
     }

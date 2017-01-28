@@ -1,14 +1,15 @@
-$color-palette: (
+// Constant absolute values
+$colors-constant: (
 	white: #ffffff, // developer not insane. This is here incase "white" needs to be a slight variation of pure white
 	mystic: #e4edeb, 
 	blue-zodiac: #102540,
 	bondi-blue: #00adb5
 );
 
-$color-definitions: (
-	brand-color-primary: map-get($color-palette, bondi-blue)
+// Variable values using vlaues defined elsewhere
+$colors-variable: (
+	default-text-color: map-get($colors-constant, blue-zodiac),
+	brand-color-primary: map-get($colors-constant, bondi-blue)
 );
 
-p {
-	color:map-get($color-palette, mystic);
-}
+$colors-map: map-merge($colors-constant, $colors-variable);

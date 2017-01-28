@@ -5,11 +5,17 @@ $dimensions-constant: (
 	base-spacing-unit: 40px,
 
 	// Layout
-	site-max-width: 1800px
+	site-max-width: 1800px,
+
+	// UI
+	border-radius: 4px
 );
 
 // Variable values using vlaues defined elsewhere
 $dimensions-variable: (
+
+	// Base
+	half-spacing-unit: map-get($dimensions-constant, base-spacing-unit)/2,
 
 	// Grid
 	grid-gutter-size: map-get($dimensions-constant, base-spacing-unit)

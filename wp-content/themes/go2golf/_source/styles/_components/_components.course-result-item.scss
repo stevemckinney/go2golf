@@ -2,13 +2,15 @@
 	position: relative;
 	width:100%;
 	margin-bottom: map-get($dimensions-map, base-spacing-unit);
-	background-color: map-get($color-palette, white);
+	background-color: map-get($colors-map, white);
 }
 
 .c-course-result-item__cta {
 	position: absolute;
 	bottom:0;
 	right:0;
-	color: map-get($color-palette, white);
-	background-color: map-get($color-definitions, brand-color-primary);
+	padding: map-get($dimensions-map, half-spacing-unit) map-get($dimensions-map, base-spacing-unit)*1.5;
+	color: map-get($colors-map, white);
+	background-color: map-get($colors-map, brand-color-primary);
+	border-top-left-radius: map-get($dimensions-map, border-radius);
 }

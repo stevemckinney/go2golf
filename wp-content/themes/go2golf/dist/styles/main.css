@@ -1,6 +1,3 @@
-p {
-  color: #e4edeb; }
-
 [class*="--background-color-white"] {
   background-color: #ffffff; }
 
@@ -12,6 +9,15 @@ p {
 
 [class*="--background-color-bondi-blue"] {
   background-color: #00adb5; }
+
+[class*="--background-color-default-text-color"] {
+  background-color: #102540; }
+
+[class*="--background-color-brand-color-primary"] {
+  background-color: #00adb5; }
+
+body, h1, h2, h3, h4, h5, h6, p {
+  color: #102540; }
 
 * {
   box-sizing: border-box; }
@@ -215,7 +221,9 @@ body {
   position: absolute;
   bottom: 0;
   right: 0;
+  padding: 20px 60px;
   color: #ffffff;
-  background-color: #00adb5; }
+  background-color: #00adb5;
+  border-top-left-radius: 4px; }
 
 /*# sourceMappingURL=main.css.map */
