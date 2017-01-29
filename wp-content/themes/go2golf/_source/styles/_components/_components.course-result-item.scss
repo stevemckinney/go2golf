@@ -1,16 +1,41 @@
 .c-course-result-item {
 	position: relative;
-	width:100%;
+	width: 100%;
 	margin-bottom: map-get($dimensions-map, base-spacing-unit);
 	background-color: map-get($colors-map, white);
 }
 
 .c-course-result-item__cta {
 	position: absolute;
-	bottom:0;
-	right:0;
+	bottom: 0;
+	right: 0;
 	padding: map-get($dimensions-map, half-spacing-unit) map-get($dimensions-map, base-spacing-unit)*1.5;
 	color: map-get($colors-map, white);
 	background-color: map-get($colors-map, brand-color-primary);
 	border-top-left-radius: map-get($dimensions-map, border-radius);
+}
+
+.c-course-result-item__average-review__stars {
+	display: inline-block;
+	position: absolute;
+	top: map-get($dimensions-map, base-spacing-unit);
+	right: map-get($dimensions-map, base-spacing-unit);
+	color: map-get($colors-map, mystic);
+}
+
+.c-course-result-item__average-review__active-stars, .c-course-result-item__average-review__inactive-stars {
+	font-size: 0;
+
+	> span {
+		font-size: 1.4rem
+	}
+}
+
+.c-course-result-item__average-review__active-stars {
+	position: absolute;
+	top: 0;
+	left: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	color: map-get($colors-map, gold);
 }

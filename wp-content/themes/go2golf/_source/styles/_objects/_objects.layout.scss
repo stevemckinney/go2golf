@@ -3,7 +3,7 @@
 .o-wrapper {
 	max-width: map-get($dimensions-map, site-max-width);
 	margin: 0 auto;
-	padding: 0 map-get($dimensions-map, base-spacing-unit);
+	padding: 0 map-get($dimensions-map, double-spacing-unit);
 }
 
 .o-grid {

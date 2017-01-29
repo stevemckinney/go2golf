@@ -10,13 +10,28 @@
 [class*="--background-color-bondi-blue"] {
   background-color: #00adb5; }
 
+[class*="--background-color-gold"] {
+  background-color: #f0d000; }
+
 [class*="--background-color-default-text-color"] {
   background-color: #102540; }
 
 [class*="--background-color-brand-color-primary"] {
   background-color: #00adb5; }
 
+.u-visuallyhidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0; }
+
 body, h1, h2, h3, h4, h5, h6, p {
+  font-family: "Work Sans", "sans-serif";
+  font-weight: normal;
   color: #102540; }
 
 * {
@@ -28,7 +43,7 @@ body {
 .o-wrapper {
   max-width: 1800px;
   margin: 0 auto;
-  padding: 0 40px; }
+  padding: 0 80px; }
 
 .o-grid {
   font-size: 0;
@@ -225,5 +240,25 @@ body {
   color: #ffffff;
   background-color: #00adb5;
   border-top-left-radius: 4px; }
+
+.c-course-result-item__average-review__stars {
+  display: inline-block;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  color: #e4edeb; }
+
+.c-course-result-item__average-review__active-stars, .c-course-result-item__average-review__inactive-stars {
+  font-size: 0; }
+  .c-course-result-item__average-review__active-stars > span, .c-course-result-item__average-review__inactive-stars > span {
+    font-size: 1.4rem; }
+
+.c-course-result-item__average-review__active-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #f0d000; }
 
 /*# sourceMappingURL=main.css.map */

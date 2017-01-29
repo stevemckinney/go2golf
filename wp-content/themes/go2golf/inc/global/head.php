@@ -18,6 +18,8 @@
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
 <link rel="shortcut icon" href="<?php echo getBasePath(); ?>/favicon.ico" rel="shortcut icon">
 
+<link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,700" rel="stylesheet">
+
 <?php wp_head(); ?>
 
 <!-- Make our theme path accessible in Javascript -->

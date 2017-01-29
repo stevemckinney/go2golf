@@ -15,6 +15,7 @@ require_once('inc/global/custom-post-types.php');
 
 require_once('functions/admin.php');
 require_once('functions/woocommerce.php');
+require_once('functions/helpers.php');
 
 /*------------------------------------*\
 	Theme Support

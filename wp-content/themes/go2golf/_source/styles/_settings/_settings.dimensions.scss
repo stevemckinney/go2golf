@@ -15,7 +15,8 @@ $dimensions-constant: (
 $dimensions-variable: (
 
 	// Base
-	half-spacing-unit: map-get($dimensions-constant, base-spacing-unit)/2,
+	half-spacing-unit: map-get($dimensions-constant, base-spacing-unit) /2,
+	double-spacing-unit: map-get($dimensions-constant, base-spacing-unit) *2,
 
 	// Grid
 	grid-gutter-size: map-get($dimensions-constant, base-spacing-unit)
