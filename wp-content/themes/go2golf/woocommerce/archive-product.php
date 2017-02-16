@@ -24,10 +24,12 @@ get_header( 'shop' ); ?>
 
 	<div class="o-wrapper">
 		<div class="o-grid">
-			<div class="o-grid__col o-grid__col--1/4">
-			   <aside>Sidebar / filter</aside>
+			<div class="o-grid__col o-grid__col--1/3">
+				<aside class="o-sidebar">
+					<?php if(!function_exists('dynamic_sidebar') || !dynamic_sidebar('course-sidebar')) ?>
+				</aside>
 			</div><!--/.o-grid__col -->
-			<div class="o-grid__col o-grid__col--3/4">
+			<div class="o-grid__col o-grid__col--2/3">
 			   <?php if ( have_posts() ) : ?>
 
 			   	<?php

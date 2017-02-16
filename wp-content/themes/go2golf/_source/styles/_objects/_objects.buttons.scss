@@ -1,0 +1,9 @@
+.o-btn {
+	padding: map-get($dimensions-map, button-padding);
+	color: map-get($colors-map, white);
+	border-radius: map-get($dimensions-map, border-radius);
+}
+
+.o-btn--primary {
+	@include button-background(map-get($colors-map, brand-color-primary), true);
+}

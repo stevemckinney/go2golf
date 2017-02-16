@@ -20,6 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+// Define variables to use on page
+$average_course_review = get_user_review_average($post->ID);
+
 get_header( 'shop' ); ?>
 
 	<?php
@@ -34,11 +37,90 @@ get_header( 'shop' ); ?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<?php wc_get_template_part( 'content', 'single-product' ); ?>
+			<div class="o-wrapper">
+				<div class="o-grid">
+					<div class="o-grid__col o-grid__col--3/4">
+						<div class="c-course-detail-box">
+							<div class="o-grid">
+								<div class="o-grid__col o-grid__col--5/12">
+									<?php wc_get_template( 'single-product/product-image.php' ); ?>
+								</div><!--/.o-grid__col -->
+								<div class="o-grid__col o-grid__col--7/12">
+									<h2 class="c-course-detail-box__name"><?php the_title(); ?></h2>
+									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id(); ?></h3>
+									<p class="u-visuallyhidden"><?php echo $average_course_review; ?> out of 10</p>
+									<div class="c-course-detail-box__average-review-stars">
+										<div class="c-course-detail-box__average-review-active-stars" style="width:<?php echo $average_course_review * 100 / 10; ?>%">
+											<span>★</span>
+											<span>★</span>
+											<span>★</span>
+											<span>★</span>
+											<span>★</span>
+										</div><!--/.c-course-detail-box__average-review-active-stars -->
+										<div class="c-course-detail-box__average-review-inactive-stars">
+											<span>★</span>
+											<span>★</span>
+											<span>★</span>
+											<span>★</span>
+											<span>★</span>
+										</div><!--/.c-course-detail-box__average-review-inactive-stars -->
+									</div><!--/.c-course-detail-box__average-review-stars -->
+									<div class="c-course-detail-box__key-features">
+										<p class="c-course-detail-box__key-feature">feature</p>
+										<p class="c-course-detail-box__key-feature">feature</p>
+										<p class="c-course-detail-box__key-feature">feature</p>
+									</div><!--/.c-course-detail-box__key-features -->
+									<div class="c-course-detail-box__key-info">
+										<p class="c-course-detail-box__key-info-item">info</p>
+										<p class="c-course-detail-box__key-info-item">info</p>
+									</div><!--/.c-course-detail-box__key-features -->
+								</div><!--/.o-grid__col -->
+							</div><!--/.o-grid -->
+						</div><!--/.c-course-detail-box -->
+					</div><!--/.o-grid__col -->
+					<div class="o-grid__col o-grid__col--1/4">
+						CTA sidebar
+					</div><!--/.o-grid__col -->
+				</div><!--/.o-grid -->
+			</div><!--/.o-wrapper -->
 
-			<h1>Main details</h1>
+			<div class="o-panel o-panel--background-color-white">
+				<div class="o-wrapper">
+					<div class="o-grid">
+						<div class="o-grid__col o-grid__col--2/3">
+							<ul class="c-tabs">
+								<li class="c-tabs__tab">
+									Contact information
+								</li>
+								<li class="c-tabs__tab">
+									Facilities
+								</li>
+								<li class="c-tabs__tab">
+									Course information
+								</li>
+								<li class="c-tabs__tab">
+									Reviews
+								</li>
+							</ul><!--/.c-tabs -->
 
-			<?php 
+							<section>
+								Contact info
+							</section>
+							<section>
+								Facilities
+							</section>
+							<section>
+								Course information
+							</section>
+							<section>
+								Reviews
+							</section>
+						</div><!--/.o-grid__col -->
+					</div><!--/.o-grid -->
+				</div><!--/.o-wrapper -->
+			</div><!--/.o-panel -->
+
+			<?php
 
 				$html = '';
 

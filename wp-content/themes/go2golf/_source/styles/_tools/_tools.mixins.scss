@@ -27,3 +27,11 @@
     }
   }
 }
+
+@mixin button-background($background-color, $from-map: true) {
+  background-color: $background-color;
+
+  &:hover, &:active, &:focus {
+    background-color: darken($background-color, 5%);
+  }
+}

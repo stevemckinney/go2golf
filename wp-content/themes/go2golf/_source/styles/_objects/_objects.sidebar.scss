@@ -1,0 +1,23 @@
+.o-sidebar {
+	padding-bottom: map-get($dimensions-map, base-spacing-unit);
+	background-color: map-get($colors-map, white);
+	border-radius: map-get($dimensions-map, border-radius);
+}
+
+.o-sidebar__section {
+	padding: 0 map-get($dimensions-map, base-spacing-unit);
+}
+
+.o-sidebar__heading {
+	margin-left: - map-get($dimensions-map, base-spacing-unit);
+	margin-right: - map-get($dimensions-map, base-spacing-unit);
+	margin-bottom: map-get($dimensions-map, half-spacing-unit);
+	padding: map-get($dimensions-map, quarter-spacing-unit) map-get($dimensions-map, half-spacing-unit);
+	color: map-get($colors-map, white);
+	background-color: map-get($colors-map, blue-zodiac);
+	font-size: map-get($typography-map, base-font-size);
+
+	.o-sidebar__section:first-of-type & {
+		border-radius: map-get($dimensions-map, border-radius) map-get($dimensions-map, border-radius) 0 0;
+	}
+}

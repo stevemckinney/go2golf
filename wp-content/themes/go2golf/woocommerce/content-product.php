@@ -28,7 +28,8 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 }
 ?>
 
-<?php 
+<?php
+// Define variables to use on page
 $average_course_review = get_user_review_average($post->ID);
 ?>
 
@@ -36,7 +37,7 @@ $average_course_review = get_user_review_average($post->ID);
 	<a href="<?php the_permalink() ?>">
 
 		<div class="o-grid">
-			<div class="o-grid__col o-grid__col--1/3">
+			<div class="o-grid__col o-grid__col--5/12">
 			<?php
 
 			/**
@@ -50,21 +51,21 @@ $average_course_review = get_user_review_average($post->ID);
 			?>
 			</div><!--/.o-grid__col -->
 
-			<div class="o-grid__col o-grid__col--2/3">
+			<div class="o-grid__col o-grid__col--7/12">
 				<div class="c-course-result-item__info-section">
 
-					<?php the_title('<h2 class="c-course-result-item__title">', '</h2>'); ?>
-					<h3 class="c-course-result-item__category"><?php echo get_first_product_category_from_id(); ?></h3>
+					<?php the_title('<h2 class="c-course-result-item__name">', '</h2>'); ?>
+					<h3 class="c-course-result-item__location"><?php echo get_first_product_category_from_id(); ?></h3>
 					<p class="u-visuallyhidden"><?php echo $average_course_review; ?> out of 10</p>
-					<div class="c-course-result-item__average-review__stars">
-						<div class="c-course-result-item__average-review__active-stars" style="width:<?php echo $average_course_review * 100 / 10; ?>%">
+					<div class="c-course-result-item__average-review-stars">
+						<div class="c-course-result-item__average-review-active-stars" style="width:<?php echo $average_course_review * 100 / 10; ?>%">
 							<span>★</span>
 							<span>★</span>
 							<span>★</span>
 							<span>★</span>
 							<span>★</span>
 						</div>
-						<div class="c-course-result-item__average-review__inactive-stars">
+						<div class="c-course-result-item__average-review-inactive-stars">
 							<span>★</span>
 							<span>★</span>
 							<span>★</span>
@@ -72,7 +73,7 @@ $average_course_review = get_user_review_average($post->ID);
 							<span>★</span>
 						</div>
 					</div>
-					<span class="c-course-result-item__cta">View course</span>
+					<span class="o-btn o-btn--primary c-course-result-item__cta">View course</span>
 
 				</div><!--/.c-course-result-item__info-section -->
 			</div><!--/.o-grid__col -->

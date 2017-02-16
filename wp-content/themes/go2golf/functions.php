@@ -145,13 +145,13 @@ if (function_exists('register_sidebar'))
 {
     // Define Sidebar Widget Area 1
     register_sidebar(array(
-        'name' => __('Widget Area 1', 'html5blank'),
-        'description' => __('Description for this widget-area...', 'html5blank'),
-        'id' => 'widget-area-1',
-        'before_widget' => '<div id="%1$s" class="%2$s">',
+        'name' => __('Course sidebar', 'html5blank'),
+        'description' => __('Sidebar to be shown alongside courses', 'html5blank'),
+        'id' => 'course-sidebar',
+        'before_widget' => '<div id="%1$s" class="%2$s o-sidebar__section">',
         'after_widget' => '</div>',
-        'before_title' => '<h3>',
-        'after_title' => '</h3>'
+        'before_title' => '<h2 class="o-sidebar__heading">',
+        'after_title' => '</h2>'
     ));
 
     // Define Sidebar Widget Area 2
@@ -400,7 +400,7 @@ if (JQUERY_V == '') {
 }
 
 // Enqueue scripts and styles
-function enqueue_theme_scripts_and_styles() 
+function enqueue_theme_scripts_and_styles()
 {
     wp_enqueue_style( 'global', get_template_directory_uri() . '/dist/styles/main.css', null, '', '' );
 
@@ -412,7 +412,7 @@ function enqueue_theme_scripts_and_styles()
 
     // Load concatenated scripts file
     wp_enqueue_script( 'scripts', get_template_directory_uri() . '/dist/js/scripts.js', null, '', true );
-    
+
     // Load our global file last so we can manipulate any plugins from here
     wp_enqueue_script( 'global', get_template_directory_uri() . '/dist/js/global.js', null, '', true );
 }
@@ -474,14 +474,14 @@ function mytheme_custom_type_nav_class($classes, $item) {
   // Remove current_page_parent from classes if the current item is the blog page
   // Note: The object_id property seems to be the ID of the menu item's target.
   if ($post_type != 'post' && $item->object_id == get_option('page_for_posts')) {
-      $current_value = "current_page_parent"; 
+      $current_value = "current_page_parent";
       $classes = array_filter($classes, function ($element) use ($current_value) { return ($element != $current_value); } );
   }
 
   // Now look for post-type-<name> in the classes. A menu item with this class
   // should be given a class that will highlight it.
   $this_type_class = 'post-type-' . $post_type;
-  if (in_array( $this_type_class, $classes )) {       
+  if (in_array( $this_type_class, $classes )) {
       array_push($classes, 'current_page_parent');
   };
 
@@ -535,7 +535,7 @@ function truncate_words($text, $limit, $ellipsis = '&hellip;') {
     if (count($words) > $limit) {
         end($words); //ignore last element since it contains the rest of the string
         $last_word = preg_replace("/\.$/", "", prev($words));
-           
+
         $text =  substr($text, 0, $last_word[1] + strlen($last_word[0])) . $ellipsis;
     }
     return $text;

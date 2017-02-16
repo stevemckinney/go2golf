@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $post, $product;
 ?>
-<div class="images">
+<div class="c-course-detail-box__image">
 	<?php
 		if ( has_post_thumbnail() ) {
 			$attachment_count = count( $product->get_gallery_attachment_ids() );
@@ -31,6 +31,7 @@ global $post, $product;
 			$image            = get_the_post_thumbnail( $post->ID, apply_filters( 'single_product_large_thumbnail_size', 'shop_single' ), array(
 				'title'	 => $props['title'],
 				'alt'    => $props['alt'],
+				'class'  => 'c-course-detail-box__image',
 			) );
 			echo apply_filters(
 				'woocommerce_single_product_image_html',

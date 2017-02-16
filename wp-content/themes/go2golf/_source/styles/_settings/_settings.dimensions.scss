@@ -5,10 +5,12 @@ $dimensions-constant: (
 	base-spacing-unit: 40px,
 
 	// Layout
-	site-max-width: 1800px,
+	site-max-width: 1320px,
 
 	// UI
-	border-radius: 4px
+	border-radius: 4px,
+	button-padding: 15px 50px,
+	border-horizontal-thickness: 1px
 );
 
 // Variable values using vlaues defined elsewhere
@@ -16,6 +18,7 @@ $dimensions-variable: (
 
 	// Base
 	half-spacing-unit: map-get($dimensions-constant, base-spacing-unit) /2,
+	quarter-spacing-unit: map-get($dimensions-constant, base-spacing-unit) /4,
 	double-spacing-unit: map-get($dimensions-constant, base-spacing-unit) *2,
 
 	// Grid

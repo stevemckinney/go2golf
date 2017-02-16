@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jtuds/go2golf/issues"
   },
-  "homepage": "https://github.com/jtuds/go2golf#readme"
+  "homepage": "https://github.com/jtuds/go2golf#readme",
+  "devDependencies": {
+    "stylelint-config-standard": "^16.0.0"
+  }
 }

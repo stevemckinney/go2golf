@@ -1,15 +1,17 @@
 // Constant absolute values
 $colors-constant: (
-	white: #ffffff, // developer not insane. This is here incase "white" needs to be a slight variation of pure white
-	mystic: #e4edeb, 
+	white: #fff, // developer not insane. This is here incase "white" needs to be a slight variation of pure white
+	mystic: #e4edeb,
 	blue-zodiac: #102540,
 	bondi-blue: #00adb5,
-	gold: #f0d000
+	gold: #f0d000,
+	raven: #707c8c
 );
 
 // Variable values using vlaues defined elsewhere
 $colors-variable: (
 	default-text-color: map-get($colors-constant, blue-zodiac),
+	secondary-text-color: map-get($colors-constant, raven),
 	brand-color-primary: map-get($colors-constant, bondi-blue)
 );
 

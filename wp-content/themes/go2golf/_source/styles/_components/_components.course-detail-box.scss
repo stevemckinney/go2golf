@@ -1,0 +1,66 @@
+.c-course-detail-box {
+	position: relative;
+	width: 100%;
+	margin-bottom: map-get($dimensions-map, base-spacing-unit);
+	background-color: map-get($colors-map, white);
+	border-radius: map-get($dimensions-map, border-radius);
+	box-shadow: map-get($visual-enhancements-map, box-shadow-primary);
+}
+
+.c-course-detail-box__name {
+	width: 65%;
+	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+	font-size: map-get($typography-map, l-font-size);
+}
+
+.c-course-detail-box__location {
+	width: 65%;
+	margin-top: 0;
+	color: map-get($colors-map, secondary-text-color);
+	font-size: map-get($typography-map, base-font-size);
+}
+
+.c-course-detail-box__image {
+	display: block;
+	width: 100%;
+	border-radius: map-get($dimensions-map, border-radius) 0 0 map-get($dimensions-map, border-radius);
+}
+
+.c-course-detail-box__average-review-stars {
+	display: inline-block;
+	position: absolute;
+	top: map-get($dimensions-map, half-spacing-unit);
+	right: map-get($dimensions-map, half-spacing-unit);
+	color: map-get($colors-map, mystic);
+}
+
+.c-course-detail-box__average-review-active-stars,
+.c-course-detail-box__average-review-inactive-stars {
+	font-size: 0;
+
+	> span {
+		font-size: 1.4rem;
+	}
+}
+
+.c-course-detail-box__average-review-active-stars {
+	position: absolute;
+	top: 0;
+	left: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	color: map-get($colors-map, gold);
+}
+
+.c-course-detail-box__key-features {
+	padding-top: map-get($dimensions-map, half-spacing-unit);
+	padding-bottom: map-get($dimensions-map, half-spacing-unit);
+	margin-right: map-get($dimensions-map, half-spacing-unit);
+	border-top: map-get($dimensions-map, border-horizontal-thickness) solid map-get($colors-map, mystic);
+	border-bottom: map-get($dimensions-map, border-horizontal-thickness) solid map-get($colors-map, mystic);
+}
+
+.c-course-detail-box__key-feature {
+	display: inline-block;
+	margin: 0;
+}
