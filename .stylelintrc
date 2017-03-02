@@ -21,7 +21,7 @@
 		"at-rule-empty-line-before": [
 			"always",
 			{
-				"except": ["all-nested", "blockless-after-same-name-blockless", "first-nested"],
+				"except": ["blockless-after-same-name-blockless"],
 				"ignore": ["after-comment"],
 				"ignoreAtRules": ["import", "return", "warn", "elseif", "else"]
 			}
