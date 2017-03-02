@@ -1,0 +1,17 @@
+.c-facility-indicator {
+	padding: map-get($dimensions-map, half-spacing-unit);
+	border: map-get($visual-enhancements-map, border-primary);
+	border-radius: map-get($dimensions-map, border-radius);
+	text-align: center;
+}
+
+.c-facility-indicator--inactive {
+	
+	.c-facility-indicator__name {
+		color: map-get($colors-map, raven);
+	}
+}
+
+.c-facility-indicator__image {
+	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+}

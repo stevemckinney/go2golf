@@ -1,0 +1,18 @@
+table {
+	width: 100%;
+	border: map-get($visual-enhancements-map, border-primary);
+	border-radius: map-get($dimensions-map, border-radius);
+}
+
+tr {
+	border-bottom: map-get($visual-enhancements-map, border-primary);
+}
+
+td {
+	padding: map-get($dimensions-map, half-spacing-unit);
+
+	&:last-of-type {
+		text-align: right;
+		font-weight: map-get($typography-map, medium-font-weight);
+	}
+}

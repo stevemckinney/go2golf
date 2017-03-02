@@ -33,6 +33,10 @@
 	padding-left: map-get($dimensions-map, grid-gutter-size);
 	width: 100%;
 	vertical-align: top;
+
+	.o-grid--vertically-spaced & {
+		margin-bottom: map-get($dimensions-map, grid-gutter-size);
+	}
 }
 
 // Output grid columns via a mixin

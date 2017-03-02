@@ -1,0 +1,64 @@
+$tabs-spacing: map-get($dimensions-map, half-spacing-unit);
+$tabs-top-offset: - $tabs-spacing * 1.5;
+
+:target {
+	background-color: map-get($colors-map, mystic);
+	animation: opacityFlash 1.6s 2;
+}
+
+@keyframes opacityFlash {
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: .1;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+.c-tabs {
+	padding-left: $tabs-spacing;
+	padding-right: $tabs-spacing;
+	list-style: none;
+	box-shadow: map-get($visual-enhancements-map, box-shadow-primary);
+	border-radius: map-get($dimensions-map, border-radius);
+
+	@supports (display: flex) {
+		display: flex;
+		justify-content: space-around;
+	}
+}
+
+.c-tabs--pull-top {
+	position: relative;
+	top: $tabs-top-offset;
+	margin-bottom: $tabs-top-offset;
+}
+
+.c-tabs__tab-label {
+	display: inline-block;
+	margin-right: map-get($dimensions-map, half-spacing-unit);
+
+	@supports (display: flex) {
+		margin-right: 0;
+		display: initial;
+		flex-basis: 100%;
+		text-align: center;
+	}
+
+	> a {
+		display: block;
+		padding-top: $tabs-spacing;
+		padding-bottom: $tabs-spacing;
+		text-decoration: none;
+		color: map-get($colors-map, default-text-color);
+	}
+}
+
+.c-tabs__tab-label--has-sibling {
+	border-right: map-get($visual-enhancements-map, border-primary);
+}

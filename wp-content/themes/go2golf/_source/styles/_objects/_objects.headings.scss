@@ -1,0 +1,17 @@
+.o-heading--primary {
+	font-size: map-get($typography-map, xl-font-size);
+	font-weight: map-get($typography-map, medium-font-weight);
+	margin-bottom: map-get($dimensions-map, half-spacing-unit);
+}
+
+.o-heading--secondary {
+	font-size: map-get($typography-map, l-font-size);
+	font-weight: map-get($typography-map, medium-font-weight);
+	margin-bottom: map-get($dimensions-map, half-spacing-unit);
+}
+
+.o-heading--tertiary {
+	font-size: map-get($typography-map, base-font-size);
+	font-weight: map-get($typography-map, medium-font-weight);
+	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+}

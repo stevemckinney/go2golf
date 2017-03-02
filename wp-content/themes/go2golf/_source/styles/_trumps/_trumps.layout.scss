@@ -1,0 +1,7 @@
+.t-pull-bottom--half {
+	margin-bottom: - map-get($dimensions-map, half-spacing-unit) !important;
+}
+
+.t-push-bottom--half {
+	margin-bottom: map-get($dimensions-map, half-spacing-unit) !important;
+}

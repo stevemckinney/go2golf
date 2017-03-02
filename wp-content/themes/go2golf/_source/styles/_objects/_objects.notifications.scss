@@ -1,0 +1,10 @@
+.o-notification {
+	background-color: map-get($colors-map, bondi-blue);
+	color: map-get($colors-map, white);
+	border-radius: map-get($dimensions-map, border-radius);
+}
+
+.o-notification--small {
+	font-size: map-get($typography-map, xxs-font-size);
+	padding: 3px;
+}

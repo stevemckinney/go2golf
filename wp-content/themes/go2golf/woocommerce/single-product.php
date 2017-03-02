@@ -37,7 +37,7 @@ get_header( 'shop' ); ?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<div class="o-wrapper">
+			<div class="o-wrapper t-push-bottom--half">
 				<div class="o-grid">
 					<div class="o-grid__col o-grid__col--3/4">
 						<div class="c-course-detail-box">
@@ -71,8 +71,8 @@ get_header( 'shop' ); ?>
 										<p class="c-course-detail-box__key-feature">feature</p>
 									</div><!--/.c-course-detail-box__key-features -->
 									<div class="c-course-detail-box__key-info">
-										<p class="c-course-detail-box__key-info-item">info</p>
-										<p class="c-course-detail-box__key-info-item">info</p>
+										<p class="c-course-detail-box__key-info-item"><span class="c-course-detail-box__key-info-description">Description</span> <span class="c-course-detail-box__key-info-value">value</span></p>
+										<p class="c-course-detail-box__key-info-item"><span class="c-course-detail-box__key-info-description">Description</span> <span class="c-course-detail-box__key-info-value">value</span></p>
 									</div><!--/.c-course-detail-box__key-features -->
 								</div><!--/.o-grid__col -->
 							</div><!--/.o-grid -->
@@ -84,36 +84,133 @@ get_header( 'shop' ); ?>
 				</div><!--/.o-grid -->
 			</div><!--/.o-wrapper -->
 
-			<div class="o-panel o-panel--background-color-white">
+			<div class="o-panel o-panel--flat o-panel--background-color-white">
 				<div class="o-wrapper">
 					<div class="o-grid">
-						<div class="o-grid__col o-grid__col--2/3">
-							<ul class="c-tabs">
-								<li class="c-tabs__tab">
-									Contact information
+						<div class="o-grid__col o-grid__col--3/4">
+							<ul class="c-tabs c-tabs--pull-top c-tabs--background-color-white">
+								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
+									<a href="#contactInformation">Contact information</a>
 								</li>
-								<li class="c-tabs__tab">
-									Facilities
+								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
+									<a href="#facilities">Facilities</a>
 								</li>
-								<li class="c-tabs__tab">
-									Course information
+								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
+									<a href="#courseInformation">Course information</a>
 								</li>
-								<li class="c-tabs__tab">
-									Reviews
+								<li class="c-tabs__tab-label">
+									<a href="#reviews">Reviews <span class="o-notification o-notification--small">12</span></a>
 								</li>
 							</ul><!--/.c-tabs -->
 
-							<section>
-								Contact info
+							<section id="contactInformation" class="o-panel o-panel--double o-panel--has-divider">
+								<h1 class="o-heading--secondary">Contact information</h1>
+								<p><?php the_field('course_telephone', $post->ID); ?></p>
+								<p class="t-push-bottom--half"><?php the_field('course_email', $post->ID); ?></p>
+								<h2 class="o-heading--tertiary">Address</h2>
+								<p>
+									<div><?php the_field('course_address_1'); ?></div>
+									<div><?php the_field('course_address_2'); ?></div>
+									<div><?php the_field('course_city'); ?></div>
+									<div><?php the_field('course_county'); ?></div>
+									<div><?php the_field('course_country'); ?></div>
+									<div><?php the_field('course_postcode'); ?></div>
+								</p>
 							</section>
-							<section>
-								Facilities
+							<section id="facilities" class="o-panel o-panel--double o-panel--has-divider">
+								<h1 class="o-heading--secondary">Facilities</h1>
+								<div class="o-grid o-grid--vertically-spaced">
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator">
+											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Facility</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator">
+											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Facility</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator">
+											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Facility</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator">
+											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Facility</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator c-facility-indicator--inactive">
+											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Facility INACTIVE</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator">
+											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Facility</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator">
+											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Facility</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator">
+											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Facility</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+								</div><!--/.o-grid -->
 							</section>
-							<section>
-								Course information
+							<section id="courseInformation" class="o-panel o-panel--double o-panel--has-divider">
+								<h1 class="o-heading--secondary">Course information</h1>
+								<div class="o-grid">
+									<div class="o-grid__col o-grid__col--1/2">
+										<p>We don't have course information data in long text form... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam maxime ullam cum obcaecati, minus, magnam dolorem aspernatur iste ex eligendi quam illum, tenetur quod illo velit accusamus omnis voluptatibus, dolores.</p>
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/2">
+										<?php wc_get_template( 'single-product/product-image.php' ); ?>
+									</div><!--/.o-grid__col -->
+								</div><!--/.o-grid -->
+								<h2 class="o-heading--secondary">Overview</h2>
+								<div class="o-grid">
+									<div class="o-grid__col o-grid__col--1/2">
+										<table>
+											<tbody>
+												<tr>
+													<td>Year founded</td>
+													<td><?php the_field('course_year_founded', $post->ID); ?></td>
+												</tr>
+												<tr>
+													<td>Designer</td>
+													<td><?php the_field('course_course_designer', $post->ID); ?></td>
+												</tr>
+												<tr>
+													<td>Professional</td>
+													<td><?php the_field('course_professional', $post->ID); ?></td>
+												</tr>
+												<tr>
+													<td>Record</td>
+													<td><?php the_field('course_course_record', $post->ID); ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/2">
+										<p>We don't have course information data in long text form... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam maxime ullam cum obcaecati, minus, magnam dolorem aspernatur iste ex eligendi quam illum, tenetur quod illo velit accusamus omnis voluptatibus, dolores.</p>
+									</div><!--/.o-grid__col -->
+								</div><!--/.o-grid -->
 							</section>
-							<section>
-								Reviews
+							<section id="reviews" class="o-panel o-panel--double">
+								<h1 class="o-heading--secondary">Reviews</h1>
 							</section>
 						</div><!--/.o-grid__col -->
 					</div><!--/.o-grid -->
@@ -140,7 +237,7 @@ get_header( 'shop' ); ?>
 				$html .= '<h2>Yards - ' . get_field('course_yards', $post->ID) . '</h2>';
 				$html .= '<h2>Par - ' . get_field('course_par', $post->ID) . '</h2>';
 				$html .= '<h2>Scratch score - ' . get_field('course_standard_scratch_score', $post->ID) . '</h2>';
-				$html .= '<h2>Record - ' . get_field('course_coruse_record', $post->ID) . '</h2>';
+				$html .= '<h2>Record - ' . get_field('course_course_record', $post->ID) . '</h2>';
 				$html .= '<h2>Founded - ' . get_field('course_year_founded', $post->ID) . '</h2>';
 				$html .= '<h2>Course pro - ' . get_field('course_professional', $post->ID) . '</h2>';
 				$html .= '<h2>Course designer - ' . get_field('course_course_designer', $post->ID) . '</h2>';

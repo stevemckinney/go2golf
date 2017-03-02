@@ -1,5 +1,14 @@
 body, h1, h2, h3, h4, h5, h6, p {
 	font-family: map-get($typography-map, brand-font-face), 'sans-serif';
 	font-weight: normal;
-	color: map-get($colors-map, default-text-color) 
+	color: map-get($colors-map, default-text-color);
+	line-height: 1.5;
+}
+
+h1 {
+	font-size: map-get($typography-map, xl);
+}
+
+h2 {
+	font-size: map-get($typography-map, l);
 }

@@ -1,3 +1,22 @@
 .o-panel {
+	padding-top: map-get($dimensions-map, base-spacing-unit);
+	padding-bottom: map-get($dimensions-map, base-spacing-unit);
+}
 
+.o-panel--double {
+	padding-top: map-get($dimensions-map, double-spacing-unit);
+	padding-bottom: map-get($dimensions-map, double-spacing-unit);
+}
+
+.o-panel--last {
+	padding-bottom: 0;
+}
+
+.o-panel--flat {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.o-panel--has-divider {
+	border-bottom: map-get($visual-enhancements-map, border-primary);
 }
