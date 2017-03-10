@@ -49,7 +49,7 @@ get_header( 'shop' ); ?>
 									<h2 class="c-course-detail-box__name"><?php the_title(); ?></h2>
 									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id(); ?></h3>
 									<p class="u-visuallyhidden"><?php echo $average_course_review; ?> out of 10</p>
-									<div class="c-course-detail-box__average-review-stars">
+									<div style="display:none" class="c-course-detail-box__average-review-stars">
 										<div class="c-course-detail-box__average-review-active-stars" style="width:<?php echo $average_course_review * 100 / 10; ?>%">
 											<span>★</span>
 											<span>★</span>
@@ -111,10 +111,10 @@ get_header( 'shop' ); ?>
 					<div class="o-grid">
 						<div class="o-grid__col o-grid__col--3/4">
 							<ul class="c-tabs c-tabs--pull-top c-tabs--background-color-white">
-								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
+								<li style="text-align:left; border:0" class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#contactInformation">Contact information</a>
 								</li>
-								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
+								<!--<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#facilities">Facilities</a>
 								</li>
 								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
@@ -122,24 +122,31 @@ get_header( 'shop' ); ?>
 								</li>
 								<li class="c-tabs__tab-label">
 									<a href="#reviews">Reviews <span class="o-notification o-notification--small">12</span></a>
-								</li>
+								</li>-->
 							</ul><!--/.c-tabs -->
 
 							<section id="contactInformation" class="o-panel o-panel--double o-panel--has-divider">
-								<h1 class="o-heading--secondary">Contact information</h1>
-								<p><?php the_field('course_telephone', $post->ID); ?></p>
-								<p class="t-push-bottom--half"><?php the_field('course_email', $post->ID); ?></p>
-								<h2 class="o-heading--tertiary">Address</h2>
-								<p>
-									<div><?php the_field('course_address_1'); ?></div>
-									<div><?php the_field('course_address_2'); ?></div>
-									<div><?php the_field('course_city'); ?></div>
-									<div><?php the_field('course_county'); ?></div>
-									<div><?php the_field('course_country'); ?></div>
-									<div><?php the_field('course_postcode'); ?></div>
-								</p>
+								<div class="o-grid">
+									<div class="o-grid__col o-grid__col--1/3">
+										<h1 class="o-heading--secondary">Contact information</h1>
+										<p><?php the_field('course_telephone', $post->ID); ?></p>
+										<p class="t-push-bottom--half"><?php the_field('course_email', $post->ID); ?></p>
+										<h2 class="o-heading--tertiary">Address</h2>
+										<p>
+											<div><?php the_field('course_address_1'); ?></div>
+											<div><?php the_field('course_address_2'); ?></div>
+											<div><?php the_field('course_city'); ?></div>
+											<div><?php the_field('course_county'); ?></div>
+											<div><?php the_field('course_country'); ?></div>
+											<div><?php the_field('course_postcode'); ?></div>
+										</p>
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--2/3">
+										<img src="https://maps.googleapis.com/maps/api/staticmap?center=<?php the_field('course_postcode'); ?>&zoom=13&size=600x300&maptype=roadmap&markers=color:%7Clabel:%7C<?php the_field('course_postcode'); ?>&key=AIzaSyBJa2I89DTU1eOfuEj3Iy7fu_4g1rhnIx4">
+									</div><!--/.o-grid__col -->
+								</div><!--/.o-grid -->
 							</section>
-							<section id="facilities" class="o-panel o-panel--double o-panel--has-divider">
+							<section style="display:none" id="facilities" class="o-panel o-panel--double o-panel--has-divider">
 								<h1 class="o-heading--secondary">Facilities</h1>
 								<div class="o-grid o-grid--vertically-spaced">
 									<div class="o-grid__col o-grid__col--1/4">
@@ -192,7 +199,7 @@ get_header( 'shop' ); ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
-							<section id="courseInformation" class="o-panel o-panel--double o-panel--has-divider">
+							<section style="display:none" id="courseInformation" class="o-panel o-panel--double o-panel--has-divider">
 								<h1 class="o-heading--secondary">Course information</h1>
 								<div class="o-grid">
 									<div class="o-grid__col o-grid__col--1/2">
@@ -231,7 +238,7 @@ get_header( 'shop' ); ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
-							<section id="reviews" class="o-panel o-panel--double">
+							<section style="display:none" id="reviews" class="o-panel o-panel--double">
 								<h1 class="o-heading--secondary">Reviews</h1>
 							</section>
 						</div><!--/.o-grid__col -->
@@ -264,10 +271,10 @@ get_header( 'shop' ); ?>
 				$html .= '<h2>Course pro - ' . get_field('course_professional', $post->ID) . '</h2>';
 				$html .= '<h2>Course designer - ' . get_field('course_course_designer', $post->ID) . '</h2>';
 
-				echo $html;
+				//echo $html;
 			?>
 
-			<?php echo do_shortcode('[rwp-review id="-1" template="rwp_template_5872271b8991c"]'); ?>
+			<?php //echo do_shortcode('[rwp-review id="-1" template="rwp_template_5872271b8991c"]'); ?>
 			<?php //echo do_shortcode('[rwp-review-recap id="-1" template="rwp_template_5872271b8991c"]'); ?>
 
 		<?php endwhile; // end of the loop. ?>
@@ -287,7 +294,7 @@ get_header( 'shop' ); ?>
 		 *
 		 * @hooked woocommerce_get_sidebar - 10
 		 */
-		do_action( 'woocommerce_sidebar' );
+		//do_action( 'woocommerce_sidebar' );
 	?>
 
-<?php get_footer( 'shop' ); ?>
+<?php //get_footer( 'shop' ); ?>
