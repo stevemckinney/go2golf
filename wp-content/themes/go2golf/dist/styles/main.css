@@ -10,6 +10,9 @@
 [class*="--background-color-bondi-blue"] {
   background-color: #00adb5; }
 
+[class*="--background-color-java"] {
+  background-color: #1ACAB6; }
+
 [class*="--background-color-gold"] {
   background-color: #f0d000; }
 
@@ -638,14 +641,46 @@ td {
   border-bottom: 1px solid #e4edeb; }
 
 .o-btn {
-  padding: 15px 50px;
+  display: inline-block;
+  padding: 15px 30px;
+  min-width: 200px;
   color: #fff;
   border-radius: 4px; }
+
+.o-btn--full {
+  width: 100%; }
+
+.o-btn--large {
+  padding: 30px; }
 
 .o-btn--primary {
   background-color: #00adb5; }
   .o-btn--primary:hover, .o-btn--primary:active, .o-btn--primary:focus {
     background-color: #00959c; }
+
+.o-btn--cta {
+  color: #00adb5;
+  background-color: #fff;
+  box-shadow: 0 1px 9px -1px rgba(16, 37, 64, 0.3);
+  text-decoration: none;
+  font-weight: 500;
+  background-image: url("../../_source/images/icons/right-arrow-bondi-blue.svg");
+  background-size: 15px;
+  background-repeat: no-repeat;
+  background-position: 85% 50%; }
+  .o-btn--cta:hover, .o-btn--cta:focus, .o-btn--cta:active {
+    color: #fff;
+    background-color: #1ACAB6;
+    background-image: url("../../_source/images/icons/right-arrow.svg"); }
+
+.o-btn--cta--inverted {
+  color: #fff;
+  background-color: #1ACAB6;
+  background-image: url("../../_source/images/icons/right-arrow.svg"); }
+  .o-btn--cta--inverted:hover, .o-btn--cta--inverted:focus, .o-btn--cta--inverted:active {
+    color: #00adb5;
+    background-color: #fff;
+    background-image: url("../../_source/images/icons/right-arrow-bondi-blue.svg"); }
 
 .o-sidebar {
   padding-bottom: 40px;
@@ -727,7 +762,8 @@ td {
   background-image: url("../../_source/images/icons/right-arrow.svg");
   background-size: 15px;
   background-repeat: no-repeat;
-  background-position: 85% 50%; }
+  background-position: 85% 50%;
+  text-align: center; }
 
 .c-course-result-item__average-review-stars {
   display: inline-block;
@@ -762,7 +798,6 @@ td {
 .c-course-detail-box__name {
   width: 65%;
   margin-top: 20px;
-  margin-bottom: 10px;
   font-size: 22px; }
 
 .c-course-detail-box__location {
@@ -803,8 +838,8 @@ td {
   padding-top: 20px;
   padding-bottom: 20px;
   margin-right: 40px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border-top: 1px solid #e4edeb;
   border-bottom: 1px solid #e4edeb; }
 
@@ -824,6 +859,50 @@ td {
 
 .c-course-detail-box__key-info-description {
   color: #707c8c; }
+
+.c-course-detail__cta {
+  margin-bottom: 10px; }
+
+.c-course-detail-box__key-features {
+  font-size: 0; }
+
+.c-course-detail-box__key-feature {
+  font-size: 16px;
+  font-size: 1rem;
+  display: inline-block;
+  width: 33.33%; }
+
+.c-course-detail-box__key-feature-icon {
+  display: inline-block;
+  margin-right: 20px;
+  width: 35px;
+  height: 35px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle; }
+
+.c-course-detail-box__key-feature-inner {
+  display: inline-block;
+  vertical-align: middle; }
+
+.c-course-detail-box__key-feature-heading {
+  font-size: 16px;
+  color: #707c8c;
+  line-height: 1;
+  margin-bottom: 5px; }
+
+.c-course-detail-box__key-feature-value {
+  font-size: 22px;
+  line-height: 1; }
+
+.c-course-detail-box__key-feature--holes .c-course-detail-box__key-feature-icon {
+  background-image: url("../../_source/images/icons/tee.svg"); }
+
+.c-course-detail-box__key-feature--par .c-course-detail-box__key-feature-icon {
+  background-image: url("../../_source/images/icons/putter-and-ball.svg"); }
+
+.c-course-detail-box__key-feature--length .c-course-detail-box__key-feature-icon {
+  background-image: url("../../_source/images/icons/map.svg"); }
 
 :target {
   background-color: #e4edeb;

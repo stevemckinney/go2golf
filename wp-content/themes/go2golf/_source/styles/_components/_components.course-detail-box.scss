@@ -10,7 +10,6 @@
 .c-course-detail-box__name {
 	width: 65%;
 	margin-top: map-get($dimensions-map, half-spacing-unit);
-	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
 	font-size: map-get($typography-map, l-font-size);
 }
 
@@ -58,8 +57,8 @@
 	padding-top: map-get($dimensions-map, half-spacing-unit);
 	padding-bottom: map-get($dimensions-map, half-spacing-unit);
 	margin-right: map-get($dimensions-map, base-spacing-unit);
-	margin-top: map-get($dimensions-map, half-spacing-unit);
-	margin-bottom: map-get($dimensions-map, half-spacing-unit);
+	margin-top: map-get($dimensions-map, quarter-spacing-unit);
+	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
 	border-top: map-get($visual-enhancements-map, border-primary);
 	border-bottom: map-get($visual-enhancements-map, border-primary);
 }
@@ -84,4 +83,58 @@
 
 .c-course-detail-box__key-info-description {
 	color: map-get($colors-map, raven);
+}
+
+.c-course-detail__cta {
+	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+}
+
+.c-course-detail-box__key-features {
+	font-size: 0;
+}
+
+.c-course-detail-box__key-feature {
+	font-size: 16px;
+	font-size: 1rem;
+	display:inline-block;
+	width: 33.33%;
+}
+
+.c-course-detail-box__key-feature-icon {
+	display: inline-block;
+	margin-right: map-get($dimensions-map, half-spacing-unit);
+	width: 35px;
+	height: 35px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	vertical-align: middle;
+}
+
+.c-course-detail-box__key-feature-inner {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.c-course-detail-box__key-feature-heading {
+	font-size: map-get($typography-map, base-font-size);
+	color: map-get($colors-map, raven);
+	line-height: 1;
+	margin-bottom: 5px;
+}
+
+.c-course-detail-box__key-feature-value {
+	font-size: map-get($typography-map, l-font-size);
+	line-height: 1;
+}
+
+.c-course-detail-box__key-feature--holes .c-course-detail-box__key-feature-icon {
+	background-image: url('../../_source/images/icons/tee.svg');
+}
+
+.c-course-detail-box__key-feature--par .c-course-detail-box__key-feature-icon {
+	background-image: url('../../_source/images/icons/putter-and-ball.svg');
+}
+
+.c-course-detail-box__key-feature--length .c-course-detail-box__key-feature-icon {
+	background-image: url('../../_source/images/icons/map.svg');
 }

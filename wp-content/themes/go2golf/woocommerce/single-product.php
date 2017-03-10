@@ -66,9 +66,27 @@ get_header( 'shop' ); ?>
 										</div><!--/.c-course-detail-box__average-review-inactive-stars -->
 									</div><!--/.c-course-detail-box__average-review-stars -->
 									<div class="c-course-detail-box__key-features">
-										<p class="c-course-detail-box__key-feature">feature</p>
-										<p class="c-course-detail-box__key-feature">feature</p>
-										<p class="c-course-detail-box__key-feature">feature</p>
+										<div class="c-course-detail-box__key-feature c-course-detail-box__key-feature--holes">
+											<span class="c-course-detail-box__key-feature-icon"></span>
+											<div class="c-course-detail-box__key-feature-inner">
+												<h3 class="c-course-detail-box__key-feature-heading">Holes</h3>
+												<p class="c-course-detail-box__key-feature-value"><?php the_field('course_holes', $post->ID); ?></p>
+											</div><!--/.c-course-detail-box__key-feature-inner -->
+										</div><!--/.c-course-detail-box__key-feature -->
+										<div class="c-course-detail-box__key-feature c-course-detail-box__key-feature--par">
+											<span class="c-course-detail-box__key-feature-icon"></span>
+											<div class="c-course-detail-box__key-feature-inner">
+												<h3 class="c-course-detail-box__key-feature-heading">Par</h3>
+												<p class="c-course-detail-box__key-feature-value"><?php the_field('course_par', $post->ID); ?></p>
+											</div><!--/.c-course-detail-box__key-feature-inner -->
+										</div><!--/.c-course-detail-box__key-feature -->
+										<div class="c-course-detail-box__key-feature c-course-detail-box__key-feature--length">
+											<span class="c-course-detail-box__key-feature-icon"></span>
+											<div class="c-course-detail-box__key-feature-inner">
+												<h3 class="c-course-detail-box__key-feature-heading">Length</h3>
+												<p class="c-course-detail-box__key-feature-value"><?php the_field('course_yards', $post->ID); ?></p>
+											</div><!--/.c-course-detail-box__key-feature-inner -->
+										</div><!--/.c-course-detail-box__key-feature -->
 									</div><!--/.c-course-detail-box__key-features -->
 									<div class="c-course-detail-box__key-info">
 										<p class="c-course-detail-box__key-info-item"><span class="c-course-detail-box__key-info-description">Description</span> <span class="c-course-detail-box__key-info-value">value</span></p>
@@ -79,7 +97,11 @@ get_header( 'shop' ); ?>
 						</div><!--/.c-course-detail-box -->
 					</div><!--/.o-grid__col -->
 					<div class="o-grid__col o-grid__col--1/4">
-						CTA sidebar
+						<div data-id="product-cta-sidebar">
+							<a href="#" class="o-btn o-btn--full o-btn--large o-btn--cta o-btn--cta--inverted c-course-detail__cta">Book a tee time</a>
+							<a href="#" class="o-btn o-btn--full o-btn--cta c-course-detail__cta">Book a hotel</a>
+							<a href="#" class="o-btn o-btn--full o-btn--cta c-course-detail__cta">Book a hotel and play</a>
+						</div>
 					</div><!--/.o-grid__col -->
 				</div><!--/.o-grid -->
 			</div><!--/.o-wrapper -->

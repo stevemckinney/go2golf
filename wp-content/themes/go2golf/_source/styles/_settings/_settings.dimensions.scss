@@ -9,7 +9,9 @@ $dimensions-constant: (
 
 	// UI
 	border-radius: 4px,
-	button-padding: 15px 50px,
+	button-padding: 15px 30px,
+	button-padding-large: 30px,
+	button-min-width: 200px,
 	border-horizontal-thickness: 1px
 );
 

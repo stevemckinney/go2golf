@@ -8,7 +8,7 @@ $project_name = PROJECT_NAME;
 
 $environments = array(
     'local_james' => 'localhost',
-    'test' => 'test.',
+    'test' => 'go2golfdev.x10host.com',
     'stage' => 'stage.',
     'live' => 'domain.com'
 );
@@ -42,12 +42,12 @@ switch( ENVIRONMENT ) {
  
     case 'test':
  
-        define( 'DB_NAME', ''  );
-        define( 'DB_USER', '' );
-        define( 'DB_PASSWORD', '' );
+        define( 'DB_NAME', 'go2golfd_wordpress'  );
+        define( 'DB_USER', 'go2golfd_james' );
+        define( 'DB_PASSWORD', 'Loiquom1' );
         define( 'DB_HOST', 'localhost' );
-        define( 'WP_SITEURL', '' . $project_name );
-        define( 'WP_HOME', '' . $project_name );
+        define( 'WP_SITEURL', 'http://go2golfdev.x10host.com' );
+        define( 'WP_HOME', 'http://go2golfdev.x10host.com' );
     
     break;
 }
