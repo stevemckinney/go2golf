@@ -2,6 +2,23 @@
 	padding-bottom: map-get($dimensions-map, base-spacing-unit);
 	background-color: map-get($colors-map, white);
 	border-radius: map-get($dimensions-map, border-radius);
+
+	li {
+		list-style: none;
+		border-bottom: map-get($visual-enhancements-map, border-primary);
+
+		a {
+			display: block;
+			text-decoration: none;
+			padding-top: map-get($dimensions-map, quarter-spacing-unit);
+			padding-bottom: map-get($dimensions-map, quarter-spacing-unit);
+			color: map-get($colors-map, default-text-color);
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
 }
 
 .o-sidebar__section {

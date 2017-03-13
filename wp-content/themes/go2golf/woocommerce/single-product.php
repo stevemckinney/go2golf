@@ -98,9 +98,9 @@ get_header( 'shop' ); ?>
 					</div><!--/.o-grid__col -->
 					<div class="o-grid__col o-grid__col--1/4">
 						<div data-id="product-cta-sidebar">
-							<a href="#" class="o-btn o-btn--full o-btn--large o-btn--cta o-btn--cta--inverted c-course-detail__cta">Book a tee time</a>
-							<a href="#" class="o-btn o-btn--full o-btn--cta c-course-detail__cta">Book a hotel</a>
-							<a href="#" class="o-btn o-btn--full o-btn--cta c-course-detail__cta">Book a hotel and play</a>
+							<a href="#" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta">Book a tee time</a>
+							<a href="#" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">Book a hotel</a>
+							<a href="#" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">Book a hotel and play</a>
 						</div>
 					</div><!--/.o-grid__col -->
 				</div><!--/.o-grid -->

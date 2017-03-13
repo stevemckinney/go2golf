@@ -73,7 +73,7 @@ $average_course_review = get_user_review_average($post->ID);
 							<span>★</span>
 						</div>
 					</div>
-					<span class="o-btn o-btn--primary c-course-result-item__cta">View course</span>
+					<span class="o-btn o-btn--primary-inverted c-course-result-item__cta">View course</span>
 
 				</div><!--/.c-course-result-item__info-section -->
 			</div><!--/.o-grid__col -->

@@ -654,11 +654,6 @@ td {
   padding: 30px; }
 
 .o-btn--primary {
-  background-color: #00adb5; }
-  .o-btn--primary:hover, .o-btn--primary:active, .o-btn--primary:focus {
-    background-color: #00959c; }
-
-.o-btn--cta {
   color: #00adb5;
   background-color: #fff;
   box-shadow: 0 1px 9px -1px rgba(16, 37, 64, 0.3);
@@ -668,16 +663,16 @@ td {
   background-size: 15px;
   background-repeat: no-repeat;
   background-position: 85% 50%; }
-  .o-btn--cta:hover, .o-btn--cta:focus, .o-btn--cta:active {
+  .o-btn--primary:hover, .o-btn--primary:focus, .o-btn--primary:active {
     color: #fff;
     background-color: #1ACAB6;
     background-image: url("../../_source/images/icons/right-arrow.svg"); }
 
-.o-btn--cta--inverted {
+.o-btn--primary-inverted {
   color: #fff;
   background-color: #1ACAB6;
   background-image: url("../../_source/images/icons/right-arrow.svg"); }
-  .o-btn--cta--inverted:hover, .o-btn--cta--inverted:focus, .o-btn--cta--inverted:active {
+  .o-btn--primary-inverted:hover, .o-btn--primary-inverted:focus, .o-btn--primary-inverted:active {
     color: #00adb5;
     background-color: #fff;
     background-image: url("../../_source/images/icons/right-arrow-bondi-blue.svg"); }
@@ -686,6 +681,17 @@ td {
   padding-bottom: 40px;
   background-color: #fff;
   border-radius: 4px; }
+  .o-sidebar li {
+    list-style: none;
+    border-bottom: 1px solid #e4edeb; }
+    .o-sidebar li a {
+      display: block;
+      text-decoration: none;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      color: #102540; }
+      .o-sidebar li a:hover {
+        text-decoration: underline; }
 
 .o-sidebar__section {
   padding: 0 40px; }
