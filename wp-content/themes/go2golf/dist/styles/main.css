@@ -734,6 +734,17 @@ td {
 .o-island {
   margin-bottom: 20px; }
 
+.c-masthead {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: #102540; }
+
+.c-footer {
+  margin-top: 80px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  background-color: #102540; }
+
 .c-course-result-item {
   position: relative;
   width: 100%;
@@ -772,11 +783,11 @@ td {
   text-align: center; }
 
 .c-course-result-item__average-review-stars {
-  display: inline-block;
   position: absolute;
   top: 20px;
   right: 40px;
-  color: #e4edeb; }
+  color: #e4edeb;
+  display: none; }
 
 .c-course-result-item__average-review-active-stars,
 .c-course-result-item__average-review-inactive-stars {
@@ -967,5 +978,29 @@ td {
 
 .c-facility-indicator__image {
   margin-bottom: 10px; }
+
+.c-woocommerce-breadcrumb {
+  margin-bottom: 80px;
+  padding: 20px 0;
+  background-color: #fff;
+  box-shadow: 0 1px 9px -1px rgba(16, 37, 64, 0.3);
+  color: #707c8c;
+  font-weight: 500; }
+
+.c-woocommerce-breadcrumb__inner {
+  max-width: 1320px;
+  padding: 0 40px;
+  margin: 0 auto; }
+
+.c-woocommerce-breadcrumb a {
+  text-decoration: none;
+  color: #707c8c;
+  font-weight: 400; }
+  .c-woocommerce-breadcrumb a:hover {
+    text-decoration: underline; }
+
+.c-woocommerce-breadcrumb__delimiter {
+  padding-left: 5px;
+  padding-right: 5px; }
 
 /*# sourceMappingURL=main.css.map */

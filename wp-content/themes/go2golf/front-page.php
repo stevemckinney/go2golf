@@ -1,9 +1,13 @@
 <?php get_header(); ?>
 
+<?php woocommerce_breadcrumb(); ?>
+
 	<main role="main">
 		<section>
 
 			<h1>HOME!</h1>
+
+			<?php if(!function_exists('dynamic_sidebar') || !dynamic_sidebar('course-search')) ?>
 
 			<?php 
 			

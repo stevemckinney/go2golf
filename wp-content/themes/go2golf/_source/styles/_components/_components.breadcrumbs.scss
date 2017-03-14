@@ -1,0 +1,29 @@
+.c-woocommerce-breadcrumb {
+	margin-bottom: map-get($dimensions-map, double-spacing-unit);
+	padding: map-get($dimensions-map, half-spacing-unit) 0;
+	background-color: map-get($colors-map, white);
+	box-shadow: map-get($visual-enhancements-map, box-shadow-primary);
+	color: map-get($colors-map, raven);
+	font-weight: map-get($typography-map, medium-font-weight);
+}
+
+.c-woocommerce-breadcrumb__inner {
+	max-width: map-get($dimensions-map, site-max-width);
+	padding: 0 map-get($dimensions-map, base-spacing-unit);
+	margin: 0 auto;
+}
+
+.c-woocommerce-breadcrumb a {
+	text-decoration: none;
+	color: map-get($colors-map, raven);
+	font-weight: map-get($typography-map, light-font-weight);
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.c-woocommerce-breadcrumb__delimiter {
+	padding-left: 5px;
+	padding-right: 5px;
+}

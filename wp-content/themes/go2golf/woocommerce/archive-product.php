@@ -22,6 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header( 'shop' ); ?>
 
+<?php woocommerce_breadcrumb(array('delimiter' => '<span class="c-woocommerce-breadcrumb__delimiter">&nbsp;&#47;&nbsp;</span>', 'wrap_before' => '<nav class="c-woocommerce-breadcrumb" ' . ( is_single() ? 'itemprop="breadcrumb"' : '' ) . '><div class="c-woocommerce-breadcrumb__inner">', 'wrap_after' => '</div></nav>')); ?>
+
 	<div class="o-wrapper">
 		<div class="o-grid">
 			<div class="o-grid__col o-grid__col--1/3">
@@ -39,7 +41,7 @@ get_header( 'shop' ); ?>
 			   		 * @hooked woocommerce_result_count - 20
 			   		 * @hooked woocommerce_catalog_ordering - 30
 			   		 */
-			   		do_action( 'woocommerce_before_shop_loop' );
+			   		//do_action( 'woocommerce_before_shop_loop' );
 			   	?>
 
 			   	<?php woocommerce_product_loop_start(); ?>

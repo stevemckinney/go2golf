@@ -1,0 +1,5 @@
+.c-masthead {
+	padding-top: map-get($dimensions-map, half-spacing-unit) *1.5;
+	padding-bottom: map-get($dimensions-map, half-spacing-unit) *1.5;
+	background-color: map-get($colors-map, blue-zodiac);
+}

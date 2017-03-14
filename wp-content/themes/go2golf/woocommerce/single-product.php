@@ -33,6 +33,7 @@ get_header( 'shop' ); ?>
 		 * @hooked woocommerce_breadcrumb - 20
 		 */
 		do_action( 'woocommerce_before_main_content' );
+		woocommerce_breadcrumb(array('delimiter' => '<span class="c-woocommerce-breadcrumb__delimiter">&nbsp;&#47;&nbsp;</span>', 'wrap_before' => '<nav class="c-woocommerce-breadcrumb" ' . ( is_single() ? 'itemprop="breadcrumb"' : '' ) . '><div class="c-woocommerce-breadcrumb__inner">', 'wrap_after' => '</div></nav>'));
 	?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
@@ -297,4 +298,4 @@ get_header( 'shop' ); ?>
 		//do_action( 'woocommerce_sidebar' );
 	?>
 
-<?php //get_footer( 'shop' ); ?>
+<?php get_footer( 'shop' ); ?>
