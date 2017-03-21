@@ -1003,4 +1003,46 @@ td {
   padding-left: 5px;
   padding-right: 5px; }
 
+.c-pagination {
+  text-align: center; }
+
+.woocommerce-pagination ul {
+  list-style: none; }
+.woocommerce-pagination li {
+  display: inline-block;
+  line-height: 1; }
+  .woocommerce-pagination li a {
+    color: #707c8c;
+    text-decoration: none;
+    font-weight: 500; }
+  .woocommerce-pagination li .current {
+    text-decoration: underline; }
+.woocommerce-pagination .prev,
+.woocommerce-pagination .next {
+  display: inline-block; }
+.woocommerce-pagination .prev {
+  margin-right: 10px; }
+  .woocommerce-pagination .prev:before {
+    content: '';
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("../../_source/images/icons/left-arrow-raven.svg"); }
+.woocommerce-pagination .next {
+  margin-left: 10px; }
+  .woocommerce-pagination .next:after {
+    content: '';
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("../../_source/images/icons/right-arrow-raven.svg"); }
+
 /*# sourceMappingURL=main.css.map */

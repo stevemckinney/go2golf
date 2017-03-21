@@ -1,0 +1,62 @@
+.c-pagination {
+	text-align: center;
+}
+
+.woocommerce-pagination {
+	
+	ul {
+		list-style: none;
+	}
+
+	li {
+		display: inline-block;
+		line-height: 1;
+
+		a {
+			color: map-get($colors-map, raven);
+			text-decoration: none;
+			font-weight: map-get($typography-map, medium-font-weight);
+		}
+
+		.current {
+			text-decoration: underline;
+		}
+	}
+
+	.prev,
+	.next {
+		display: inline-block;
+	}
+
+	.prev {
+		margin-right: map-get($dimensions-map, quarter-spacing-unit);
+
+		&:before {
+			content: '';
+			display: inline-block;
+			margin-right: map-get($dimensions-map, quarter-spacing-unit);
+			vertical-align: top;
+			width: 15px;
+			height: 15px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-image: url('../../_source/images/icons/left-arrow-raven.svg');
+		}
+	}
+
+	.next {
+		margin-left: map-get($dimensions-map, quarter-spacing-unit);
+
+		&:after {
+			content: '';
+			display: inline-block;
+			margin-left: map-get($dimensions-map, quarter-spacing-unit);
+			vertical-align: top;
+			width: 15px;
+			height: 15px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-image: url('../../_source/images/icons/right-arrow-raven.svg');
+		}
+	}
+}
