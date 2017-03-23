@@ -15,15 +15,29 @@
 }
 
 .o-btn--primary {
-	color: map-get($colors-map, bondi-blue);
-	background-color: map-get($colors-map, white);
+	color: map-get($colors-map, white);
+	background-color: map-get($colors-map, java);
 	box-shadow: map-get($visual-enhancements-map, box-shadow-primary);
 	text-decoration: none;
 	font-weight: map-get($typography-map, medium-font-weight);
-	background-image: url('../../_source/images/icons/right-arrow-bondi-blue.svg');
+	background-image: url('../../_source/images/icons/right-arrow.svg');
 	background-size: 15px;
 	background-repeat: no-repeat;
 	background-position: 85% 50%;
+
+	&:hover,
+	&:focus,
+	&:active {
+		color: map-get($colors-map, bondi-blue);
+		background-color: map-get($colors-map, white);
+		background-image: url('../../_source/images/icons/right-arrow-bondi-blue.svg');
+	}
+}
+
+.o-btn--primary-inverted {
+	color: map-get($colors-map, bondi-blue);
+	background-color: map-get($colors-map, white);
+	background-image: url('../../_source/images/icons/right-arrow-bondi-blue.svg');
 
 	&:hover,
 	&:focus,
@@ -34,16 +48,36 @@
 	}
 }
 
-.o-btn--primary-inverted {
-	color: map-get($colors-map, white);
-	background-color: map-get($colors-map, java);
-	background-image: url('../../_source/images/icons/right-arrow.svg');
+// .o-btn--primary {
+// 	color: map-get($colors-map, bondi-blue);
+// 	background-color: map-get($colors-map, white);
+// 	box-shadow: map-get($visual-enhancements-map, box-shadow-primary);
+// 	text-decoration: none;
+// 	font-weight: map-get($typography-map, medium-font-weight);
+// 	background-image: url('../../_source/images/icons/right-arrow-bondi-blue.svg');
+// 	background-size: 15px;
+// 	background-repeat: no-repeat;
+// 	background-position: 85% 50%;
 
-	&:hover,
-	&:focus,
-	&:active {
-		color: map-get($colors-map, bondi-blue);
-		background-color: map-get($colors-map, white);
-		background-image: url('../../_source/images/icons/right-arrow-bondi-blue.svg');
-	}
-}
+// 	&:hover,
+// 	&:focus,
+// 	&:active {
+// 		color: map-get($colors-map, white);
+// 		background-color: map-get($colors-map, java);
+// 		background-image: url('../../_source/images/icons/right-arrow.svg');
+// 	}
+// }
+
+// .o-btn--primary-inverted {
+// 	color: map-get($colors-map, white);
+// 	background-color: map-get($colors-map, java);
+// 	background-image: url('../../_source/images/icons/right-arrow.svg');
+
+// 	&:hover,
+// 	&:focus,
+// 	&:active {
+// 		color: map-get($colors-map, bondi-blue);
+// 		background-color: map-get($colors-map, white);
+// 		background-image: url('../../_source/images/icons/right-arrow-bondi-blue.svg');
+// 	}
+// }

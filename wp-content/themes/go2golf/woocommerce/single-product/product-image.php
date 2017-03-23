@@ -45,6 +45,7 @@ global $post, $product;
 				$post->ID
 			);
 		}
+		echo "here";
 		do_action( 'woocommerce_product_thumbnails' );
 	?>
 </div>

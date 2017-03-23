@@ -654,28 +654,28 @@ td {
   padding: 30px; }
 
 .o-btn--primary {
-  color: #00adb5;
-  background-color: #fff;
+  color: #fff;
+  background-color: #1ACAB6;
   box-shadow: 0 1px 9px -1px rgba(16, 37, 64, 0.3);
   text-decoration: none;
   font-weight: 500;
-  background-image: url("../../_source/images/icons/right-arrow-bondi-blue.svg");
+  background-image: url("../../_source/images/icons/right-arrow.svg");
   background-size: 15px;
   background-repeat: no-repeat;
   background-position: 85% 50%; }
   .o-btn--primary:hover, .o-btn--primary:focus, .o-btn--primary:active {
-    color: #fff;
-    background-color: #1ACAB6;
-    background-image: url("../../_source/images/icons/right-arrow.svg"); }
-
-.o-btn--primary-inverted {
-  color: #fff;
-  background-color: #1ACAB6;
-  background-image: url("../../_source/images/icons/right-arrow.svg"); }
-  .o-btn--primary-inverted:hover, .o-btn--primary-inverted:focus, .o-btn--primary-inverted:active {
     color: #00adb5;
     background-color: #fff;
     background-image: url("../../_source/images/icons/right-arrow-bondi-blue.svg"); }
+
+.o-btn--primary-inverted {
+  color: #00adb5;
+  background-color: #fff;
+  background-image: url("../../_source/images/icons/right-arrow-bondi-blue.svg"); }
+  .o-btn--primary-inverted:hover, .o-btn--primary-inverted:focus, .o-btn--primary-inverted:active {
+    color: #fff;
+    background-color: #1ACAB6;
+    background-image: url("../../_source/images/icons/right-arrow.svg"); }
 
 .o-sidebar {
   padding-bottom: 40px;
@@ -692,6 +692,49 @@ td {
       color: #102540; }
       .o-sidebar li a:hover {
         text-decoration: underline; }
+  .o-sidebar .widget_product_search .o-sidebar__heading {
+    margin-bottom: 0; }
+  .o-sidebar .widget_product_search .woocommerce-product-search {
+    position: relative; }
+  .o-sidebar .widget_product_search label {
+    border: 0;
+    clip-path: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px; }
+  .o-sidebar .widget_product_search .search-field {
+    margin-bottom: 0;
+    width: 100%;
+    border: 0;
+    padding: 20px 0;
+    outline: 0; }
+  .o-sidebar .widget_product_search input[type="submit"] {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%); }
+  .o-sidebar .o-sidebar__search-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    padding: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border: 0;
+    outline: 0;
+    min-height: 0;
+    height: 22px;
+    background-color: transparent;
+    width: 24px;
+    background-image: url("../../_source/images/icons/search-bondi-blue.svg");
+    background-repeat: no-repeat; }
 
 .o-sidebar__section {
   padding: 0 40px; }
