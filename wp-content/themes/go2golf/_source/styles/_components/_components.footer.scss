@@ -1,10 +1,11 @@
 .c-footer {
-	margin-top: map-get($dimensions-map, double-spacing-unit);
+	margin-top: 0;
 	padding-top: map-get($dimensions-map, double-spacing-unit);
 	padding-bottom: map-get($dimensions-map, double-spacing-unit);
 	background-color: map-get($colors-map, blue-zodiac);
 }
 
-.c-footer--no-margin {
-	margin-top: 0;
+.c-footer__copy {
+	color: map-get($colors-map, bondi-blue);
+	font-weight: map-get($typography-map, bold-font-weight);
 }

@@ -448,7 +448,7 @@ body {
     border-radius: 60px;
     background-color: #00adb5;
     color: #fff;
-    padding: 20px 40px;
+    padding: 20px 30px;
     height: 75%;
     width: 180px; }
     .homepage-hero .search-submit:hover, .homepage-hero .search-submit:active, .homepage-hero .search-submit:focus {
@@ -699,7 +699,7 @@ td {
   width: 100%; }
 
 .o-btn--large {
-  padding: 20px 40px; }
+  padding: 20px 30px; }
 
 .o-btn--primary {
   color: #fff;
@@ -758,6 +758,7 @@ td {
     width: 100%;
     border: 0;
     padding: 20px 0;
+    padding-right: 50px;
     outline: 0; }
   .o-sidebar .widget_product_search input[type="submit"] {
     position: absolute;
@@ -778,7 +779,7 @@ td {
     border: 0;
     outline: 0;
     min-height: 0;
-    height: 22px;
+    height: 24px;
     background-color: transparent;
     width: 24px;
     background-image: url("../../_source/images/icons/search-bondi-blue.svg");
@@ -836,13 +837,14 @@ td {
   width: 100%; }
 
 .c-footer {
-  margin-top: 80px;
+  margin-top: 0;
   padding-top: 80px;
   padding-bottom: 80px;
   background-color: #102540; }
 
-.c-footer--no-margin {
-  margin-top: 0; }
+.c-footer__copy {
+  color: #00adb5;
+  font-weight: 600; }
 
 .c-course-result-item {
   position: relative;

@@ -39,6 +39,7 @@
 			width: 100%;
 			border: 0;
 			padding: map-get($dimensions-map, half-spacing-unit) 0;
+			padding-right: 50px;
 			outline: 0;
 		}
 
@@ -64,7 +65,7 @@
 		border: 0;
 		outline: 0;
 		min-height: 0;
-		height: 22px;
+		height: 24px;
 		background-color: transparent;
 		width: 24px;
 		background-image: url('../../_source/images/icons/search-bondi-blue.svg');
