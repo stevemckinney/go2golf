@@ -89,10 +89,10 @@ get_header( 'shop' ); ?>
 											</div><!--/.c-course-detail-box__key-feature-inner -->
 										</div><!--/.c-course-detail-box__key-feature -->
 									</div><!--/.c-course-detail-box__key-features -->
-									<div class="c-course-detail-box__key-info">
+									<!--<div class="c-course-detail-box__key-info">
 										<p class="c-course-detail-box__key-info-item"><span class="c-course-detail-box__key-info-description">Description</span> <span class="c-course-detail-box__key-info-value">value</span></p>
 										<p class="c-course-detail-box__key-info-item"><span class="c-course-detail-box__key-info-description">Description</span> <span class="c-course-detail-box__key-info-value">value</span></p>
-									</div><!--/.c-course-detail-box__key-features -->
+									</div>/.c-course-detail-box__key-features -->
 								</div><!--/.o-grid__col -->
 							</div><!--/.o-grid -->
 						</div><!--/.c-course-detail-box -->
