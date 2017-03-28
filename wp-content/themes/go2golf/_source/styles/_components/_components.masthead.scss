@@ -3,3 +3,9 @@
 	padding-bottom: map-get($dimensions-map, half-spacing-unit) *1.5;
 	background-color: map-get($colors-map, blue-zodiac);
 }
+
+.c-masthead--overlaid {
+	background-color: transparent;
+	position: absolute;
+	width: 100%;
+}

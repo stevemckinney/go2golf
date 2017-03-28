@@ -4,3 +4,7 @@
 	padding-bottom: map-get($dimensions-map, double-spacing-unit);
 	background-color: map-get($colors-map, blue-zodiac);
 }
+
+.c-footer--no-margin {
+	margin-top: 0;
+}

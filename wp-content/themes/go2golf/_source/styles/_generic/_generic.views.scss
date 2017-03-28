@@ -1,0 +1,60 @@
+.homepage-hero {
+	display: table;
+	width: 100%;
+	text-align: center;
+	height: 600px;
+	height: 100vh;
+	background-image: url('../../_source/images/hero.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	.search {
+		position: relative;
+		width: 100%;
+		max-width: 700px;
+		margin-top: map-get($dimensions-map, base-spacing-unit);
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.search-input {
+		padding: map-get($dimensions-map, base-spacing-unit);
+		padding-right: 220px;
+		border-radius: map-get($dimensions-map, border-radius-mega);
+		border: 0;
+		width: 100%;
+		max-width: 700px;
+		font-size: map-get($typography-map, l-font-size);
+	}
+
+	.search-submit {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: map-get($dimensions-map, half-spacing-unit);
+		-webkit-appearance: none;
+		border: 0;
+		border-radius: map-get($dimensions-map, border-radius-mega);
+		background-color: map-get($colors-map, bondi-blue);
+		color: map-get($colors-map, white);
+		padding: map-get($dimensions-map, button-padding-large);
+		height: 75%;
+		width: 180px;
+
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: darken(map-get($colors-map, bondi-blue), 5%);
+		}
+	}
+}
+
+.homepage-hero__content {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.homepage-hero__heading {
+	font-size: 48px;
+	font-weight: map-get($typography-map, bold-font-weight);
+}

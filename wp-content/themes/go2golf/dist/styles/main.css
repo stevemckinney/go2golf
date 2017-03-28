@@ -414,6 +414,54 @@ body, h1, h2, h3, h4, h5, h6, p {
 body {
   background-color: #e4edeb; }
 
+.homepage-hero {
+  display: table;
+  width: 100%;
+  text-align: center;
+  height: 600px;
+  height: 100vh;
+  background-image: url("../../_source/images/hero.jpg");
+  background-repeat: no-repeat;
+  background-size: cover; }
+  .homepage-hero .search {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto; }
+  .homepage-hero .search-input {
+    padding: 40px;
+    padding-right: 220px;
+    border-radius: 60px;
+    border: 0;
+    width: 100%;
+    max-width: 700px;
+    font-size: 22px; }
+  .homepage-hero .search-submit {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+    -webkit-appearance: none;
+    border: 0;
+    border-radius: 60px;
+    background-color: #00adb5;
+    color: #fff;
+    padding: 20px 40px;
+    height: 75%;
+    width: 180px; }
+    .homepage-hero .search-submit:hover, .homepage-hero .search-submit:active, .homepage-hero .search-submit:focus {
+      background-color: #00959c; }
+
+.homepage-hero__content {
+  display: table-cell;
+  vertical-align: middle; }
+
+.homepage-hero__heading {
+  font-size: 48px;
+  font-weight: 600; }
+
 table {
   width: 100%;
   border: 1px solid #e4edeb;
@@ -651,7 +699,7 @@ td {
   width: 100%; }
 
 .o-btn--large {
-  padding: 30px; }
+  padding: 20px 40px; }
 
 .o-btn--primary {
   color: #fff;
@@ -782,11 +830,19 @@ td {
   padding-bottom: 30px;
   background-color: #102540; }
 
+.c-masthead--overlaid {
+  background-color: transparent;
+  position: absolute;
+  width: 100%; }
+
 .c-footer {
   margin-top: 80px;
   padding-top: 80px;
   padding-bottom: 80px;
   background-color: #102540; }
+
+.c-footer--no-margin {
+  margin-top: 0; }
 
 .c-course-result-item {
   position: relative;
