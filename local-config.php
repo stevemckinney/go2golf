@@ -56,7 +56,7 @@ switch( ENVIRONMENT ) {
         define( 'DB_NAME', 'goandgol_wordpress'  );
         define( 'DB_USER', 'goandgol_admin' );
         define( 'DB_PASSWORD', 'g@cH5spebRak' );
-        define( 'DB_HOST', 'localhost' );
+        define( 'DB_HOST', '10.169.0.141' );
         define( 'WP_SITEURL', 'http://goandgolf.co.uk' );
         define( 'WP_HOME', 'http://goandgolf.co.uk' );
     
