@@ -10,7 +10,7 @@ $environments = array(
     'local_james' => 'localhost',
     'test' => 'go2golfdev.x10host.com',
     'stage' => 'stage.',
-    'live' => 'domain.com'
+    'live' => 'goandgolf.co.uk'
 );
 // Get Server name
 $server_name = $_SERVER['SERVER_NAME'];
@@ -48,6 +48,17 @@ switch( ENVIRONMENT ) {
         define( 'DB_HOST', 'localhost' );
         define( 'WP_SITEURL', 'http://go2golfdev.x10host.com' );
         define( 'WP_HOME', 'http://go2golfdev.x10host.com' );
+    
+    break;
+
+    case 'live':
+ 
+        define( 'DB_NAME', 'goandgol_wordpress'  );
+        define( 'DB_USER', 'goandgol_admin' );
+        define( 'DB_PASSWORD', 'g@cH5spebRak' );
+        define( 'DB_HOST', 'localhost' );
+        define( 'WP_SITEURL', 'http://goandgolf.co.uk' );
+        define( 'WP_HOME', 'http://goandgolf.co.uk' );
     
     break;
 }
