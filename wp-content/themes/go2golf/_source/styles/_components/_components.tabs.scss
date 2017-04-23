@@ -1,24 +1,24 @@
 $tabs-spacing: map-get($dimensions-map, half-spacing-unit);
 $tabs-top-offset: - $tabs-spacing * 1.5;
 
-:target {
-	background-color: map-get($colors-map, mystic);
-	animation: opacityFlash 1.6s 2;
-}
+// :target {
+// 	background-color: map-get($colors-map, mystic);
+// 	animation: opacityFlash 1.6s 2;
+// }
 
-@keyframes opacityFlash {
-	0% {
-		opacity: 1;
-	}
+// @keyframes opacityFlash {
+// 	0% {
+// 		opacity: 1;
+// 	}
 
-	50% {
-		opacity: .1;
-	}
+// 	50% {
+// 		opacity: .1;
+// 	}
 
-	100% {
-		opacity: 1;
-	}
-}
+// 	100% {
+// 		opacity: 1;
+// 	}
+// }
 
 .c-tabs {
 	padding-left: $tabs-spacing;

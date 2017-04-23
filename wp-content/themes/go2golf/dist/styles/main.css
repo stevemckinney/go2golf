@@ -422,7 +422,8 @@ body {
   height: 100vh;
   background-image: url("../../_source/images/hero.jpg");
   background-repeat: no-repeat;
-  background-size: cover; }
+  background-size: cover;
+  background-position: 0 100%; }
   .homepage-hero .search {
     position: relative;
     width: 100%;
@@ -437,7 +438,11 @@ body {
     border: 0;
     width: 100%;
     max-width: 700px;
-    font-size: 22px; }
+    font-size: 22px;
+    -webkit-appearance: none; }
+    .homepage-hero .search-input:focus {
+      border: 1px solid;
+      outline: 0; }
   .homepage-hero .search-submit {
     position: absolute;
     top: 50%;
@@ -759,7 +764,8 @@ td {
     border: 0;
     padding: 20px 0;
     padding-right: 50px;
-    outline: 0; }
+    outline: 0;
+    -webkit-appearance: none; }
   .o-sidebar .widget_product_search input[type="submit"] {
     position: absolute;
     top: 50%;
@@ -786,11 +792,11 @@ td {
     background-repeat: no-repeat; }
 
 .o-sidebar__section {
-  padding: 0 40px; }
+  padding: 0 20px; }
 
 .o-sidebar__heading {
-  margin-left: -40px;
-  margin-right: -40px;
+  margin-left: -20px;
+  margin-right: -20px;
   margin-bottom: 20px;
   padding: 10px 20px;
   color: #fff;
@@ -1022,17 +1028,6 @@ td {
 .c-course-detail-box__key-feature--length .c-course-detail-box__key-feature-icon {
   background-image: url("../../_source/images/icons/map.svg"); }
 
-:target {
-  background-color: #e4edeb;
-  animation: opacityFlash 1.6s 2; }
-
-@keyframes opacityFlash {
-  0% {
-    opacity: 1; }
-  50% {
-    opacity: .1; }
-  100% {
-    opacity: 1; } }
 .c-tabs {
   padding-left: 20px;
   padding-right: 20px;

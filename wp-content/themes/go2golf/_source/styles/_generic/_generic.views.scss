@@ -7,6 +7,7 @@
 	background-image: url('../../_source/images/hero.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
+	background-position: 0 100%;
 
 	.search {
 		position: relative;
@@ -25,6 +26,12 @@
 		width: 100%;
 		max-width: 700px;
 		font-size: map-get($typography-map, l-font-size);
+		-webkit-appearance: none;
+
+		&:focus {
+			border: 1px solid;
+			outline: 0;
+		}
 	}
 
 	.search-submit {
