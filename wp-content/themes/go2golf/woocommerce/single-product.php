@@ -115,10 +115,10 @@ get_header( 'shop' ); ?>
 								<li style="text-align:left; border:0" class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#contactInformation">Contact information</a>
 								</li>
-								<!--<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
+								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#facilities">Facilities</a>
 								</li>
-								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
+								<!--<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#courseInformation">Course information</a>
 								</li>
 								<li class="c-tabs__tab-label">
@@ -147,55 +147,80 @@ get_header( 'shop' ); ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
-							<section style="display:none" id="facilities" class="o-panel o-panel--double o-panel--has-divider">
+							<section id="facilities" class="o-panel o-panel--double o-panel--has-divider">
 								<h1 class="o-heading--secondary">Facilities</h1>
+								<?php 
+									function checkInactiveFacility($facility) {
+										if (!$facility == 1) {
+											echo ' c-facility-indicator--inactive';
+										}
+									}
+								?>
 								<div class="o-grid o-grid--vertically-spaced">
 									<div class="o-grid__col o-grid__col--1/4">
-										<div class="c-facility-indicator">
-											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Facility</p>
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_trolleys')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/trolley.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Trolleys</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col o-grid__col--1/4">
-										<div class="c-facility-indicator">
-											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Facility</p>
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_buggies')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/buggy.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Buggies</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col o-grid__col--1/4">
-										<div class="c-facility-indicator">
-											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Facility</p>
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_clubs')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/club.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Clubs</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col o-grid__col--1/4">
-										<div class="c-facility-indicator">
-											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Facility</p>
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_driving_range')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/driving-range.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Driving Range</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col o-grid__col--1/4">
-										<div class="c-facility-indicator c-facility-indicator--inactive">
-											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Facility INACTIVE</p>
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_putting_green')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/putting.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Putting Green</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col o-grid__col--1/4">
-										<div class="c-facility-indicator">
-											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Facility</p>
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_practice_area')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/practice.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Practice Area</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col o-grid__col--1/4">
-										<div class="c-facility-indicator">
-											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Facility</p>
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_changing_room')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/changing-room.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Changing Room</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col o-grid__col--1/4">
-										<div class="c-facility-indicator">
-											<img src="https://image.flaticon.com/icons/svg/182/182598.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Facility</p>
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_pro_shop')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/shop.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Pro Shop</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_corporate_facilities')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/corporate.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Corporate Facilities</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_accommodation')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/accommodation.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Accommodation</p>
+										</div><!--/.c-facility-indicator -->
+									</div><!--/.o-grid__col -->
+									<div class="o-grid__col o-grid__col--1/4">
+										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_bar_and_food')); ?>">
+											<img src="<?php getThemePath(); ?>/_source/images/icons/facilities/bar-food.svg" width="80" class="c-facility-indicator__image">
+											<p class="c-facility-indicator__name">Bar and Food</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->

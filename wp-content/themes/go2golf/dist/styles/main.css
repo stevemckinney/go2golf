@@ -1069,8 +1069,8 @@ td {
   border-radius: 4px;
   text-align: center; }
 
-.c-facility-indicator--inactive .c-facility-indicator__name {
-  color: #707c8c; }
+.c-facility-indicator--inactive {
+  opacity: 0.5; }
 
 .c-facility-indicator__image {
   margin-bottom: 10px; }
