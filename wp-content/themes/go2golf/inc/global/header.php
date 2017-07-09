@@ -4,7 +4,7 @@
 		<header role="banner" class="c-masthead c-masthead--overlaid">
 			<div class="o-wrapper">
 				<h1>
-					<img src="<?php echo bloginfo('template_directory'); ?>/_source/images/icons/logo.svg" alt="Go 2 Golf">
+					<img src="<?php echo bloginfo('template_directory'); ?>/_source/images/icons/logo.svg" alt="Go 2 Golf" class="u-db">
 				</h1>
 			</div><!--/.o-wrapper -->
 		</header>
@@ -13,7 +13,7 @@
 			<div class="o-wrapper">
 				<h1>
 					<a href="<?php bloginfo('url'); ?>">
-						<img src="<?php echo bloginfo('template_directory'); ?>/_source/images/icons/logo-white.svg" alt="Go 2 Golf">
+						<img src="<?php echo bloginfo('template_directory'); ?>/_source/images/icons/logo-white.svg" alt="Go 2 Golf" class="u-db">
 					</a>
 				</h1>
 			</div><!--/.o-wrapper -->
