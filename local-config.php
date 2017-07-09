@@ -8,6 +8,7 @@ $project_name = PROJECT_NAME;
 
 $environments = array(
     'local_james' => 'localhost',
+    'local_steve' => 'goandgolf.dev',
     'test' => 'go2golfdev.x10host.com',
     'stage' => 'stage.',
     'live' => 'goandgolf.co.uk'
@@ -35,6 +36,19 @@ switch( ENVIRONMENT ) {
         define( 'WP_DEBUG', true );
         define( 'WP_SITEURL', 'http://localhost/' . $project_name );
         define( 'WP_HOME', 'http://localhost/' . $project_name );
+        
+        define ('JETPACK_DEV_DEBUG', true);
+        
+		break;
+		
+    case 'local_steve':
+        define( 'DB_NAME', 'gogolf' );
+        define( 'DB_USER', 'root' );
+        define( 'DB_PASSWORD', 'root' );
+        define( 'DB_HOST', 'localhost' );
+        define( 'WP_DEBUG', true );
+        define( 'WP_SITEURL', 'http://goandgolf.dev' );
+        define( 'WP_HOME', 'http://goandgolf.dev' );
         
         define ('JETPACK_DEV_DEBUG', true);
         
