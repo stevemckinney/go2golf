@@ -1,16 +1,31 @@
 .c-woocommerce-breadcrumb {
 	margin-bottom: map-get($dimensions-map, double-spacing-unit);
-	padding: map-get($dimensions-map, half-spacing-unit) 0;
 	background-color: map-get($colors-map, white);
 	box-shadow: map-get($visual-enhancements-map, box-shadow-primary);
 	color: map-get($colors-map, raven);
 	font-weight: map-get($typography-map, medium-font-weight);
+	
+	padding: map-get($dimensions-map, half-spacing-unit)/2 0;
+	
+	@include respond-to-min(600px) {
+  	padding: map-get($dimensions-map, half-spacing-unit) 0;
+  }
+  
+  @include respond-to-max(599px) {
+    font-size: map-get($typography-map, xxs-font-size)
+  }
 }
 
 .c-woocommerce-breadcrumb__inner {
 	max-width: map-get($dimensions-map, site-max-width);
 	padding: 0 map-get($dimensions-map, base-spacing-unit);
 	margin: 0 auto;
+	
+	// Make sure the breadcrumbs don’t wrap awkwardly at smaller screen sizes
+	white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .c-woocommerce-breadcrumb a {
