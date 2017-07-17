@@ -3,9 +3,9 @@
 	padding-bottom: map-get($dimensions-map, half-spacing-unit);
 	background-color: map-get($colors-map, blue-zodiac);
 	
-	@include respond-to-min(600px) {
-  	padding-top: map-get($dimensions-map, half-spacing-unit) *1.5;
-  	padding-bottom: map-get($dimensions-map, half-spacing-unit) *1.5;
+  @include respond-to-min(600px) {
+    padding-top: map-get($dimensions-map, half-spacing-unit) *1.5;
+    padding-bottom: map-get($dimensions-map, half-spacing-unit) *1.5;
   }
   
   @include respond-to-max(599px) {

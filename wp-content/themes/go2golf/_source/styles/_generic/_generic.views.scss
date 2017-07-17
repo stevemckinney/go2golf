@@ -18,16 +18,32 @@
 		margin-right: auto;
 	}
 	
+	.sidebar {
+  	@include respond-to-max(599px) {
+  		padding-left: 5%;
+  		padding-right: 5%;
+    }
+	}
+	
 	.search-input {
-		padding: map-get($dimensions-map, base-spacing-unit);
-		padding-right: 220px;
+		padding: map-get($dimensions-map, base-spacing-unit)/2;
 		border-radius: map-get($dimensions-map, border-radius-mega);
 		border: 0;
 		width: 100%;
 		max-width: 700px;
 		font-size: map-get($typography-map, l-font-size);
 		-webkit-appearance: none;
-
+    
+    @include respond-to-max(599px) {
+      margin-bottom: map-get($dimensions-map, base-spacing-unit)/2;
+      font-size: 16px;
+    }
+    
+    @include respond-to-min(600px) {
+      padding: map-get($dimensions-map, base-spacing-unit);
+      padding-right: 220px;
+    }
+    
 		&:focus {
 			border: 1px solid;
 			outline: 0;
@@ -35,18 +51,21 @@
 	}
 
 	.search-submit {
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		right: map-get($dimensions-map, half-spacing-unit);
 		-webkit-appearance: none;
 		border: 0;
 		border-radius: map-get($dimensions-map, border-radius-mega);
 		background-color: map-get($colors-map, bondi-blue);
 		color: map-get($colors-map, white);
 		padding: map-get($dimensions-map, button-padding-large);
-		height: 75%;
-		width: 180px;
+		
+		@include respond-to-min(600px) {
+  		position: absolute;
+  		top: 50%;
+  		transform: translateY(-50%);
+  		right: map-get($dimensions-map, half-spacing-unit);
+  		width: 180px;
+  		height: 75%;
+    }
 
 		&:hover,
 		&:active,
@@ -62,6 +81,28 @@
 }
 
 .homepage-hero__heading {
-	font-size: 48px;
+	font-size: 24px;
 	font-weight: map-get($typography-map, bold-font-weight);
+	
+	@include respond-to-min(600px) {
+    font-size: 48px;
+  }
+  
+  @include respond-to-max(599px) {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}
+
+.homepage-hero__subheading {
+  font-size: 16px;
+	
+	@include respond-to-min(600px) {
+    font-size: 24px;
+  }
+  
+  @include respond-to-max(599px) {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
 }
