@@ -7,7 +7,7 @@
 
       .b, .c {
         fill: none;
-        stroke: #000;
+        stroke: #344154;
         stroke-width: 2px;
       }
 
