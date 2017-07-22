@@ -1036,8 +1036,7 @@ td {
   border-radius: 4px; }
   @supports (display: flex) {
     .c-tabs {
-      display: flex;
-      justify-content: space-around; } }
+      display: flex; } }
 
 .c-tabs--pull-top {
   position: relative;
@@ -1051,7 +1050,6 @@ td {
     .c-tabs__tab-label {
       margin-right: 0;
       display: initial;
-      flex-basis: 100%;
       text-align: center; } }
   .c-tabs__tab-label > a {
     display: block;
@@ -1061,7 +1059,9 @@ td {
     color: #102540; }
 
 .c-tabs__tab-label--has-sibling {
-  border-right: 1px solid #e4edeb; }
+  border-right: 1px solid #e4edeb;
+  margin-right: 40px;
+  padding-right: 40px; }
 
 .c-facility-indicator {
   padding: 20px;
@@ -1073,7 +1073,8 @@ td {
   opacity: 0.5; }
 
 .c-facility-indicator__image {
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  height: 76px; }
 
 .c-woocommerce-breadcrumb {
   margin-bottom: 80px;
