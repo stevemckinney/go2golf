@@ -6,12 +6,10 @@
 }
 
 .c-facility-indicator--inactive {
-	
-	.c-facility-indicator__name {
-		color: map-get($colors-map, raven);
-	}
+	opacity: 0.5;
 }
 
 .c-facility-indicator__image {
 	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+	height: 76px;
 }
