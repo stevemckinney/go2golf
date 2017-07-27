@@ -18,7 +18,7 @@
 }
 
 @mixin widths($cols, $modifier: "") {
-  @for $i from 1 through $cols - 1 {
+  @for $i from 1 through $cols {
     $gcd: gcd($i, $cols);
     $numerator: $i / $gcd;
     $denominator: $cols / $gcd;
