@@ -29,7 +29,7 @@ $tabs-top-offset: - $tabs-spacing * 1.5;
 
 	@supports (display: flex) {
 		display: flex;
-		justify-content: space-around;
+		// justify-content: space-around;
 	}
 }
 
@@ -46,7 +46,7 @@ $tabs-top-offset: - $tabs-spacing * 1.5;
 	@supports (display: flex) {
 		margin-right: 0;
 		display: initial;
-		flex-basis: 100%;
+		// flex-basis: 100%;
 		text-align: center;
 	}
 
@@ -61,4 +61,6 @@ $tabs-top-offset: - $tabs-spacing * 1.5;
 
 .c-tabs__tab-label--has-sibling {
 	border-right: map-get($visual-enhancements-map, border-primary);
+	margin-right: map-get($dimensions-map, base-spacing-unit);
+	padding-right: map-get($dimensions-map, base-spacing-unit);
 }
