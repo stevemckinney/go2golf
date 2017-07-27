@@ -160,7 +160,7 @@ get_header( 'shop' ); ?>
 									<div class="o-grid__col o-grid__col--1/4">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_trolleys')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/trolley.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Trolleyies for hire</p>
+											<p class="c-facility-indicator__name">Trollies for hire</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col o-grid__col--1/4">
