@@ -99,9 +99,21 @@ get_header( 'shop' ); ?>
 					</div><!--/.o-grid__col -->
 					<div class="o-grid__col o-grid__col--1/4">
 						<div data-id="product-cta-sidebar">
-							<a href="#" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta">Book a tee time</a>
-							<a href="#" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">Book a hotel</a>
-							<a href="#" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">Book a hotel and play</a>
+							<?php
+							if(get_field('cta_1_text')) {
+								echo '<a href="' . get_field('cta_1_link') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta">' . get_field('cta_1_text'). '</a>';
+							}
+							?>
+							<?php
+							if(get_field('cta_2_text')) {
+								echo '<a href="' . get_field('cta_2_link') . '" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">' . get_field('cta_2_text'). '</a>';
+							}
+							?>
+							<?php
+							if(get_field('cta_3_text')) {
+								echo '<a href="' . get_field('cta_3_link') . '" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">' . get_field('cta_3_text'). '</a>';
+							}
+							?>
 						</div>
 					</div><!--/.o-grid__col -->
 				</div><!--/.o-grid -->
