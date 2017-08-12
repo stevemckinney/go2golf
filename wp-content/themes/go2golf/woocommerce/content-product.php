@@ -37,7 +37,7 @@ $average_course_review = get_user_review_average($post->ID);
 	<a href="<?php the_permalink() ?>">
 
 		<div class="o-grid">
-			<div class="o-grid__col o-grid__col--5/12">
+			<div class="o-grid__col o-grid__col--5/12--med">
 			<?php
 
 			/**
@@ -51,7 +51,7 @@ $average_course_review = get_user_review_average($post->ID);
 			?>
 			</div><!--/.o-grid__col -->
 
-			<div class="o-grid__col o-grid__col--7/12">
+			<div class="o-grid__col o-grid__col--7/12--med">
 				<div class="c-course-result-item__info-section">
 
 					<?php the_title('<h2 class="c-course-result-item__name">', '</h2>'); ?>

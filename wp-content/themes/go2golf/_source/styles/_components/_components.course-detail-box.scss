@@ -85,8 +85,29 @@
 	color: map-get($colors-map, raven);
 }
 
+.c-course-detail__ctas {
+	
+	@include respond-to-max(get-breakpoint(large)) {
+		position: fixed;
+		left: 0;
+		width: 100%;
+		bottom: 0;
+		display: flex;
+		margin-bottom: map-get($dimensions-map, base-spacing-unit);
+	}
+}
+
 .c-course-detail__cta {
 	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+
+	@include respond-to-max(get-breakpoint(large)) {
+		background-position-x: 95%;
+		align-self: center;
+
+		&:not(:last-of-type) {
+			margin-right: map-get($dimensions-map, quarter-spacing-unit);
+		}
+	}
 }
 
 .c-course-detail-box__key-features {

@@ -40,7 +40,7 @@ get_header( 'shop' ); ?>
 
 			<div class="o-wrapper t-push-bottom--half">
 				<div class="o-grid">
-					<div class="o-grid__col o-grid__col--3/4">
+					<div class="o-grid__col o-grid__col--3/4--large">
 						<div class="c-course-detail-box">
 							<div class="o-grid">
 								<div class="o-grid__col o-grid__col--5/12">
@@ -97,8 +97,8 @@ get_header( 'shop' ); ?>
 							</div><!--/.o-grid -->
 						</div><!--/.c-course-detail-box -->
 					</div><!--/.o-grid__col -->
-					<div class="o-grid__col o-grid__col--1/4">
-						<div data-id="product-cta-sidebar">
+					<div class="o-grid__col o-grid__col--1/4--large">
+						<div data-id="product-cta-sidebar" class="c-course-detail__ctas">
 							<a href="#" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta">Book a tee time</a>
 							<a href="#" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">Book a hotel</a>
 							<a href="#" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">Book a hotel and play</a>

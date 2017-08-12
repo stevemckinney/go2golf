@@ -3,7 +3,7 @@
 	background-color: map-get($colors-map, white);
 	border-radius: map-get($dimensions-map, border-radius);
 
-	@include respond-to-max(get-breakpoint(large)) {
+	@include respond-to-max(get-breakpoint(x-large)) {
 		overflow: hidden;
 		margin-bottom: map-get($dimensions-map, base-spacing-unit);
 	}
@@ -82,7 +82,7 @@
 .o-sidebar__section {
 	padding: 0 map-get($dimensions-map, half-spacing-unit);
 	
-	@include respond-to-max(get-breakpoint(large)) {
+	@include respond-to-max(get-breakpoint(x-large)) {
 		max-height: 200px;
 		overflow: scroll;
 	}

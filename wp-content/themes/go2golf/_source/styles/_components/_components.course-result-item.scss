@@ -8,10 +8,15 @@
 }
 
 .c-course-result-item__name {
-	width: 65%;
-	margin-top: map-get($dimensions-map, half-spacing-unit);
+	width: 90%;
+	margin-top: map-get($dimensions-map, quarter-spacing-unit);
 	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
 	font-size: map-get($typography-map, l-font-size);
+
+	@include respond-to-min(get-breakpoint(large)) {
+		width: 65%;
+		margin-top: map-get($dimensions-map, half-spacing-unit);
+	}
 }
 
 .c-course-result-item__location {
@@ -28,17 +33,33 @@
 	border-radius: map-get($dimensions-map, border-radius) 0 0 map-get($dimensions-map, border-radius);
 }
 
+.c-course-result-item__info-section {
+
+	@include respond-to-max(get-breakpoint(med)) {
+		padding: map-get($dimensions-map, half-spacing-unit);
+	}
+}
+
 .c-course-result-item__cta {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	border-radius: map-get($dimensions-map, border-radius) 0 0 0;
+	border-radius: map-get($dimensions-map, border-radius);
 	// TODO
 	background-image: url('../../_source/images/icons/right-arrow.svg');
 	background-size: 15px;
 	background-repeat: no-repeat;
 	background-position: 85% 50%;
 	text-align: center;
+
+	@include respond-to-min(get-breakpoint(med)) {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		border-radius: map-get($dimensions-map, border-radius) 0 0 0;
+	}
+
+	@include respond-to-max(get-breakpoint(med)) {
+		float: right;
+		margin-bottom: map-get($dimensions-map, half-spacing-unit);
+	}
 }
 
 .c-course-result-item__average-review-stars {
