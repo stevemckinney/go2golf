@@ -101,17 +101,19 @@ get_header( 'shop' ); ?>
 						<div data-id="product-cta-sidebar">
 							<?php
 							if(get_field('cta_1_text')) {
-								echo '<a href="' . get_field('cta_1_link') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta">' . get_field('cta_1_text'). '</a>';
+								echo '<a href="' . get_field('cta_1_link') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta" target="_blank">' . get_field('cta_1_text'). '</a>';
+							} elseif(get_field('course_website')) {
+								echo '<a href="' . get_field('course_website') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta" target="_blank">Course website</a>';
 							}
 							?>
 							<?php
 							if(get_field('cta_2_text')) {
-								echo '<a href="' . get_field('cta_2_link') . '" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">' . get_field('cta_2_text'). '</a>';
+								echo '<a href="' . get_field('cta_2_link') . '" class="o-btn o-btn--full o-btn--primary c-course-detail__cta" target="_blank">' . get_field('cta_2_text'). '</a>';
 							}
 							?>
 							<?php
 							if(get_field('cta_3_text')) {
-								echo '<a href="' . get_field('cta_3_link') . '" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">' . get_field('cta_3_text'). '</a>';
+								echo '<a href="' . get_field('cta_3_link') . '" class="o-btn o-btn--full o-btn--primary c-course-detail__cta" target="_blank">' . get_field('cta_3_text'). '</a>';
 							}
 							?>
 						</div>
