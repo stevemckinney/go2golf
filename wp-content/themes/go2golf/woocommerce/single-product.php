@@ -103,7 +103,7 @@ get_header( 'shop' ); ?>
 							if(get_field('cta_1_text')) {
 								echo '<a href="' . get_field('cta_1_link') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta" target="_blank">' . get_field('cta_1_text'). '</a>';
 							} elseif(get_field('course_website')) {
-								echo '<a href="' . get_field('course_website') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta" target="_blank">Course website</a>';
+								echo '<a href="http://' . get_field('course_website') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta" target="_blank">Course website</a>';
 							}
 							?>
 							<?php
