@@ -98,10 +98,24 @@ get_header( 'shop' ); ?>
 						</div><!--/.c-course-detail-box -->
 					</div><!--/.o-grid__col -->
 					<div class="o-grid__col o-grid__col--1/4--large">
-						<div data-id="product-cta-sidebar" class="c-course-detail__ctas">
-							<a href="#" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta">Book a tee time</a>
-							<a href="#" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">Book a hotel</a>
-							<a href="#" class="o-btn o-btn--full o-btn--primary c-course-detail__cta">Book a hotel and play</a>
+						<div data-id="product-cta-sidebar">
+							<?php
+							if(get_field('cta_1_text')) {
+								echo '<a href="' . get_field('cta_1_link') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta" target="_blank">' . get_field('cta_1_text'). '</a>';
+							} elseif(get_field('course_website')) {
+								echo '<a href="http://' . get_field('course_website') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta" target="_blank">Book a Tee Time</a>';
+							}
+							?>
+							<?php
+							if(get_field('cta_2_text')) {
+								echo '<a href="' . get_field('cta_2_link') . '" class="o-btn o-btn--full o-btn--primary c-course-detail__cta" target="_blank">' . get_field('cta_2_text'). '</a>';
+							}
+							?>
+							<?php
+							if(get_field('cta_3_text')) {
+								echo '<a href="' . get_field('cta_3_link') . '" class="o-btn o-btn--full o-btn--primary c-course-detail__cta" target="_blank">' . get_field('cta_3_text'). '</a>';
+							}
+							?>
 						</div>
 					</div><!--/.o-grid__col -->
 				</div><!--/.o-grid -->
@@ -160,7 +174,7 @@ get_header( 'shop' ); ?>
 									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_trolleys')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/trolley.svg" width="80" class="c-facility-indicator__image">
-											<p class="c-facility-indicator__name">Trolleyies for hire</p>
+											<p class="c-facility-indicator__name">Trollies for hire</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
