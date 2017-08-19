@@ -41,7 +41,11 @@ $tabs-top-offset: - $tabs-spacing * 1.5;
 
 .c-tabs__tab-label {
 	display: inline-block;
-	margin-right: map-get($dimensions-map, half-spacing-unit);
+	margin-right: map-get($dimensions-map, quarter-spacing-unit);
+
+	@include respond-to-min(get-breakpoint(small)) {
+		margin-right: map-get($dimensions-map, half-spacing-unit);
+	}
 
 	@supports (display: flex) {
 		margin-right: 0;
@@ -61,6 +65,11 @@ $tabs-top-offset: - $tabs-spacing * 1.5;
 
 .c-tabs__tab-label--has-sibling {
 	border-right: map-get($visual-enhancements-map, border-primary);
-	margin-right: map-get($dimensions-map, base-spacing-unit);
-	padding-right: map-get($dimensions-map, base-spacing-unit);
+	margin-right: map-get($dimensions-map, quarter-spacing-unit);
+	padding-right: map-get($dimensions-map, quarter-spacing-unit);
+
+	@include respond-to-min(get-breakpoint(small)) {
+		margin-right: map-get($dimensions-map, base-spacing-unit);
+		padding-right: map-get($dimensions-map, base-spacing-unit);
+	}
 }

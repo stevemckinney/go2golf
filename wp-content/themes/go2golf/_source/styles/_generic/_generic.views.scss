@@ -13,9 +13,13 @@
 		position: relative;
 		width: 100%;
 		max-width: 700px;
-		margin-top: map-get($dimensions-map, base-spacing-unit);
+		margin-top: map-get($dimensions-map, quarter-spacing-unit);
 		margin-left: auto;
 		margin-right: auto;
+
+		@include respond-to-min(get-breakpoint(small)) {
+			margin-top: map-get($dimensions-map, base-spacing-unit);
+		}
 	}
 	
 	.sidebar {
@@ -78,6 +82,10 @@
 .homepage-hero__content {
 	display: table-cell;
 	vertical-align: middle;
+	
+	@include respond-to-max(get-breakpoint(small)) {
+		padding-top: map-get($dimensions-map, half-spacing-unit);
+	}
 }
 
 .homepage-hero__heading {
