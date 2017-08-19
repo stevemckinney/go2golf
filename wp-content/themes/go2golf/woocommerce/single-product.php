@@ -40,13 +40,13 @@ get_header( 'shop' ); ?>
 
 			<div class="o-wrapper t-push-bottom--half">
 				<div class="o-grid">
-					<div class="o-grid__col o-grid__col--3/4">
+					<div class="o-grid__col o-grid__col--3/4--large">
 						<div class="c-course-detail-box">
 							<div class="o-grid">
-								<div class="o-grid__col o-grid__col--5/12">
+								<div class="o-grid__col o-grid__col--5/12--small">
 									<?php wc_get_template( 'single-product/product-image.php' ); ?>
 								</div><!--/.o-grid__col -->
-								<div class="o-grid__col o-grid__col--7/12">
+								<div class="o-grid__col o-grid__col--7/12--small">
 									<h2 class="c-course-detail-box__name"><?php the_title(); ?></h2>
 									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id(); ?></h3>
 									<p class="u-visuallyhidden"><?php echo $average_course_review; ?> out of 10</p>
@@ -97,7 +97,7 @@ get_header( 'shop' ); ?>
 							</div><!--/.o-grid -->
 						</div><!--/.c-course-detail-box -->
 					</div><!--/.o-grid__col -->
-					<div class="o-grid__col o-grid__col--1/4">
+					<div class="o-grid__col o-grid__col--1/4--large">
 						<div data-id="product-cta-sidebar">
 							<?php
 							if(get_field('cta_1_text')) {
@@ -124,7 +124,7 @@ get_header( 'shop' ); ?>
 			<div class="o-panel o-panel--flat o-panel--background-color-white">
 				<div class="o-wrapper">
 					<div class="o-grid">
-						<div class="o-grid__col o-grid__col--3/4">
+						<div class="o-grid__col o-grid__col--3/4--large">
 							<ul class="c-tabs c-tabs--pull-top c-tabs--background-color-white">
 								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#contactInformation">Contact information</a>
@@ -141,8 +141,8 @@ get_header( 'shop' ); ?>
 							</ul><!--/.c-tabs -->
 
 							<section id="contactInformation" class="o-panel o-panel--double o-panel--has-divider">
-								<div class="o-grid">
-									<div class="o-grid__col o-grid__col--1/3">
+								<div class="o-grid o-grid--vertically-spaced">
+									<div class="o-grid__col o-grid__col--1/3--large">
 										<h1 class="o-heading--secondary">Contact information</h1>
 										<p><?php the_field('course_telephone', $post->ID); ?></p>
 										<p class="t-push-bottom--half"><?php the_field('course_email', $post->ID); ?></p>
@@ -156,8 +156,8 @@ get_header( 'shop' ); ?>
 											<div><?php the_field('course_postcode'); ?></div>
 										</p>
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--2/3">
-										<img src="https://maps.googleapis.com/maps/api/staticmap?center=<?php the_field('course_postcode'); ?>&zoom=13&size=600x300&maptype=roadmap&markers=color:%7Clabel:%7C<?php the_field('course_postcode'); ?>&key=AIzaSyBJa2I89DTU1eOfuEj3Iy7fu_4g1rhnIx4">
+									<div class="o-grid__col o-grid__col--2/3--large">
+										<img class="c-embedded-map" src="https://maps.googleapis.com/maps/api/staticmap?center=<?php the_field('course_postcode'); ?>&zoom=13&size=600x300&maptype=roadmap&markers=color:%7Clabel:%7C<?php the_field('course_postcode'); ?>&key=AIzaSyBJa2I89DTU1eOfuEj3Iy7fu_4g1rhnIx4">
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
@@ -171,67 +171,67 @@ get_header( 'shop' ); ?>
 									}
 								?>
 								<div class="o-grid o-grid--vertically-spaced">
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_trolleys')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/trolley.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Trollies for hire</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_buggies')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/golf-cart.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Buggies for hire</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_clubs')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/golf-bag.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Clubs for hire</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_driving_range')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/putter-and-ball.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Driving Range</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_putting_green')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/golf-field.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Putting Green</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_practice_area')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/tee.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Practice Area</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_changing_room')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/golf-shirt.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Changing Room</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_pro_shop')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/cup.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Pro Shop</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_corporate_facilities')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/corporate-facilities.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Corporate Facilities</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_accommodation')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/accommodation.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Accommodation</p>
 										</div><!--/.c-facility-indicator -->
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/4">
+									<div class="o-grid__col o-grid__col--1/2--small o-grid__col--1/4--large">
 										<div class="c-facility-indicator<?php checkInactiveFacility(get_field('course_facility_-_bar_and_food')); ?>">
 											<img src="<?php getThemePath(); ?>/_source/images/icons/bar-food.svg" width="80" class="c-facility-indicator__image">
 											<p class="c-facility-indicator__name">Bar and Food</p>

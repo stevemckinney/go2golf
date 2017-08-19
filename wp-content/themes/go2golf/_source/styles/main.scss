@@ -8,6 +8,7 @@
 @import '_tools/_tools.functions';
 
 @import '_utilities/_utilities.accessibility';
+@import '_utilities/_utilities.display';
 
 @import '_generic/_generic.normalize';
 @import '_generic/_generic.typography';
@@ -36,3 +37,4 @@
 @import '_components/_components.facility-indicator';
 @import '_components/_components.breadcrumbs';
 @import '_components/_components.pagination';
+@import '_components/_components.embedded-map';

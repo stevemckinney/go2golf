@@ -1,4 +1,5 @@
 .c-pagination {
+	margin-bottom: map-get($dimensions-map, base-spacing-unit);
 	text-align: center;
 }
 
@@ -11,6 +12,8 @@
 	li {
 		display: inline-block;
 		line-height: 1;
+		padding: map-get($dimensions-map, half-spacing-unit);
+		font-size: map-get($typography-map, l-font-size);
 
 		a {
 			color: map-get($colors-map, raven);
@@ -35,7 +38,7 @@
 			content: '';
 			display: inline-block;
 			margin-right: map-get($dimensions-map, quarter-spacing-unit);
-			vertical-align: top;
+			vertical-align: middle;
 			width: 15px;
 			height: 15px;
 			background-size: contain;
@@ -51,7 +54,7 @@
 			content: '';
 			display: inline-block;
 			margin-left: map-get($dimensions-map, quarter-spacing-unit);
-			vertical-align: top;
+			vertical-align: middle;
 			width: 15px;
 			height: 15px;
 			background-size: contain;

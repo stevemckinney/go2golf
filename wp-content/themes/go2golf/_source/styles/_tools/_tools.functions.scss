@@ -3,3 +3,10 @@
         background-color: $color;
     }
 }
+
+/**
+ * Wrap functionality to get fixed breakpint values from layout map
+ */
+@function get-breakpoint($breakpoint) {
+	@return map-get($breakpoints-map, $breakpoint);
+}
