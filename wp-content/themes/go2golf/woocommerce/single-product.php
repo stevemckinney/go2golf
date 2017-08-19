@@ -98,7 +98,7 @@ get_header( 'shop' ); ?>
 						</div><!--/.c-course-detail-box -->
 					</div><!--/.o-grid__col -->
 					<div class="o-grid__col o-grid__col--1/4--large">
-						<div data-id="product-cta-sidebar">
+						<div data-id="product-cta-sidebar" class="c-course-detail__ctas">
 							<?php
 							if(get_field('cta_1_text')) {
 								echo '<a href="' . get_field('cta_1_link') . '" class="o-btn o-btn--full o-btn--large o-btn--primary c-course-detail__cta" target="_blank">' . get_field('cta_1_text'). '</a>';
