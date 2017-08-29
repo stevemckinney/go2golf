@@ -1,1 +1,0 @@
-/Applications/AMPPS/www/go2golf/wp-content/plugins/query-monitor/wp-content/db.php
