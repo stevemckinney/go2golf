@@ -24,7 +24,7 @@
 				if (st > lastScrollTop){
 					$('[data-id="product-cta-sidebar"]').css('max-height', '60px');
 				} else {
-					$('[data-id="product-cta-sidebar"]').css('max-height', '100vh');
+					$('[data-id="product-cta-sidebar"]').css('max-height', '30vh');
 				}
 				lastScrollTop = st;
 			});
