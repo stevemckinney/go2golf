@@ -48,7 +48,7 @@ get_header( 'shop' ); ?>
 								</div><!--/.o-grid__col -->
 								<div class="o-grid__col o-grid__col--7/12--small">
 									<h2 class="c-course-detail-box__name"><?php the_title(); ?></h2>
-									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id(); ?></h3>
+									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id($post->id); ?></h3>
 									<p class="u-visuallyhidden"><?php echo $average_course_review; ?> out of 10</p>
 									<div style="display:none" class="c-course-detail-box__average-review-stars">
 										<div class="c-course-detail-box__average-review-active-stars" style="width:<?php echo $average_course_review * 100 / 10; ?>%">

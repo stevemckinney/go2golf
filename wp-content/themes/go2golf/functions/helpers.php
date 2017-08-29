@@ -36,8 +36,12 @@ function get_user_review_average($post_id) {
 		$total_of_average_user_ratings += $average_rating_for_review;
 	}
 
-	// Get an average rating for course based on the total sum of average user ratings divided by the total number of reviews
-	return round($total_of_average_user_ratings / count($reviews), 1); 
+	if (count($reviews > 0)) {
+		return 0;
+	} else {
+		// Get an average rating for course based on the total sum of average user ratings divided by the total number of reviews
+		return round($total_of_average_user_ratings / count($reviews), 1); 
+	}
 }
 
 ?>

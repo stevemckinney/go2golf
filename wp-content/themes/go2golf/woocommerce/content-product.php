@@ -55,7 +55,7 @@ $average_course_review = get_user_review_average($post->ID);
 				<div class="c-course-result-item__info-section">
 
 					<?php the_title('<h2 class="c-course-result-item__name">', '</h2>'); ?>
-					<h3 class="c-course-result-item__location"><?php echo get_first_product_category_from_id(); ?></h3>
+					<h3 class="c-course-result-item__location"><?php echo get_first_product_category_from_id($post->id); ?></h3>
 					<p class="u-visuallyhidden"><?php echo $average_course_review; ?> out of 10</p>
 					<div class="c-course-result-item__average-review-stars">
 						<div class="c-course-result-item__average-review-active-stars" style="width:<?php echo $average_course_review * 100 / 10; ?>%">
