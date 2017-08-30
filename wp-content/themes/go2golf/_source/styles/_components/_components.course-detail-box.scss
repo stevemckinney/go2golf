@@ -110,6 +110,10 @@
 		flex-wrap: wrap;
 		transition: max-height 0.6s;
 	}
+
+	&.is_stuck {
+		z-index: map-get($z-index-map, course-detail-ctas);
+	}
 }
 
 .c-course-detail__cta {

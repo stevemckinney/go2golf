@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.3
  * Created by Michele Ivani
  */

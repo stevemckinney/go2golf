@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -22,9 +22,7 @@ class RWP_Support_Page extends RWP_Admin_Page
 	{
 		parent::__construct();
 
-		global $current_user;
-		get_currentuserinfo();
-		$this->user = $current_user;
+		$this->user = wp_get_current_user();
 
 		$this->set_support_fields(); 
 		$this->menu_slug = 'reviewer-support-page';
@@ -258,7 +256,7 @@ class RWP_Support_Page extends RWP_Admin_Page
 		);
 	}
 
-/*  for PRO users! - ----------------------------------------------------------------------------*
+/*----------------------------------------------------------------------------*
  * Callbacks for form fields
  *----------------------------------------------------------------------------*/
 

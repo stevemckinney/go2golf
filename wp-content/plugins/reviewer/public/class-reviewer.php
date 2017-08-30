@@ -1,13 +1,13 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.3
  * Created by Michele Ivani
  */
 class RWP_Reviewer
 {
 	// Plugin Version
-	const VERSION = '3.6.0';
+	const VERSION = '3.15.0';
 
 	// Plugin Slug
 	protected $plugin_slug = 'reviewer';
@@ -18,10 +18,10 @@ class RWP_Reviewer
 	function __construct()
 	{
 		// Load plugin text domain
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );	
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		// Session
-		add_action( 'init', array( $this, 'session_start' ) );
+		//add_action( 'init', array( $this, 'session_start' ) );
 
 		// Load admin style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_public_styles' ) );
@@ -38,9 +38,18 @@ class RWP_Reviewer
 
 		// Add widgets
 		add_action( 'widgets_init', array( $this, 'widgets') );
+
+		// Add html for PhotoSwipe
+		add_action( 'wp_footer', array( $this, 'addHtmlForPhotoSwipe'), 19 );
+
+		// Check license
+		add_action('rwp_check_license', array('RWP_License_Page', 'check_remote_license'));
+
+		// Hook for schediling reviews notice emails.
+		add_action('reviewer_notify_about_new_reviews', array( 'RWP_Rating', 'send_notification'), 10, 2 );
 	}
 
-	public function session_start() 
+	public function session_start()
 	{
 		$have_captcha 	= false;
 		$templates 		= self::get_option('rwp_templates');
@@ -62,7 +71,7 @@ class RWP_Reviewer
 
 	public function init_shortcodes()
 	{
-		$includes = array( 'class-review-shortcode', 'class-table-shortcode', 'class-reviews-list-shortcode', 'class-rating-stars-shortcode' );
+		$includes = array( 'class-review-shortcode', 'class-table-shortcode', 'class-reviews-list-shortcode', 'class-rating-stars-shortcode', 'class-user-reviews-shortcode' );
 
 		foreach ($includes as $file)
 			include_once('includes/'. $file .'.php');
@@ -72,9 +81,10 @@ class RWP_Reviewer
 		$reviews_list_shortcode  	= RWP_Reviews_List_Shortcode::get_instance();
 		$reviews_list_shortcode  	= RWP_Reviews_List_Shortcode::get_instance();
 		$rating_stars_shortcode  	= RWP_Rating_Stars_Shortcode::get_instance();
+		$user_reviews_shortcode  	= RWP_User_Reviews_Shortcode::get_instance();
 
 		// Add WP filter for automatic shortcodes
-		add_filter( 'the_content', array( $this, 'filter_content') );		
+		add_filter( 'the_content', array( $this, 'filter_content') );
 	}
 
 	public function filter_content( $content ) {
@@ -102,7 +112,7 @@ class RWP_Reviewer
 						foreach ($template['template_exclude_terms'] as $id) {
 							$i = explode('-', $id);
 
-							if( in_array( $i[1], $terms_keys[ $i[0] ] ) ) {
+							if( isset( $i[0] ) && isset( $terms_keys[ $i[0] ] ) && is_array( $terms_keys[ $i[0] ] ) && in_array( $i[1], $terms_keys[ $i[0] ] ) ) {
 								$to_exclude = true;
 								break;
 							}
@@ -112,7 +122,7 @@ class RWP_Reviewer
 					}
 
 					$new_content = '[rwp-review id="-1" template="'. $template['template_id'] .'"]';
-					$content .= $new_content;	
+					$content .= $new_content;
 				}
 			}
 		}
@@ -122,12 +132,13 @@ class RWP_Reviewer
 
 	public function rating()
 	{
-		$includes = array( 'class-rating' );
+		$includes = array( 'class-rating', 'class-user-review' );
 
 		foreach ($includes as $file)
 			include_once('includes/'. $file .'.php');
 
-		$rating = RWP_Rating::get_instance();
+		$rating  = RWP_Rating::get_instance();
+		$reviews = RWP_User_Review::get_instance();
 	}
 
 	public function widgets()
@@ -142,17 +153,29 @@ class RWP_Reviewer
 	}
 
 	public function enqueue_public_styles() {
-
-		//wp_enqueue_style( 'jquery-ui-slider-smoothness', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' );
-		wp_enqueue_style( $this->plugin_slug .'-nouislider-styles', plugins_url( 'assets/css/jquery.nouislider.css', __FILE__ ), array(), RWP_Reviewer::VERSION );
-		wp_enqueue_style( $this->plugin_slug .'-themes-reviews-styles', plugins_url( 'assets/css/themes-reviews.css', __FILE__ ), array('dashicons'), RWP_Reviewer::VERSION );
-		wp_enqueue_style( $this->plugin_slug .'-themes-tables-styles', plugins_url( 'assets/css/themes-tables.css', __FILE__ ), array(), RWP_Reviewer::VERSION );
+		wp_enqueue_style( $this->plugin_slug .'-photoswipe', plugins_url( 'assets/css/photoswipe.css', __FILE__ ), array(), RWP_Reviewer::VERSION );
+		wp_enqueue_style( $this->plugin_slug .'-public', plugins_url( 'assets/css/reviewer-public.css', __FILE__ ), array('dashicons'), RWP_Reviewer::VERSION );
 	}
 
 	public function enqueue_public_scripts() {
-		wp_enqueue_script( $this->plugin_slug .'-nouislider-plugin', plugins_url( 'assets/js/jquery.nouislider.all.min.js', __FILE__ ), array( 'jquery'), RWP_Reviewer::VERSION );
-		wp_enqueue_script( $this->plugin_slug .'-knob-plugin', plugins_url( 'assets/js/jquery.knob.js', __FILE__ ), array('jquery'), RWP_Reviewer::VERSION );
-		wp_enqueue_script( $this->plugin_slug .'-public-script', plugins_url( 'assets/js/reviewer.public.min.js', __FILE__ ), array('jquery'), RWP_Reviewer::VERSION );		
+		$pref = RWP_Reviewer::get_option( 'rwp_preferences' );
+		if( isset( $pref['preferences_users_reviews_captcha'] ) && $pref['preferences_users_reviews_captcha']['enabled'] ) {
+			wp_enqueue_script( $this->plugin_slug .'-recaptcha', 'https://www.google.com/recaptcha/api.js?onload=rwpReCaptchaLoad&render=explicit', array(), RWP_Reviewer::VERSION, true );
+		}
+
+		// wp_enqueue_script( $this->plugin_slug .'-nouislider-plugin', plugins_url( 'assets/js/jquery.nouislider.all.min.js', __FILE__ ), array( 'jquery'), RWP_Reviewer::VERSION, true );
+		// wp_enqueue_script( $this->plugin_slug .'-photoswipe', plugins_url( 'assets/js/photoswipe.js', __FILE__ ), array(), RWP_Reviewer::VERSION, true );
+		// wp_enqueue_script( $this->plugin_slug .'-knob-plugin', plugins_url( 'assets/js/jquery.knob.js', __FILE__ ), array('jquery'), RWP_Reviewer::VERSION, true );
+		// wp_enqueue_script( $this->plugin_slug .'-public-script', plugins_url( 'assets/js/reviewer.public.min.js', __FILE__ ), array('jquery'), RWP_Reviewer::VERSION, true );
+		// wp_enqueue_script( $this->plugin_slug .'-reviews-boxes-script', plugins_url( 'assets/js/reviewer-reviews-boxes.js', __FILE__ ), array('jquery'), RWP_Reviewer::VERSION, true );
+		// wp_enqueue_script( $this->plugin_slug .'-widget-users-reviews-script', plugins_url( 'assets/js/reviewer-widget-users-reviews.js', __FILE__ ), array('jquery'), RWP_Reviewer::VERSION, true );
+		// wp_enqueue_script( $this->plugin_slug .'-shortcode-user-reviews-script', plugins_url( 'assets/js/reviewer-shortcode-user-reviews.js', __FILE__ ), array('jquery'), RWP_Reviewer::VERSION, true );
+		wp_enqueue_script( $this->plugin_slug .'-front-end-script', plugins_url( 'assets/js/reviewer-front-end.js', __FILE__ ), array('jquery'), RWP_Reviewer::VERSION, true );
+
+		// Send php constants to js scope
+		// wp_localize_script( $this->plugin_slug .'-reviews-boxes-script', 'rwpConstants', array( 'debugVue' => WP_DEBUG ) );
+		// wp_localize_script( $this->plugin_slug .'-widget-users-reviews-script', 'rwpConstants', array( 'debugVue' => WP_DEBUG ) );
+		wp_localize_script( $this->plugin_slug .'-front-end-script', 'rwpConstants', array( 'debugVue' => WP_DEBUG ) );
 	}
 
 	public function enqueue_custom_style() {
@@ -167,12 +190,12 @@ class RWP_Reviewer
 	    }
 	}
 
-	public function get_plugin_slug() 
+	public function get_plugin_slug()
 	{
 		return $this->plugin_slug;
 	}
 
-	public static function get_instance() 
+	public static function get_instance()
 	{
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
@@ -182,19 +205,19 @@ class RWP_Reviewer
 		return self::$instance;
 	}
 
-	public static function activate() 
+	public static function activate()
 	{
 		global  $wp_version;
-		
+
 		if( version_compare( $wp_version, '4.2', '>=' ) && version_compare( PHP_VERSION, '5.3', '>=' ) ) { // Check ok!
-			
+
 			// Set default preferences
 			$pref = RWP_Reviewer::get_option( 'rwp_preferences' );
 
 			if ( empty( $pref ) ) {
 				$default = array(
 					'preferences_authorization' 	=> 'all',
-				    'preferences_rating_mode' 		=> 'five_stars',
+				    'preferences_rating_mode' 		=> 'full_five_stars',
 				    'preferences_post_types' 		=> array('post', 'page'),
 				    'preferences_step' 				=> 0.5
 				);
@@ -204,41 +227,58 @@ class RWP_Reviewer
 			// Init templates
 			$temps = RWP_Reviewer::get_option( 'rwp_templates' );
 
-			if ( empty( $temps ) ) 
+			if ( empty( $temps ) )
 				add_option( 'rwp_templates', array() );
 
 			// Check if there are some previous version references
 			$old = RWP_Reviewer::get_option( 'rwp_reviewer_templates' );
-			
+
 			if ( empty( $old ) )
 				update_option('rwp_restore', 1);
-			
+
 			// Init support info
 			$sup = RWP_Reviewer::get_option( 'rwp_support' );
 
-			if ( empty( $sup ) ) 
+			if ( empty( $sup ) )
 				add_option( 'rwp_support', array() );
 
 			// Init support info
 			$pend = get_option( 'rwp_pending_ratings');
 
-			if ( !$pend ) 
+			if ( !$pend )
 				add_option( 'rwp_pending_ratings', 0 );
 
 		} else {
 			RWP_Notification::push( 'activation', __('The Reviewer Plugin needs WordPress >= 4.2 and PHP >= 5.3 to work. If data are correct you can ignore the notice', 'reviewer' ), 'error' );
 		}
 
-		$support = RWP_Reviewer::get_option('rwp_support');
-		if( !isset( $support['support_copy_id'] ) ) {
-			RWP_Notification::push( 'support', __('Thank you for purchasing the Reviewer Plugin. Activate your copy in order to get support.', 'reviewer' ) .' <a href="'.admin_url('admin.php?page=reviewer-support-page').'">'. __('Activate Now', 'reviewer') .'</a>', 'update-nag', false );
+		// Add Cap to admin
+		$capManageReviews = 'rwp_manage_user_reviews';
+		$role = get_role('administrator');
+		if( !is_null( $role ) ) {
+			$has_cap    = ( isset( $role->capabilities[ $capManageReviews ] ) && $role->capabilities[ $capManageReviews ] == 1 );
+	        if( !$has_cap ) {
+	            $role->add_cap( $capManageReviews );
+	        }
 		}
-		return 0;	
+
+		$license = get_option( get_option( 'rwp_license' ) );
+		if( !$license ) {
+			RWP_Notification::pushLicenseNotice();
+		} else {
+			RWP_Notification::delete('license');
+		}
+
+		RWP_License_Page::schedule_license_checking();
+
+		RWP_Notification::delete('support');
+		return 0;
 	}
 
-	public static function deactivate() 
+	public static function deactivate()
 	{
-		// Do some stuff!
+		RWP_License_Page::unschedule_license_checking();
+		RWP_Rating::unschedule_reviews_notice();
 	}
 
 	public static function pretty_print( $data = array() )
@@ -248,7 +288,7 @@ class RWP_Reviewer
 		echo '</pre>';
 	}
 
-	public static function get_decimal_places($value) 
+	public static function get_decimal_places($value)
 	{
 		$str_value = "" . $value;
 		$parts = explode('.', $str_value);
@@ -264,17 +304,17 @@ class RWP_Reviewer
 
 	public static function get_avg( $scores = array() )
 	{
-		if (!is_array($scores)) 
+		if (!is_array($scores))
 			return 1;
 		if( count( $scores) == 0 )
 			return 0;
 
-		$tot = array_sum($scores);	
+		$tot = array_sum($scores);
 		$avg = $tot / count( $scores );
 		return $avg;
 	}
 
-	public static function get_in_base( $current_base, $base, $value ) 
+	public static function get_in_base( $current_base, $base, $value )
 	{
 		return ( ( floatval($value) * floatval($base) ) / floatval($current_base) );
 	}
@@ -289,9 +329,9 @@ class RWP_Reviewer
 			return $intval;
 
 		return $floatval;
-	} 
+	}
 
-	public function load_plugin_textdomain() 
+	public function load_plugin_textdomain()
 	{
 		$domain = $this->plugin_slug;
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
@@ -300,15 +340,15 @@ class RWP_Reviewer
 		load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
 	}
 
-	
+
 	public static function filter_ratings( $ratings, $moderation ) {
 
 		$count = count( $ratings );
 
-		for ( $i = 0; $i < $count; $i++ ) { 
-			
+		for ( $i = 0; $i < $count; $i++ ) {
+
 			if( isset( $ratings[ $i ]['rating_status'] ) && $ratings[ $i ]['rating_status'] == 'pending' )
-				unset( $ratings[ $i ] ); 
+				unset( $ratings[ $i ] );
 		}
 
 		return $ratings;
@@ -318,7 +358,7 @@ class RWP_Reviewer
 
 		$scores 		= self::review_field( 'review_scores', $review, true );
 		$preferences 	= self::get_option( 'rwp_preferences' );
-		$precision 		= self::get_decimal_places( self::preferences_field( 'preferences_step', $preferences, true ) ); 
+		$precision 		= self::get_decimal_places( self::preferences_field( 'preferences_step', $preferences, true ) );
 
 		$avg = round( self::get_avg( $scores ), $precision );
 
@@ -330,13 +370,13 @@ class RWP_Reviewer
 		$scores = $data['scores'];
 
 		$preferences 	= self::get_option( 'rwp_preferences' );
-		$precision 		= self::get_decimal_places( self::preferences_field( 'preferences_step', $preferences, true ) ); 
+		$precision 		= self::get_decimal_places( self::preferences_field( 'preferences_step', $preferences, true ) );
 
 		$avg = self::get_avg( $scores );
 
 		// Old Rating
 		$ratings 		= get_post_meta( $post_id, 'rwp_ratings', true );
-		$old_ratings	= ( isset( $ratings[ $review_id ] ) ) ? $ratings[ $review_id ] : array( 'rating_count' => 0, 'rating_total_score' => 0 ); 
+		$old_ratings	= ( isset( $ratings[ $review_id ] ) ) ? $ratings[ $review_id ] : array( 'rating_count' => 0, 'rating_total_score' => 0 );
 
 		if( $old_ratings['rating_count'] > 0 ) {
 			$old_avg 	= $old_ratings['rating_total_score'] / $old_ratings['rating_count'];
@@ -354,7 +394,7 @@ class RWP_Reviewer
 
 		// Old Rating
 		//$ratings 		= get_post_meta( $post_id, 'rwp_ratings', true );
-		//$old_ratings	= ( isset( $ratings[ $review_id ] ) ) ? $ratings[ $review_id ] : array( 'rating_count' => 0, 'rating_total_score' => 0 ); 
+		//$old_ratings	= ( isset( $ratings[ $review_id ] ) ) ? $ratings[ $review_id ] : array( 'rating_count' => 0, 'rating_total_score' => 0 );
 
 		// Templates
 		$templates 		= self::get_option('rwp_templates');
@@ -365,13 +405,13 @@ class RWP_Reviewer
 
 		// New Ratings
 		$ratings 		= get_post_meta( $post_id, 'rwp_rating_' . $review_id );
-		$new_ratings 	= is_array( $ratings ) ? $ratings : array(); 
+		$new_ratings 	= is_array( $ratings ) ? $ratings : array();
 
 		$moderation 	= self::preferences_field( 'preferences_rating_before_appears', $preferences, true );
 		$new_ratings	= RWP_Reviewer::filter_ratings( $new_ratings, $moderation );
-		
+
 		if( empty( $template ) ) return array();
-		
+
 		$order = self::template_field( 'template_criteria_order', $template,  true );
 		$criteria = self::template_field( 'template_criterias', $template,  true );
 		$order = ( $order == null ) ? array_keys( $criteria ) : $order;
@@ -381,18 +421,18 @@ class RWP_Reviewer
 
 		if( $count > 0 ) {
 
-			$precision  = self::get_decimal_places( self::preferences_field( 'preferences_step', $preferences, true ) ); 
-				
+			$precision  = self::get_decimal_places( self::preferences_field( 'preferences_step', $preferences, true ) );
+
 			foreach ($order as $i) {
 				$scores[$i] = 0;
 			}
 
 			foreach ($new_ratings as $rating) {
-				
+
 				if( !is_array($rating) ) {
 					$rating = maybe_unserialize( $rating );
 				}
-				
+
 				foreach ($order as $i) {
 					$scores[$i] += ( isset( $rating['rating_score'] ) && isset( $rating['rating_score'][$i] ) )  ? $rating['rating_score'][$i] : 0;
 				}
@@ -447,7 +487,7 @@ class RWP_Reviewer
 		$html  = '<div class="rwp-str">';
 
 		$j = 0;
-		for ($i = 0; $i < $count; $i++) { 
+		for ($i = 0; $i < $count; $i++) {
 
 			$oe = ($i % 2 == 0) ? 'rwp-o' : 'rwp-e';
 			$fx = ($j < $score) ? 'rwp-f' : 'rwp-x';
@@ -456,7 +496,7 @@ class RWP_Reviewer
 
 			$j += .5;
 		}
-	
+
 		$html .= '</div><!-- /stars -->';
 
 		return $html;
@@ -471,7 +511,7 @@ class RWP_Reviewer
 		$range 	= explode( '-', self::template_field('template_score_percentages', $template, true) );
 		$low 	= floatval( $range[0] );
 		$high 	= floatval( $range[1] );
-		
+
 		$pct = round ( (( $value / $max ) * 100), 1);
 
 		if ( $pct < $low ) {
@@ -520,10 +560,102 @@ class RWP_Reviewer
 		if( $return )
 			return $value;
 
-		echo $value; 
+		echo $value;
 	}
 
 	public static function set_html_content_type() {
 		return 'text/html';
+	}
+
+	public static function sanitizeText( $text ) {
+        return sanitize_text_field( stripslashes_deep( $text ) );
+    }
+
+    public static function getUploadLimit() {
+		$max_upload     = floatval( ini_get('upload_max_filesize') );
+        $max_post       = floatval( ini_get('post_max_size') );
+        $memory_limit   = floatval( ini_get('memory_limit') );
+
+        return min( $max_upload, $max_post, $memory_limit );
+	}
+
+	public static function add_custom_cron_schedule( $schedules ){
+		$schedules['minute'] = array(
+			'interval' => 60 * 1,
+			'display' => __('Every Minute')
+		);
+		return $schedules;
+	}
+
+	public function addHtmlForPhotoSwipe()
+	{
+	?>
+		<!-- Root element of PhotoSwipe. Must have class pswp. -->
+		<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+		    <!-- Background of PhotoSwipe.
+		         It's a separate element as animating opacity is faster than rgba(). -->
+		    <div class="pswp__bg"></div>
+
+		    <!-- Slides wrapper with overflow:hidden. -->
+		    <div class="pswp__scroll-wrap">
+
+		        <!-- Container that holds slides.
+		            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+		            Don't modify these 3 pswp__item elements, data is added later on. -->
+		        <div class="pswp__container">
+		            <div class="pswp__item"></div>
+		            <div class="pswp__item"></div>
+		            <div class="pswp__item"></div>
+		        </div>
+
+		        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+		        <div class="pswp__ui pswp__ui--hidden">
+
+		            <div class="pswp__top-bar">
+
+		                <!--  Controls are self-explanatory. Order can be changed. -->
+
+		                <div class="pswp__counter"></div>
+
+		                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+		                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+		                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+		                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+		                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+		                <!-- element will get class pswp__preloader-active when preloader is running -->
+		                <div class="pswp__preloader">
+		                    <div class="pswp__preloader__icn">
+		                      <div class="pswp__preloader__cut">
+		                        <div class="pswp__preloader__donut"></div>
+		                      </div>
+		                    </div>
+		                </div>
+		            </div>
+
+		            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+		                <div class="pswp__share-tooltip"></div>
+		            </div>
+
+		            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+		            </button>
+
+		            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+		            </button>
+
+		            <div class="pswp__caption">
+		                <div class="pswp__caption__center"></div>
+		            </div>
+
+		        </div>
+
+		    </div>
+
+		</div>
+		<?php
 	}
 }

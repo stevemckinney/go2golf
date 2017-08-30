@@ -17,7 +17,14 @@
 		<a 
 			class="rwp-image-link"
 			href="<?php $this->review_field('review_image_url') ?>" 
-			style="background-image: url(<?php echo $img; ?>);"></a>
+			style="background-image: url(<?php echo $img; ?>);"
+			<?php  
+				$nofollow = $this->preferences_field( 'preferences_nofollow', true );
+				if( in_array('box_image', $nofollow) ) {
+					echo ' rel="nofollow" ';
+				}
+			?>
+		></a>
 
 	<?php else: ?>
 

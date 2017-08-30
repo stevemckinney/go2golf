@@ -1,11 +1,13 @@
 <?php
-/*  for PRO users! - *
- * Plugin Name: Reviewer \ Shared By yogithemes.com
- * Plugin URI: http://codecanyon.net/item/reviewer-wordpress-plugin/5532349?ref=evoG
- * Description: The Reviewer WordPress Plugin allows you to insert reviews and comparison tables inside your WordPress blog posts in a quick and easy way. The plugin offers 9 customizable themes so that you can adapt your reviews and comparison tables to your need. The plugin support users rating so blog visitors can leave their reviews.
- * Version: 3.6.0
- * Author: Michele Ivani
- * Author URI: http://codecanyon.net/user/evoG?ref=evoG
+/**
+ * Plugin Name:       Reviewer
+ * Plugin URI:        http://reviewerplugin.com
+ * Description:       Ultimate reviews and user rating.
+ * Version:           3.15.0
+ * Author:            Michele Ivani
+ * Author URI:        http://micheleivani.com
+ * Text Domain:       reviewer
+ * Domain Path:       /languages
  */
 
 // If this file is called directly, abort.
@@ -13,17 +15,17 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/*  for PRO users! - ----------------------------------------------------------------------------*
- * Envato Market Extended License | Redistributors 
- * If you are going to redistribute the plugin after purchasing of extended 
- * license you need to disable plugin support features. Just set to true 
+/*----------------------------------------------------------------------------*
+ * Envato Market Extended License | Redistributors
+ * If you are going to redistribute the plugin after purchasing of extended
+ * license you need to disable plugin support features. Just set to true
  * the following constant.
  *----------------------------------------------------------------------------*/
 if ( ! defined( 'RWP_EXTENDED_LICENSE' ) ) {
 	define('RWP_EXTENDED_LICENSE', false);
 }
 
-/*  for PRO users! - ----------------------------------------------------------------------------*
+/*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
 
@@ -36,6 +38,9 @@ if( ! defined( 'RWP_PLUGIN_PATH' ) )
 if( ! defined( 'RWP_DEMO_MODE' ) )
 	define( 'RWP_DEMO_MODE', false );
 
+// Require custom user class
+require_once( plugin_dir_path( __FILE__ ) . 'share/class-user.php' );
+
 // Require plugin main class
 require_once( plugin_dir_path( __FILE__ ) . 'public/class-reviewer.php' );
 
@@ -44,6 +49,9 @@ require_once( plugin_dir_path( __FILE__ ) . 'public/includes/class-api.php' );
 
 // Include admin notice class
 require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-notification.php');
+
+require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-admin-page.php');
+require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-license-page.php');
 
 require_once( plugin_dir_path( __FILE__ ) . 'public/includes/class-snippets.php');
 
@@ -60,11 +68,14 @@ foreach ($includes as $file)
 // Include captcha class
 require_once( plugin_dir_path( __FILE__ ) . 'public/includes/class-captcha.php' );
 
+// Add new cron schedule
+add_filter( 'cron_schedules', array( 'RWP_Reviewer', 'add_custom_cron_schedule' ) );
+
 
 // Hook for plugin initialitazion
 add_action( 'plugins_loaded', array( 'RWP_Reviewer', 'get_instance' ) );
 
-/*  for PRO users! - ----------------------------------------------------------------------------*
+/*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
 
@@ -74,7 +85,7 @@ if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 	add_action( 'plugins_loaded', array( 'RWP_Reviewer_Admin', 'get_instance' ) );
 }
 
-// Ajax 
+// Ajax
 if ( defined( 'DOING_AJAX') && DOING_AJAX ) {
 
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-reviewer-admin.php' );
@@ -85,7 +96,8 @@ if ( defined( 'DOING_AJAX') && DOING_AJAX ) {
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-preferences-page.php' );
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-main-page.php' );
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-reviews-page.php' );
-	
+	require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-license-page.php' );
+
 	// Meta Boxes
 	add_action( 'wp_ajax_rwp_ajax_action_get_review_form', array('RWP_Reviews_Meta_Box', 'ajax_callback'));
 	add_action( 'wp_ajax_rwp_ajax_action_get_table_form', array('RWP_Tables_Meta_Box', 'ajax_callback'));
@@ -102,7 +114,7 @@ if ( defined( 'DOING_AJAX') && DOING_AJAX ) {
 	// Reset Score - Delete review
 	add_action( 'wp_ajax_rwp_ajax_action_reset_users_score', array('RWP_Reviews_Page', 'ajax_callback'));
 	add_action( 'wp_ajax_rwp_ajax_action_delete_review', array('RWP_Reviews_Page', 'ajax_callback_delete_review'));
-	
+
 	// Rating actions
 	add_action( 'wp_ajax_nopriv_rwp_ajax_action_rating', array('RWP_Rating', 'ajax_callback') );
 	add_action( 'wp_ajax_rwp_ajax_action_rating', array('RWP_Rating', 'ajax_callback') );
@@ -114,19 +126,33 @@ if ( defined( 'DOING_AJAX') && DOING_AJAX ) {
 	add_action( 'wp_ajax_nopriv_rwp_ajax_action_like', array('RWP_Rating', 'ajax_callback_like') );
 	add_action( 'wp_ajax_rwp_ajax_action_like', array('RWP_Rating', 'ajax_callback_like') );
 
+	// Query users reviews of a box
+	add_action( 'wp_ajax_nopriv_rwp_reviews_box_query_users_reviews', array('RWP_User_Review', 'query_users_reviews') );
+	add_action( 'wp_ajax_rwp_reviews_box_query_users_reviews', array('RWP_User_Review', 'query_users_reviews') );
+
+	add_action( 'wp_ajax_nopriv_rwp_reviews_box_query_all_users_reviews', array('RWP_User_Review', 'query_all_users_reviews') );
+	add_action( 'wp_ajax_rwp_reviews_box_query_all_users_reviews', array('RWP_User_Review', 'query_all_users_reviews') );
+
 	//Captcha
-	add_action( 'wp_ajax_nopriv_rwp_ajax_action_refresh_captcha', array('RWP_Rating', 'refresh_captcha') );
-	add_action( 'wp_ajax_rwp_ajax_action_refresh_captcha', array('RWP_Rating', 'refresh_captcha') );
+	// add_action( 'wp_ajax_nopriv_rwp_ajax_action_refresh_captcha', array('RWP_Rating', 'refresh_captcha') );
+	// add_action( 'wp_ajax_rwp_ajax_action_refresh_captcha', array('RWP_Rating', 'refresh_captcha') );
 
 	// Test Email Notification
 	add_action( 'wp_ajax_rwp_ajax_action_demo_notification', array('RWP_Preferences_Page', 'send_demo_notification'));
 
+	// Upload user review image
+	add_action( 'wp_ajax_nopriv_rwp_reviews_box_upload_image', array('RWP_User_Review', 'uploadImage') );
+	add_action( 'wp_ajax_rwp_reviews_box_upload_image', array('RWP_User_Review', 'uploadImage') );
 
+	// Register license
+	add_action( 'wp_ajax_rwp_register_license', array('RWP_License_Page', 'register_license'));
+	// Remove license
+	add_action( 'wp_ajax_rwp_remove_license', array('RWP_License_Page', 'remove_license'));
+
+	// Query reviews of single user
+	add_action( 'wp_ajax_nopriv_rwp_reviews_of_single_user', array('RWP_User', 'ajax_get_reviews') );
+	add_action( 'wp_ajax_rwp_reviews_of_single_user', array('RWP_User', 'ajax_get_reviews') );
+
+	// Clear rosu cache
+	add_action( 'wp_ajax_rwp_ajax_action_clear_rosu_cache', array('RWP_User', 'clear_reviews_maps'));
 }
-
-
-
-	
-
-
-

@@ -1,7 +1,12 @@
 <div class="rwp-scores <?php if ( $is_UR ) echo 'rwp-ur' ?>">
 
-<?php 
-$scores 	= (!$is_UR) ? $this->review_field('review_scores', true) : $this->ratings_scores['scores'];
+<?php
+$cr_source	= $this->review_field('review_criteria_source', true);
+if( !$is_UR ) {
+	$scores = ( $cr_source == 'reviewer' ) ? $this->review_field('review_scores', true) : $this->users_data['criteria'];
+} else {
+	$scores = $this->users_data['criteria'];
+}
 $criteria 	= $this->template_field('template_criterias', true);
 $order  	= $this->template_field('template_criteria_order', true);
 $order		= ( $order == null ) ? array_keys( $criteria) : $order;
@@ -11,7 +16,7 @@ $score_size = intval( $font_size ) + 4;
 $max 		= $this->template_field('template_maximum_score', true);
 
 foreach ($order as $i) {
-			
+
 	$score = isset( $scores[$i] ) ? $scores[$i] : 0;
 
 	switch ( $theme ) {
@@ -31,7 +36,7 @@ foreach ($order as $i) {
 			echo '</div><!-- /criterion -->';
 			break;
 
-		case 'rwp-theme-5':		
+		case 'rwp-theme-5':
 			echo '<div class="rwp-criterion">';
 				echo '<div class="rwp-criterion-text">';
 					echo '<span class="rwp-criterion-label" style="font-size: '. ($font_size - 2) .'px; line-height: '. ($font_size - 2) .'px;">'.  $criteria[$i] .'</span>';
@@ -45,7 +50,7 @@ foreach ($order as $i) {
 			break;
 
 		case 'rwp-theme-4':
-			
+
 			echo '<div class="rwp-criterion">';
 				echo '<div class="rwp-criterion-bar-base">';
 					echo $this->get_score_bar( $score, $theme, $font_size );
@@ -57,7 +62,7 @@ foreach ($order as $i) {
 		case 'rwp-theme-3':
 
 			echo '<div class="rwp-criterion">';
-				echo $this->get_knobs( $score );
+				echo $this->get_circle( $score );
 				echo '<span class="rwp-criterion-label" style="line-height: '. $font_size .'px;">'.  $criteria[$i] .'</span>';
 			echo '</div><!-- /criterion -->';
 			break;
@@ -70,9 +75,9 @@ foreach ($order as $i) {
 			echo '</div><!-- /criterion -->';
 			break;
 
-		case 'rwp-theme-1':		
+		case 'rwp-theme-1':
 		default:
-			
+
 			echo '<div class="rwp-criterion">';
 				echo '<div class="rwp-criterion-text">';
 					echo '<span class="rwp-criterion-label" style="line-height: '. $font_size .'px;">'.  $criteria[$i] .'</span>';
@@ -84,7 +89,7 @@ foreach ($order as $i) {
 				echo '</div><!-- /criterion-bar -->';
 			echo '</div><!-- /criterion -->';
 			break;
-	} 
+	}
 }
 ?>
 

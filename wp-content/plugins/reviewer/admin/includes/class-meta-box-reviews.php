@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -33,7 +33,7 @@ class RWP_Reviews_Meta_Box
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_script') );
 	}
 
-	public function localize_script() 
+	public function localize_script()
 	{
 		$action_name = 'rwp_ajax_action_get_review_form';
 		wp_localize_script( $this->plugin_slug . '-admin-script', 'reviewsMetaBoxObj', array('ajax_nonce' => wp_create_nonce( $action_name ), 'ajax_url' => admin_url('admin-ajax.php'), 'action' => $action_name ) );
@@ -54,8 +54,9 @@ class RWP_Reviews_Meta_Box
 		$this->review_fields = RWP_Reviews_Meta_Box::get_review_fields();
 		$this->post_reviews = get_post_meta( get_the_ID(), $this->post_meta_key, true );
 
-		foreach ($this->preferences_option['preferences_post_types'] as $post_type) {
-			
+		$types = is_array( $this->preferences_option['preferences_post_types'] ) ? $this->preferences_option['preferences_post_types'] : array();
+		foreach ( $types as $post_type) {
+
 			add_meta_box( 'rwp-reviews-meta-box', 'Reviewer | ' . __( 'Reviews Boxes', $this->plugin_slug ), array( $this, 'render_meta_box'), $post_type );
 		}
 	}
@@ -63,7 +64,7 @@ class RWP_Reviews_Meta_Box
 	public function save_meta_box( $post_id )
 	{
 		// Check nonce
-		if ( ! isset( $_POST['rwp_reviews_meta_box_nonce'] ) ) 
+		if ( ! isset( $_POST['rwp_reviews_meta_box_nonce'] ) )
 			return $post_id;
 
 		$nonce = $_POST['rwp_reviews_meta_box_nonce'];
@@ -90,7 +91,7 @@ class RWP_Reviews_Meta_Box
 			$_POST[ $this->post_meta_key ] = array();
 
 		// Check if is a valid array
-		if( ! is_array( $_POST[ $this->post_meta_key ] ) ) 
+		if( ! is_array( $_POST[ $this->post_meta_key ] ) )
 			return $post_id;
 
 		// Validate reviews
@@ -100,14 +101,14 @@ class RWP_Reviews_Meta_Box
 
 		foreach ( $_POST[ $this->post_meta_key ] as $review_id => $review) {
 
-			// Get the fields for review type 
+			// Get the fields for review type
 			$review_type = ( isset( $review['review_type'] ) ) ? $review['review_type'] : 'PAR+UR';
 			$review_type_fields = $this->review_type_fields[ $review_type ];
 
 			foreach( $review_type_fields as $field_id ) {
 
 				$field = $this->review_fields[ $field_id ];
-				
+
 				switch ( $field_id ) {
 					case 'review_title':
 
@@ -121,6 +122,7 @@ class RWP_Reviews_Meta_Box
 						break;
 
 					case 'review_title_options':
+					case 'review_criteria_source':
 
 						if( ! isset( $review[ $field_id ] ) ) { //if field is not set
 							$reviews[ $review_id ][ $field_id ] = $field['default'];
@@ -143,7 +145,7 @@ class RWP_Reviews_Meta_Box
 
 						$reviews[ $review_id ][ $field_id ] = 'yes';
 						break;
-					
+
 					case 'review_status':
 
 						if( ! isset( $review[ $field_id ] ) ) { //if field is not set
@@ -160,7 +162,7 @@ class RWP_Reviews_Meta_Box
 
 						$default_v = array_values( $this->templates_option );
 						$default = $default_v[0]['template_id'];
-						
+
 
 						if( ! isset( $review[ $field_id ] ) ){ //if field is not set
 							$reviews[ $review_id ][ $field_id ] = $default;
@@ -172,9 +174,9 @@ class RWP_Reviews_Meta_Box
 						break;
 
 					case 'review_custom_tabs':
-						
+
 						$template 		= $this->templates_option[ $reviews[ $review_id ]['review_template'] ];
-						$template_id 	= $template['template_id']; 
+						$template_id 	= $template['template_id'];
 
 						if( ! isset( $review[ $field_id ][ $template_id ] ) ) { // Field is not set
 							$reviews[ $review_id ][ $field_id ] = $field['default'];
@@ -189,16 +191,16 @@ class RWP_Reviews_Meta_Box
 						//print_r( $template_tabs);
 
 						foreach ($template_tabs as $key => $t_tab) {
-							
+
 							if( isset( $reviews_tabs[ $key ] ) && is_array( $reviews_tabs[ $key ] )  ) {
-								
+
 								foreach ($reviews_tabs_opts as $k => $opt) {
 
 									if ( isset( $reviews_tabs[ $key ] ) ) {
 
 										$value = trim( $reviews_tabs[ $key ][ $k ] );
 										$valid_tabs[ $key ][ $k ] = wp_kses_post( $value );
-										
+
 									} else {
 
 										$valid_tabs[ $key ][ $k ] = $opt['default'];
@@ -207,8 +209,8 @@ class RWP_Reviews_Meta_Box
 
 							} else { // Set tab default values
 
-								foreach ($reviews_tabs_opts as $k => $o) 									
-									$valid_tabs[ $key ][ $k ] = $o['default'];	
+								foreach ($reviews_tabs_opts as $k => $o)
+									$valid_tabs[ $key ][ $k ] = $o['default'];
 							}
 						}
 
@@ -227,19 +229,19 @@ class RWP_Reviews_Meta_Box
 							$default[] = $min;
 
 						if( ! isset( $review[ $field_id ] ) || ! isset( $review[ $field_id ][ $reviews[ $review_id ]['review_template'] ] ) ) { //if field is not set
-							$reviews[ $review_id ][ $field_id ] = $default;	
+							$reviews[ $review_id ][ $field_id ] = $default;
 							break;
 						}
 
 						$scores = array();
 
 						foreach ($template['template_criterias'] as $criteria_id => $criteria) {
-							
+
 							if( ! isset( $review[ $field_id ][ $template['template_id'] ][ $criteria_id ] ) ) {
 								$scores[ $criteria_id ] = $min;
 								continue;
 							}
-								
+
 							$value = floatval( $review[ $field_id ][ $template['template_id'] ][ $criteria_id ] );
 							$scores[ $criteria_id ] = ( $value <= 0 || ( $value < $min || $value > $max ) ) ? $min : $value;
 						}
@@ -249,6 +251,7 @@ class RWP_Reviews_Meta_Box
 
 					case 'review_image_url':
 					case 'review_custom_overall_score' :
+					case 'review_sameas_attr':
 
 						if( ! isset( $review[ $field_id ] ) ) { //if field is not set
 							$reviews[ $review_id ][ $field_id ] = $field['default'];
@@ -362,16 +365,16 @@ class RWP_Reviews_Meta_Box
 
 		// Check if there is at least one reviews template
 		if( empty( $this->templates_option ) ) {
-			
+
 			echo '<p>' . __( 'It is necessary to create a Template before adding a new review.', $this->plugin_slug ) . '</p>';
 			return;
 		}
 		?>
 
-		<p class="description"><?php _e( 'In this meta box you can manage the reviews boxes; save/update the post to save them.', $this->plugin_slug ); ?></p>
+		<p class="description"><?php _e( 'In this meta box you can manage the reviews boxes for the post. You can find more informations about Reviewer Box or Users Box types inside documentation. Save/update the post to save reviews boxes.', $this->plugin_slug ); ?></p>
 
 		<div class="rwp-metabox-elems">
-			
+
 			<select name="rwp-review-type">
 				<?php foreach ($this->review_types as $key => $label): ?>
 					<option value="<?php echo $key; ?>"><?php echo $label; ?></option>
@@ -380,15 +383,15 @@ class RWP_Reviews_Meta_Box
 
 			<a href="#" class="button button-primary" id="rwp-add-review-form-btn"><?php _e( 'Add new reviews box', $this->plugin_slug ); ?></a><img class="rwp-loader" src="<?php echo admin_url(); ?>images/spinner.gif" alt="loading" />
 		</div>
-		
-		
+
+
 		<ul class="rwp-tabs-wrap" data-placehoder="<?php _e( 'Review', $this->plugin_slug ); ?>">
 		<?php
 		if ($this->post_reviews != null && ! empty( $this->post_reviews ) ) {
 			//$first_review_id = array_keys( $this->post_reviews )[0]; // First Review ID
 			$pr = array_keys( $this->post_reviews );
 			$first_review_id = $pr[0];
-				
+
 			foreach ( $this->post_reviews as $review_id => $review) {
 				$hide = ( $review_id != $first_review_id ) ? '' : 'rwp-tabs';
 				echo '<li class="'. $hide .'" id="rwp-review-tab-'. $review_id .'"><a href="#" data-review-id="'. $review_id .'">'. $review['review_title'] .'</a></li>';
@@ -399,9 +402,9 @@ class RWP_Reviews_Meta_Box
 
 		<div id="rwp-reviews-wrap">
 		<?php
-		if ($this->post_reviews != null && ! empty( $this->post_reviews ) ) 
+		if ($this->post_reviews != null && ! empty( $this->post_reviews ) )
 			foreach ( $this->post_reviews as $review_id => $review) {
-				$this->get_review_form( $review ); 
+				$this->get_review_form( $review );
 			}
 		?>
 		</div><!--/rwp-reviews-wrap-->
@@ -409,40 +412,47 @@ class RWP_Reviews_Meta_Box
 		<?php
 		//RWP_Reviewer::pretty_print(  $this->post_reviews ); //flush();
 	}
-	
+
 	public function get_review_form( $review = array( 'review_id' => 0, 'review_type' => 'PAR+UR' ) )
 	{
 		$review_id = $review['review_id']; // Get the review ID
-		
+
 		if($this->post_reviews != null && ! empty( $this->post_reviews ) ) {
 			$pr = array_keys( $this->post_reviews );
 			$first_review_id = $pr[0];
 		} else {
 			$first_review_id = -1;
 		}
-		
+
 		//$first_review_id = ($this->post_reviews != null && ! empty( $this->post_reviews ) ) ? array_keys( $this->post_reviews )[0] : -1; // First Review ID
-		$hide = ( $review_id != $first_review_id ) ? 'style="display:none;"' : ''; 
+		$hide = ( $review_id != $first_review_id ) ? 'style="display:none;"' : '';
+		$type_color = ( $review['review_type'] == 'PAR+UR' ) ? '--rwp-reviewer-box' : '--rwp-users-box';
 		?>
 
 		<div id="rwp-review-<?php echo $review_id ?>" class="rwp-review-form rwp-tabs-panel" data-review-id="<?php echo $review_id ?>" <?php echo $hide; ?>>
-			
+
+			<div class="rwp-reviews-box-type" >
+				<span class="rwp-reviews-box-type__label <?php echo $type_color ?>"><?php echo $this->review_types[ $review['review_type'] ]; ?></span>
+				<span class="rwp-reviews-box-type__label <?php echo $type_color ?>"><?php _e('Post id', $this->plugin_slug) ?>: <strong><?php echo get_the_ID(); ?></strong></span>
+				<span class="rwp-reviews-box-type__label <?php echo $type_color ?>"><?php _e('Box id', $this->plugin_slug) ?>: <strong><?php echo $review_id; ?></strong></span>
+			</div><!-- /reviews box type -->
+
 			<table class="form-table">
-				
+
 				<tbody>
 				<?php
 
-				// Get the fields for review type 
+				// Get the fields for review type
 				$review_type = ( isset( $review['review_type'] ) ) ? $review['review_type'] : 'PAR+UR';
 				$review_type_fields = $this->review_type_fields[ $review_type ];
 
 				foreach( $review_type_fields as $field_id ) {
 
-					if($field_id == 'review_type') continue;
+					// if($field_id == 'review_type') continue;
 
 					$field 		= $this->review_fields[ $field_id ];
 					$default 	= $field['default'];
-					
+
 					echo '<tr valign="top">';
 					echo '<th scope="row">' . $field['label'] . '</th>';
 					echo '<td>';
@@ -465,16 +475,16 @@ class RWP_Reviews_Meta_Box
 								$show = (isset($review['review_template']) && $review['review_template'] == $template_id) ? 'style="display:block;"' : '';
 								echo '<div id="rwp-custom-tabs-'. $review_id .'-'. $template_id .'" class="rwp-custom-tabs rwp-t-custom-tabs-'. $review_id .'" '. $show .'>';
 								echo '<ul class="rwp-review-custom-tabs">';
-								
+
 								if( isset( $template['template_custom_tabs'] ) && !empty( $template['template_custom_tabs'] ) ) {
 
 									foreach ($template['template_custom_tabs'] as $tab_id => $tab) {
-										
+
 										echo '<li>';
 										echo '<span>'. $tab['tab_label'] .'</span>';
 
 										foreach ( $field['options'] as $key => $opt) {
-											
+
 											$value = ( isset($review['review_template']) && $review['review_template'] == $template_id && isset( $review['review_custom_tabs'][ $tab_id ][$key] ) ) ? $review['review_custom_tabs'][ $tab_id ][$key] : $opt['default'];
 
 											echo '<span>';
@@ -534,7 +544,7 @@ class RWP_Reviews_Meta_Box
 						case 'review_summary':
 							$value = ( isset($review[ $field_id ]) ) ? $review[ $field_id ] : '';
 							//echo '<textarea id="rwp_editor_'.$this->post_meta_key .'_'. $review_id .'_'. $field_id .'" name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . ']" placeholder="">'. $value .'</textarea>';
-							
+
 							wp_editor( $value, 'rwp_editor_'.$this->post_meta_key .'_'. $review_id .'_'. $field_id , $settings = array(
 
 								'wpautop'		=> false,
@@ -555,7 +565,7 @@ class RWP_Reviews_Meta_Box
 
 							$src = ( !isset($review[ $field_id ]) || empty($review[ $field_id ]) ) ? $default : $review[ $field_id ];
 							echo '<div class="rwp-review-image-wrap"><img src="'. $src .'" alt="Review Image" id="rwp-review-image-img-' . $review_id . '" /></div>';
-							// echo '<span class="rwp-review-image-desc description">'. $field['description'] .'</span>';
+							echo '<span class="rwp-review-image-desc description">'. $field['description'] .'</span>';
 							break;
 
 						case 'review_id':
@@ -574,16 +584,16 @@ class RWP_Reviews_Meta_Box
 
 							break;
 
-						case 'review_status': 
+						case 'review_status':
 							echo '<select name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . ']">';
 
 							foreach ( array('publish' => __( 'Published', $this->plugin_slug ), "draft" => __( 'Draft', $this->plugin_slug )) as $key => $value) {
-								
+
 								$ck = (isset($review[ $field_id ]) && $review[ $field_id ] == $key) ? 'selected' : '';
 
 								echo '<option value="'. $key.'" '.$ck.'>'.$value.'</option>';
 							}
-							
+
 							echo '</select>';
 
 							echo '<p class="description">'. $field['description'] .'</p>';
@@ -594,16 +604,16 @@ class RWP_Reviews_Meta_Box
 							$links = isset($review[ $field_id ]) ? $review[ $field_id ] : $default;
 
 							echo '<input class="button rwp-add-custom-link-btn" type="button"  value="'. __( 'Add Custom Link', $this->plugin_slug ).'" data-review-id="'. $review_id .'" />';
-							
+
 							echo '<ul class="rwp-custom-links" data-label-placeholder="'.__( 'Link Label', $this->plugin_slug ).'" data-url-placeholder="'.__( 'Link URL', $this->plugin_slug ).'" data-remove-placeholder="'.__( 'Remove', $this->plugin_slug ).'">';
 
 							foreach ($links as $key => $value) {
 
 								echo '<li data-id="'.$key.'">';
-									echo '<input type="text" name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . ']['.$key.'][label]" 	value="'. $value['label'] .'"	placeholder="' . __( 'Link Label', $this->plugin_slug ) . '" />';	
-									echo '<input type="text" name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . ']['.$key.'][url]" 		value="'. $value['url'] .'" 	placeholder="' . __( 'Link URL', $this->plugin_slug ) . '" />';	
+									echo '<input type="text" name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . ']['.$key.'][label]" 	value="'. $value['label'] .'"	placeholder="' . __( 'Link Label', $this->plugin_slug ) . '" />';
+									echo '<input type="text" name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . ']['.$key.'][url]" 		value="'. $value['url'] .'" 	placeholder="' . __( 'Link URL', $this->plugin_slug ) . '" />';
 									echo '<a href="#" class="rwp-delete-custom-link-btn">'.__( 'Remove', $this->plugin_slug ).'</a>';
-								echo '</li>';	
+								echo '</li>';
 							}
 
 							echo '</ul>';
@@ -618,7 +628,7 @@ class RWP_Reviews_Meta_Box
 							$ur_options = isset($review[ $field_id ]) ? $review[ $field_id ] : $default;
 
 							foreach ($field['options'] as $key => $value) {
-								
+
 								$ck = in_array($key, $ur_options) ? 'checked' : '';
 
 								echo '<input type="checkbox" name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . '][]" value="'. $key .'" '.$ck.'/>' . ' ' . $value . '<br/>';
@@ -646,18 +656,28 @@ class RWP_Reviews_Meta_Box
 						case 'review_title':
 							$value = ( isset($review[ $field_id ]) ) ? $review[ $field_id ] : '';
 							echo '<input class="rwp-review-title-input" data-review-id="'. $review_id .'" type="text" name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . ']" value="'. $value .'" placeholder="' . $default . ' ' . $review_id .'" data-default="' . $default . ' ' . $review_id .'" />';
-							echo '<input type="hidden" name="'. $this->post_meta_key .'['. $review_id .'][review_type]" value="'. $review_type .'" />';
+							// echo '<input type="hidden" name="'. $this->post_meta_key .'['. $review_id .'][review_type]" value="'. $review_type .'" />';
 							break;
 
 						case 'review_title_options':
+						case 'review_criteria_source':
+						case 'review_type':
 							$value = ( isset($review[ $field_id ]) ) ? $review[ $field_id ] : $field['default'];
 
 							foreach ( $field['options'] as $key => $v) {
-								
+
 								$ck = ( $value == $key ) ? 'checked' : '';
 								echo '<input type="radio" name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . ']" value="'. $key .'" '.$ck.'/>' . ' ' . $v . '<br/>';
 
 							}
+							echo '<p class="description">'. $field['description'] .'</p>';
+
+							break;
+
+						case 'review_sameas_attr':
+							$value = ( isset($review[ $field_id ]) ) ? esc_url( $review[ $field_id ] ) : '';
+							echo '<input type="text" class="regular-text" name="'. $this->post_meta_key .'['. $review_id .'][' . $field_id . ']" value="'. $value .'" />';
+							echo '<p class="description">'. $field['description'] .'</p>';
 							break;
 
 						default:
@@ -671,16 +691,16 @@ class RWP_Reviews_Meta_Box
 				}
 				?>
 				</tbody>
-			
+
 			</table>
 
 			<input class="button rwp-delete-review-btn" type="button"  value="<?php _e( 'Delete review', $this->plugin_slug ); ?>" data-review-id="<?php echo $review_id ?>" />
 
-		</div> <!--/review-<?php echo $review_id; ?>--> 
+		</div> <!--/review-<?php echo $review_id; ?>-->
 		<?php
 	}
 
-	public static function get_instance() 
+	public static function get_instance()
 	{
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
@@ -694,8 +714,8 @@ class RWP_Reviews_Meta_Box
 	{
 		$this->review_types = array(
 
-			'PAR+UR' 	=> __('Post Author Review + Users Reviews', $this->plugin_slug ),
-			'UR' 		=> __('Users Reviews Only', $this->plugin_slug ),
+			'PAR+UR' 	=> __('Reviewer Box', $this->plugin_slug ),
+			'UR' 		=> __('Users Box', $this->plugin_slug ),
 		);
 
 		$this->review_type_fields = array(
@@ -704,16 +724,18 @@ class RWP_Reviews_Meta_Box
 
 			'UR' 		=> array(
 
-				'review_status', 
-				'review_title', 
+				// 'review_status',
+				'review_type',
+				'review_title',
 				'review_title_options',
 				'review_template',
-				'review_custom_tabs', 
+				'review_custom_tabs',
 				'review_use_featured_image',
-				'review_image', 
+				'review_image',
 				'review_image_url',
 				'review_custom_links',
-				//'review_user_rating_options', 
+				'review_sameas_attr',
+				//'review_user_rating_options',
 				'review_id'
 			)
 		);
@@ -726,27 +748,33 @@ class RWP_Reviews_Meta_Box
 
 		 return array(
 
-			'review_status' => array(
-			
-				'label' => __('Review Status', $plugin_slug ),
-				'default' => 'publish',
-				'description'	=> __('If the status is set to "Draft", the review will not appear inside Reviews Lists, Reviewer Widget and Comparison Tables', $plugin_slug )
-			),
+			// 'review_status' => array(
+
+			// 	'label' => __('Reviews Box Status', $plugin_slug ),
+			// 	'default' => 'publish',
+			// 	'description'	=> __('If the status is set to "Draft", the review will not appear inside Reviews Lists, Reviewer Widget and Comparison Tables', $plugin_slug )
+			// ),
 
 			'review_type' => array(
-				'default' => 'PAR+UR'
+				'label' => __('Review Box Type', $plugin_slug ),
+				'default' => 'PAR+UR',
+				'options' => array(
+					'PAR+UR' 	=> __('Reviewer Box', $plugin_slug ),
+					'UR' 	=> __('Users Box', $plugin_slug ),
+				),
+				'description' => __('If you change the box type you need to save the post before editing the review box settings.', $plugin_slug ),
 			),
-			
+
 			'review_title' => array(
-			
-				'label' => __('Review Title', $plugin_slug ),
-				'default' => __( 'Review', $plugin_slug ),
+
+				'label' => __('Reviews Box Title', $plugin_slug ),
+				'default' => __( 'Review Box', $plugin_slug ),
 				'description'	=> ''
 			),
 
 			'review_title_options' => array(
-			
-				'label' => __('Review Title Options', $plugin_slug ),
+
+				'label' => __('Reviews Box Title Options', $plugin_slug ),
 				'default' => 'custom_title',
 				'description'	=> '',
 				'options' => array(
@@ -755,35 +783,46 @@ class RWP_Reviews_Meta_Box
 					'hidden' 		=> __('Hide Title', $plugin_slug ),
 				),
 			),
-			
+
 			'review_template' => array(
-			
-				'label' => __('Review Template', $plugin_slug ),
+
+				'label' => __('Reviews Box Template', $plugin_slug ),
 				'default' => '',
 				'description'	=> ''
 			),
-			
+
 			'review_scores' => array(
-			
-				'label' => __('Review Scores', $plugin_slug ),
+
+				'label' => __('Reviewer Scores', $plugin_slug ),
 				'default' => array(),
 				'description'	=> ''
 			),
 
 			'review_custom_overall_score' => array(
-			
-				'label' => __('Review Custom Overall Score', $plugin_slug ),
+
+				'label' => __('Reviewer Custom Overall Score', $plugin_slug ),
 				'default' => '',
 				'description'	=> __( 'Leave blank for default overall score', $plugin_slug )
 			),
 
+			'review_criteria_source' => array(
+
+				'label' => __('Reviews Box Criteria', $plugin_slug ),
+				'default' => 'reviewer',
+				'description'	=> __( 'Decide if you want to show the single criteria of Reviewer or Users inside the reviews box', $plugin_slug ),
+				'options' => array(
+					'reviewer' 	=> __('Show Reviewer single criteria ', $plugin_slug ),
+					'users' 	=> __('Show Users single criteria', $plugin_slug ),
+				),
+			),
+
 			'review_custom_tabs' => array(
-			
-				'label' => __('Review Custom Tabs', $plugin_slug ),
+
+				'label' => __('Reviews Box Custom Tabs', $plugin_slug ),
 				'default' => array(),
 				'description'	=> __( 'Custom tabs will be shown near overall scores', $plugin_slug ),
 				'options' => array(
-					
+
 					'tab_value' => array(
 						'label' => __('Tab Value', $plugin_slug ),
 						'default' => '',
@@ -797,84 +836,91 @@ class RWP_Reviews_Meta_Box
 			),
 
 			'review_pros' => array(
-			
-				'label' => __( 'Review Pros', $plugin_slug ),
+
+				'label' => __( 'Reviews Box Pros', $plugin_slug ),
 				'default' => '',
 				'description'	=> ''
 			),
-			
+
 			'review_cons' => array(
-			
-				'label' => __( 'Review Cons', $plugin_slug ),
+
+				'label' => __( 'Reviews Box Cons', $plugin_slug ),
 				'default' => '',
 				'description'	=> ''
 			),
 
 			'review_summary' => array(
-			
-				'label' => __( 'Review Summary', $plugin_slug ),
+
+				'label' => __( 'Reviews Box Summary', $plugin_slug ),
 				'default' => '',
 				'description'	=> ''
 			),
 
 			'review_use_featured_image' => array(
-				'label' => __( 'Use "Featured Image" as Review Image', $plugin_slug ),
+				'label' => __( 'Use "Featured Image" as Reviews Box Image', $plugin_slug ),
 				'default' => 'no',
 				'description'	=> __( 'Check the checkbox for using the post "Featured Image" as review image', $plugin_slug )
 			),
-			
+
 			'review_image' => array(
-			
-				'label' => __( 'Review Custom Image', $plugin_slug ),
+
+				'label' => __( 'Reviews Box Custom Image', $plugin_slug ),
 				'default' => RWP_PLUGIN_URL . 'admin/assets/images/review-image-preview.png',
-				'description'	=> __( 'Best size', $plugin_slug ) . ' 400 x 272 (px)',
+				'description'	=> sprintf( __( 'Best size %s, or any size with the same aspect ratio', $plugin_slug ), '400 x 272 (px)'),
 			),
 
 			'review_image_url' => array(
-			
-				'label' => __( 'Review Image URL', $plugin_slug ),
+
+				'label' => __( 'Reviews Box Image URL', $plugin_slug ),
 				'default' => '',
 				'description'	=> __( 'You can add a custom url for review image', $plugin_slug )
 			),
 
 			'review_custom_links' => array(
-			
-				'label' => __( 'Review Custom Links', $plugin_slug ),
+
+				'label' => __( 'Reviews Box Custom Links', $plugin_slug ),
 				'default' => array(),
 				'description'	=> __( 'You can add custom links that will appear under the overall score box', $plugin_slug )
 			),
 
+			'review_sameas_attr' => array(
+
+				'label' => __('Define "sameAs" URL', $plugin_slug ),
+				'default' => '',
+				'description'	=> __( 'Define "sameAs" attribute url for Google Rich Snippets', $plugin_slug ),
+			),
+
 			'review_disable_user_rating' => array(
-				'label' => __( 'Disable User rating', $plugin_slug ),
+				'label' => __( 'Disable User reviews', $plugin_slug ),
 				'default' => 'no',
 				'description'	=> __( 'Check the checkbox for disabling the users rating for this review', $plugin_slug )
 			),
-			
+
 			'review_id' => array(
 				'label' => __( 'Reviews Box Shortcodes', $plugin_slug ),
 				'default' => 0,
 				'description'	=> sprintf( __( 'You can insert the following shortcodes inside your post content. If you add the %s parameter to one of those shortcodes you can display the reviews box in a different post/page. More info inside documentation.', $plugin_slug ), '<span>post="THE_POST_ID"</span>' ),
 				'shortcodes' => array(
-					'rwp-review' => array(
-						'description' => __('Display the reviews box', $plugin_slug),
+					'rwp_box' => array(
+						'description' => __('Display the review box', $plugin_slug),
 					),
-					'rwp-reviewer-rating-stars' => array(
+					'rwp_reviewer_rating_stars' => array(
 						'description' => __('Display rating stars about the reviewer score', $plugin_slug),
 					),
-					'rwp-users-rating-stars' => array(
+					'rwp_users_rating_stars' => array(
 						'description' => __('Display rating stars about the users score', $plugin_slug),
 					),
-					'rwp-review-recap' => array(
-						'description' => __('Display some recap sections of reviews box. The users reviews and form sections are not shown', $plugin_slug),
+					'rwp_box_recap' => array(
+						'description' => __('Display some recap sections of review box. The user reviews and form sections are not shown', $plugin_slug),
 					),
-					'rwp-review-scores' => array(
+					'rwp_box_criteria' => array(
 						'description' => __('Display the scores of single criteria', $plugin_slug),
 					),
-					'rwp-review-ratings' => array(
-						'description' => __('Display the users reviews only', $plugin_slug),
+					'rwp_box_reviews' => array(
+						'description' => __('Display the user reviews only', $plugin_slug),
 					),
-					'rwp-review-form' => array(
-						'description' => __('Display the form for user rating', $plugin_slug),
+					'rwp_box_form' => array(
+						'description' => __('Display the form for user review', $plugin_slug),
 					),
 				),
 			)

@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -15,7 +15,7 @@ class RWP_Admin_Page
 	// Page fields
 	protected $capability = 'manage_options';
 	protected $menu_slug = '';
-	protected $icon_url = 'dashicons-chart-line';
+	protected $icon_url = 'dashicons-star-filled';
 
 	function __construct()
 	{
@@ -29,5 +29,33 @@ class RWP_Admin_Page
 			self::$instance = new self;
 		}
 		return self::$instance;
+	}
+
+	protected function is_licensed() 
+	{
+		$license = get_option( get_option( 'rwp_license' ) );
+
+		if( isset( $license['license'] ) && $license['license'] ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	protected function check_license() 
+	{
+		if( !$this->is_licensed() ) {
+			wp_redirect( menu_page_url('reviewer-license-page', true), 200 );
+			exit();
+		}
+	}
+
+	protected function license_notice()
+	{
+		?>
+		<div class="error notice"> 
+			<p><strong><?php _e( 'Please register your Reviewer license before using the plugin. Go to Reviewer > License.', $this->plugin_slug ); ?></strong></p>
+		</div>
+		<?php
 	}
 }

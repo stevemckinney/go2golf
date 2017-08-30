@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.3
  * Created by Michele Ivani
  */
@@ -15,6 +15,7 @@ class RWP_Users_Ratings_Page extends RWP_Admin_Page
 
 		$this->menu_slug = 'reviewer-users-ratings-page';
 		$this->parent_menu_slug = 'reviewer-main-page';
+        $this->capability = 'rwp_manage_user_reviews';
 		//$this->templates_option = RWP_Reviewer::get_option( 'rwp_templates' );
 		$this->add_menu_page();
 
@@ -24,7 +25,7 @@ class RWP_Users_Ratings_Page extends RWP_Admin_Page
 
 	public function add_menu_page()
 	{
-		add_submenu_page( $this->parent_menu_slug, __( 'Users Reviews', $this->plugin_slug), __( 'Users Reviews', $this->plugin_slug), $this->capability, $this->menu_slug, array( $this, 'display_plugin_admin_page' ) );
+		add_submenu_page( $this->parent_menu_slug, __( 'User Reviews', $this->plugin_slug), __( 'User Reviews', $this->plugin_slug), $this->capability, $this->menu_slug, array( $this, 'display_plugin_admin_page' ) );
 	} 
 
     public function localize_script() 
@@ -61,6 +62,11 @@ class RWP_Users_Ratings_Page extends RWP_Admin_Page
                 $pend_count = $pend_count + $count;
                 update_option( $key, $pend_count );
                 
+                break;
+
+            case 'rwp_verify':
+            case 'rwp_unverify':
+                $count = self::apply_badge_bulk( $_POST['rows'], $_POST['ac'] );
                 break;
 
             case 'delete':
@@ -133,7 +139,7 @@ class RWP_Users_Ratings_Page extends RWP_Admin_Page
                     $res['data']['msg'] = 'OK';
 
                     $form  = '';
-                    $form .= '<tr id="rwp-tr-r-'. $rating['rating_id'] .'" class="rwp-tr-edit-rating"><td colspan="5">';
+                    $form .= '<tr id="rwp-tr-r-'. $rating['rating_id'] .'" class="rwp-tr-edit-rating"><td colspan="6">';
 
                     if( $rating['rating_user_id'] <= 0 ) {
 
@@ -192,6 +198,37 @@ class RWP_Users_Ratings_Page extends RWP_Admin_Page
                         $form .= '<input type="text" name="rwp-rmi[rating_date]" value="'. $rating_date.'" />';
                     $form .= '</span>';
 
+                    // Images
+                    $rating_images = isset( $rating['rating_images'] ) && is_array( $rating['rating_images'] ) ? $rating['rating_images'] : array();
+                    $form .= '<div class="rwp-rmi-wrap rwp_rt_images">';
+                        $form .= '<p class="description">'. __( 'Review Images', 'reviewer' ) .'</p>';
+                        if( count( $rating_images ) > 0 ) {
+                            $form .= '<ul>';
+                            foreach ( $rating_images as $attachment_id ) {
+                                $thumb = wp_get_attachment_image_src( $attachment_id, array( 160, 160 ) );
+                                if( $thumb === false ) {
+                                    continue;
+                                }
+                                $image = wp_get_attachment_image_src( $attachment_id, 'full' );
+                                $form .= '<li>';
+                                    $form .= '<a href="'. $image[0] .'" target="_blank">';
+                                        $form .= '<span style="background-image: url('. $thumb[0] .')"></span>';
+                                    $form .= '</a>';
+                                    $form .= '<em class="rwp-rmi-delete-image" data-attachment="'. $attachment_id .'">'. __('Remove', 'reviewer') .'</em>';
+                                $form .= '</li>';
+                            }
+                            $form .= '</ul>';
+                    } else {
+                        $form .= '<p>'. __( 'No images for the review', 'reviewer' ) .'</p>';
+                    }
+                    $form .= '<input type="hidden" name="rwp-rmi[rating_images_to_delete]" value="" />';
+                    $form .= '</div>';
+
+                    $form .= '<div class="rwp-rmi-wrap">';
+                        $form .= '<p class="description">'. __( 'You can attach images to the review by adding the "File ID" separated by a comma', 'reviewer' ) .'</p>';
+                        $form .= '<input type="text" name="rwp-rmi[rating_images_new]" value="" placeholder="32, 45, 98" />';
+                    $form .= '</div>';
+
                     $form .= '<input type="button" name="rwp-rmi[cancel]" class="button rwp-rmi-cancel" value="'. __( 'Cancel', 'reviewer' ) .'" data-meta-id="'. $rating['rating_meta_id'] .'" data-rating-id="'. $rating['rating_id'] .'"/>';
                     $form .= '<input type="submit" name="rwp-rmi[submit]" class="button button-primary rwp-rmi-submit rwp-ratings-action" value="'. __( 'Save Changes', 'reviewer' ) .'" data-action="edit-done" data-meta-id="'. $rating['rating_meta_id'] .'" data-rating-id="'. $rating['rating_id'] .'" />';
                     $form .= '<img class="rwp-loader" src="'.admin_url() .'images/spinner.gif" alt="loading" />';
@@ -207,6 +244,11 @@ class RWP_Users_Ratings_Page extends RWP_Admin_Page
                 $result = self::update_rating( $_POST['metaId'], $_POST['ratingId'], $_POST['newRating'] );
                 $res['data']['rating']  = $result;
                 $res['data']['msg']     = 'OK';
+                break;
+
+            case 'verify':
+            case 'unverify':
+                $result = self::apply_badge( $_POST['metaId'], $_POST['ratingId'], $_POST['ac'] );
                 break;
 
             default:
@@ -278,6 +320,40 @@ class RWP_Users_Ratings_Page extends RWP_Admin_Page
                     continue;
                 } // end rating_score
 
+                if( $key == 'rating_images_new' ) {
+                    $images = isset( $rating['rating_images'] ) && is_array( $rating['rating_images'] ) ? $rating['rating_images'] : array();
+                    $new_images = explode(',', $value);
+                    if( !is_array( $new_images ) || count( $new_images ) < 1 ) { // no new images
+                        continue;
+                    }
+
+                    foreach ( $new_images as $image_id ) {
+                        $attachment_id = intval( $image_id );
+                        if( $attachment_id > 0 && wp_attachment_is_image( $attachment_id ) && !in_array( $attachment_id, $images ) ) {
+                            $images[] = $attachment_id;
+                        } 
+                    }
+                    $rating['rating_images'] = $images;
+                    continue;
+                } // end rating_images_new
+
+                if( $key == 'rating_date_to_delete' ) {
+                    $images = isset( $rating['rating_images'] ) && is_array( $rating['rating_images'] ) ? $rating['rating_images'] : array();
+                    $to_delete = explode(',', $value);
+                    if( !is_array( $to_delete ) || count( $to_delete ) < 1 ) { // no new images
+                        continue;
+                    }
+
+                    foreach ( $to_delete as $image_id ) {
+                        $attachment_id = intval( $image_id );
+                        if( $attachment_id > 0 && in_array( $attachment_id, $images ) ) {
+                           $images = array_diff( $images, array( $attachment_id ) );
+                        } 
+                    }
+                    $rating['rating_images'] = $images;
+                    continue;
+                } // end rating_images_new
+
                 $rating[ $key ] = ($key == 'rating_comment') ? implode( "\n", array_map( 'sanitize_text_field', explode( "\n", stripslashes_deep( $value ) ) ) ) : sanitize_text_field( stripslashes_deep( $value ) );
             }
 
@@ -323,6 +399,83 @@ class RWP_Users_Ratings_Page extends RWP_Admin_Page
         } else {
             return false;
         }
+    }
+
+    public static function apply_badge( $meta_id, $rating_id, $action = 'verify' ) 
+    {
+        global $wpdb;
+
+        $row = $wpdb->get_row("SELECT * FROM $wpdb->postmeta WHERE meta_id = " . intval( $meta_id ), ARRAY_A);
+
+        $rating = maybe_unserialize( $row['meta_value'] );
+
+        if( isset( $rating['rating_id'] ) && $rating['rating_id'] == $rating_id ) {
+
+            $rating['rating_verified'] = ( $action == 'verify'  ) ? true : false;
+
+            return $wpdb->update( 
+                $wpdb->postmeta, 
+                array( 
+                    'meta_value' => maybe_serialize( $rating )
+                ), 
+                array( 'meta_id' => intval( $meta_id ) ), 
+                array( '%s' ), 
+                array( '%d' ) 
+            );
+
+        } else {
+            return false;
+        }
+    }
+
+    
+    public static function apply_badge_bulk( $items = array(), $action = 'rwp_approve'  ) 
+    {
+        global $wpdb;
+
+        $count = 0;
+
+        foreach ($items as $item) {
+
+            $res = false;
+
+            $row = $wpdb->get_row("SELECT * FROM $wpdb->postmeta WHERE meta_id = " . intval( $item['metaId'] ), ARRAY_A);
+
+            $rating = maybe_unserialize( $row['meta_value'] );
+
+            if( isset( $rating['rating_id'] ) && $rating['rating_id'] == $item['ratingId'] ) {
+
+                $verified = ( isset($rating['rating_verified'] ) ) ? $rating['rating_verified'] : false ;
+                $rating['rating_verified'] = ( $action == 'rwp_verify'  ) ? true : false;
+
+                $res = $wpdb->update( 
+                    $wpdb->postmeta, 
+                    array( 
+                        'meta_value' => maybe_serialize( $rating )
+                    ), 
+                    array( 'meta_id' => intval( $item['metaId'] ) ), 
+                    array( '%s' ), 
+                    array( '%d' ) 
+                );
+            }
+
+            if( $res !== false ) {
+
+                if( $verified === true && $action == 'rwp_verify' )
+                    continue;
+
+                if( $verified === false && $action == 'rwp_verify' )
+                    $count++;
+
+                if( $verified === true && $action != 'rwp_verify' )
+                    $count++;
+
+                if( $verified === false && $action != 'rwp_verify' )
+                    continue;
+            }
+        }
+
+        return $count;
     }
 
     public static function approve_unapprove_bulk( $items = array(), $action = 'rwp_approve'  ) 
@@ -436,11 +589,17 @@ class RWP_Users_Ratings_Page extends RWP_Admin_Page
         $ratings = $this->get_ratings();
 		
         echo '<div class="wrap" id="rwp-ratings-mega-wrap">';
-		echo '<h2>'. __( 'Users Ratings', $this->plugin_slug ) .' <span class="rwp-template-count">'. count( $ratings ) .'</span></h2>';
+        echo '<h2>'. __( 'User Reviews', $this->plugin_slug ) .' <span class="rwp-template-count">'. count( $ratings ) .'</span></h2>';
+        
+        if($this->is_licensed()):
 
-		$ratings_table = new RWP_Ratings_List_Table( $ratings );
+        $ratings_table = new RWP_Ratings_List_Table( $ratings );
         $ratings_table->prepare_items();
         $ratings_table->display();
+        
+        else:
+            $this->license_notice();
+        endif;
 
         //RWP_Reviewer::pretty_print( $ratings );
 
@@ -505,7 +664,7 @@ class RWP_Ratings_List_Table extends WP_List_Table {
         $this->preferences = RWP_Reviewer::get_option('rwp_preferences');
     }
 
-    /*  for PRO users! - *
+    /**
      * Prepare the items for the table to process
      *
      * @return Void
@@ -534,7 +693,7 @@ class RWP_Ratings_List_Table extends WP_List_Table {
         $this->items = $data;
     }
 
-    /*  for PRO users! - *
+    /**
      * Override the parent columns method. Defines the columns to use in your listing table
      *
      * @return Array
@@ -546,13 +705,14 @@ class RWP_Ratings_List_Table extends WP_List_Table {
             'rwp_rt_author'    => __( 'Author', 'reviewer' ),
             'rwp_rt_comment'   => __( 'Comment', 'reviewer' ),
             'rwp_rt_score'     => __( 'Score', 'reviewer' ),
-            'rwp_rt_review'     => __( 'Review', 'reviewer' ),
+            'rwp_rt_review'     => __( 'Review Box', 'reviewer' ),
+            'rwp_rt_images'    => __('Images', 'reviewer'),
         );
  
         return $columns;
     }
 
-    /*  for PRO users! - *
+    /**
      * Define which columns are hidden
      *
      * @return Array
@@ -562,7 +722,7 @@ class RWP_Ratings_List_Table extends WP_List_Table {
         return array();
     }
  
-    /*  for PRO users! - *
+    /**
      * Define the sortable columns
      *
      * @return Array
@@ -573,7 +733,7 @@ class RWP_Ratings_List_Table extends WP_List_Table {
         //return array('title' => array('title', false));
     }
 
-    /*  for PRO users! - *
+    /**
      * Define what data to show on each column of the table
      *
      * @param  Array $item        Data
@@ -586,7 +746,7 @@ class RWP_Ratings_List_Table extends WP_List_Table {
         return var_dump( $item ) ;
     }
 
-    /*  for PRO users! - *
+    /**
      * Allows you to sort the data by the variables set in the $_GET
      *
      * @return Mixed
@@ -629,6 +789,8 @@ class RWP_Ratings_List_Table extends WP_List_Table {
       $actions = array(
         'rwp_approve'    => __('Approve', 'reviewer'),
         'rwp_unapprove'  => __('Unapprove', 'reviewer'),
+        'rwp_verify'     => __('Apply Verified Badge', 'reviewer'),
+        'rwp_unverify'     => __('Remove Verified Badge', 'reviewer'),
         'delete'         => __('Delete', 'reviewer'),
       );
 
@@ -680,6 +842,10 @@ class RWP_Ratings_List_Table extends WP_List_Table {
 
         $h = ( isset( $item['rating_status'] ) && $item['rating_status'] == 'pending' ) ? '' : 'rwp-hidden';
         $html .= '<span class="dashicons dashicons-flag rwp-marker '. $h .'"></span>';
+        
+        $badge = isset( $this->preferences['preferences_user_review_verified_badge'] ) ? $this->preferences['preferences_user_review_verified_badge'] : array( 'label' => __( 'Verified', 'reviewer' ), 'color' => '#E91E63' );
+        $h = ( isset( $item['rating_verified'] ) && $item['rating_verified'] ) ? '' : 'rwp-hidden';
+        $html .= '<div class="rwp-badges"><span class="rwp-badge '. $h .'" style="background: '. $badge['color'] .';">'. $badge['label'] .'</span></div>';
         //$html .= '</div>';
 
         return $html;
@@ -752,8 +918,14 @@ class RWP_Ratings_List_Table extends WP_List_Table {
             $actions['rwp_unapprove'] = '<a href="#" class="rwp-ratings-action" data-action="unapprove" data-meta-id="'. $item['rating_meta_id'] .'" data-rating-id="'. $item['rating_id'] .'" data-counterpart="'. __('Approve', 'reviewer') .'">'. __('Unapprove', 'reviewer') .'</a>';
         }
 
-        $link = 'rwp-review-'. $item['rating_post_id'].'-'.$item['rating_review_id'];
-        $actions['rwp_view'] = '<a href="'. get_permalink( $item['rating_post_id'] ) .'#'.$link.'">'. __('View', 'reviewer') .'</a>';
+        if( !isset( $item['rating_verified'] ) || !$item['rating_verified'] ) {
+            $actions['rwp_verify'] = '<a href="#" class="rwp-ratings-action rwp_verify" data-action="verify" data-meta-id="'. $item['rating_meta_id'] .'" data-rating-id="'. $item['rating_id'] .'" data-counterpart="'. __('Remove Verified Badge', 'reviewer') .'">'. __('Apply Verified Badge', 'reviewer') .'</a>';
+        } else {
+            $actions['rwp_unverify'] = '<a href="#" class="rwp-ratings-action rwp_unverify" data-action="unverify" data-meta-id="'. $item['rating_meta_id'] .'" data-rating-id="'. $item['rating_id'] .'" data-counterpart="'. __('Apply Verified Badge', 'reviewer') .'">'. __('Remove Verified Badge', 'reviewer') .'</a>';
+        }
+
+        $link = add_query_arg( 'rwpurid', $item['rating_id'], get_permalink( $item['rating_post_id'] ) );
+        $actions['rwp_view'] = '<a href="'. $link .'">'. __('View', 'reviewer') .'</a>';
         $actions['rwp_edit'] = '<a href="#" class="rwp-ratings-action" data-action="edit" data-meta-id="'. $item['rating_meta_id'] .'" data-rating-id="'. $item['rating_id'] .'">'. __('Edit', 'reviewer') .'</a>';
 
         
@@ -789,6 +961,27 @@ class RWP_Ratings_List_Table extends WP_List_Table {
 
         $link = 'rwp-review-'. $post_id.'-'.$review_id;
         return '<a href="'. get_permalink( $item['rating_post_id'] ) .'#'.$link.'">'. $review['review_title'] .'</a>';
+     }
+
+     public function column_rwp_rt_images( $item )
+     {
+        $images = isset( $item['rating_images'] ) && is_array( $item['rating_images'] ) ? $item['rating_images'] : array();
+        $html  = '';
+        $html .= '<ul>';
+        foreach ( $images as $attachment_id ) {
+            $thumb = wp_get_attachment_image_src( $attachment_id, array( 160, 160 ) );
+            if( $thumb === false ) {
+                continue;
+            }
+            $image = wp_get_attachment_image_src( $attachment_id, 'full' );
+            $html .= '<li>';
+                $html .= '<a href="'. $image[0] .'" target="_blank">';
+                    $html .= '<span style="background-image: url('. $thumb[0] .')"></span>';
+                $html .= '</a>';
+            $html .= '</li>';
+        }
+        $html .= '</ul>';
+        return $html;
      }
 
      protected function get_stars( $scores = array(), $template, $stars = 5 ) {

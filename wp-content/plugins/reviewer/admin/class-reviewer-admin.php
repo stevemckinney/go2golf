@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -35,13 +35,19 @@ class RWP_Reviewer_Admin
 		// Add the TinyMCE button
 		$this->add_tinyMCE_support();
 
+		// Add User ID column in users admin page
+		$this->add_user_id_column();
+
+		// Add Attachment ID column in media library page
+		$this->add_attachment_id_column();
+
 		// Localize media box
 		// add_action( 'admin_init', array($this, 'localize_media_box') ); // [WPMUO] uncomment for old version of wp media loader
 	}
 
 	public function add_plugin_admin_menu() 
 	{
-		$includes = array( 'class-menu-page', 'class-main-page', 'class-reviews-page', 'class-users-ratings-page', 'class-support-page', 'class-io-page', 'class-api-page' );
+		$includes = array( 'class-menu-page', 'class-main-page', 'class-reviews-page', 'class-users-ratings-page', 'class-support-page', 'class-license-page', 'class-io-page', 'class-api-page' );
 
 		foreach ($includes as $file)
 			include_once('includes/'. $file .'.php');
@@ -57,9 +63,10 @@ class RWP_Reviewer_Admin
 		RWP_Users_Ratings_Page::get_instance();
 		RWP_Preferences_Page::get_instance();
 		RWP_IO_Page::get_instance();
-		if( ! RWP_EXTENDED_LICENSE )
-			RWP_Support_Page::get_instance();
-		RWP_API_Page::get_instance();
+		RWP_License_Page::get_instance();
+		// if( ! RWP_EXTENDED_LICENSE )
+		// 	RWP_Support_Page::get_instance();
+		//RWP_API_Page::get_instance();
 	}
 
 	public function add_pending_ratings_bubble() 
@@ -114,20 +121,15 @@ class RWP_Reviewer_Admin
 
 		$screen = get_current_screen();
 
-		//if( ! in_array( $screen->id, $this->hooknames) )
-		//	return;
-
-		if( 'admin_page_reviewer-template-manager-page' == $screen->id ) { // Add color picker css files
+		if( 'admin_page_reviewer-template-manager-page' == $screen->id || 'reviewer_page_reviewer-preferences-page' == $screen->id ) { // Add color picker css files
 			wp_enqueue_style( 'wp-color-picker' );
 		}
-		//wp_enqueue_style( 'jquery-ui-slider-smoothness', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' );
 
 		if( 'reviewer_page_reviewer-preferences-page' == $screen->id ) { // Add Codemirror css
 			wp_enqueue_style( $this->plugin_slug .'-codemirror-styles', plugins_url( 'assets/css/codemirror.css', __FILE__ ), array(), RWP_Reviewer::VERSION );
 		}
 		
-		wp_enqueue_style( $this->plugin_slug .'-nouislider-styles', plugins_url( 'assets/css/jquery.nouislider.css', __FILE__ ), array(), RWP_Reviewer::VERSION );
-		wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array( 'dashicons' ), RWP_Reviewer::VERSION );
+		wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/reviewer-admin.css', __FILE__ ), array( 'dashicons' ), RWP_Reviewer::VERSION );
 
 	}
 
@@ -141,14 +143,10 @@ class RWP_Reviewer_Admin
 		$preferences = RWP_Reviewer::get_option('rwp_preferences');
 
 		if( ( isset( $preferences['preferences_post_types'] ) && is_array( $preferences['preferences_post_types'] ) && in_array( get_current_screen()->id , $preferences['preferences_post_types'] ) ) || 'admin_page_reviewer-template-manager-page' == get_current_screen() -> id  ) {
-
-		//if ( 'model' == get_current_screen() -> id || 'tribe_events' == get_current_screen() -> id || 'essential_grid' == get_current_screen() -> id || 'admin_page_reviewer-template-manager-page' == get_current_screen() -> id || 'post' == get_current_screen() -> id || 'page' == get_current_screen() -> id ) {
 	 
 	        wp_enqueue_script('thickbox');
 	        wp_enqueue_style('thickbox');
 	 
-	        // wp_enqueue_script('media-upload'); // [WPMUO] uncomment for old version of wp media loader
-
 	        // New WP Media Uploader
  			wp_enqueue_media();
  			wp_enqueue_script( 'reviewer-admin-script-wp-uploader', plugins_url( 'assets/js/wp-media-uploader.min.js', __FILE__ ), array( 'jquery'), RWP_Reviewer::VERSION );
@@ -203,6 +201,45 @@ class RWP_Reviewer_Admin
 	    		echo '<p>'. __('Thank you for purchasing the Reviewer Plugin. Activate your copy in order to get support.', $this->plugin_slug ) .' <a href="'.admin_url('admin.php?page=reviewer-support-page').'">'. __('Activate Now', $this->plugin_slug) .'</a></p>';
 			echo '</div>';
 		}
+	}
+
+	public function add_user_id_column()
+	{
+		add_filter('manage_users_columns', array($this, 'manage_users_columns'));
+		add_action('manage_users_custom_column', array($this, 'manage_users_custom_column'), 10, 3);
+	}
+
+	public function manage_users_columns($columns) 
+	{
+	    $columns['rwp_user_id'] = __('User ID', 'reviewer');
+	    return $columns;
+	}
+
+	public function manage_users_custom_column($value, $column_name, $user_id) 
+	{
+	    $user = get_userdata( $user_id );
+		if ( 'rwp_user_id' == $column_name )
+			return $user_id;
+	    return $value;
+	}
+
+	public function add_attachment_id_column()
+	{
+		add_filter('manage_media_columns', array($this, 'manage_media_columns'));
+		add_action('manage_media_custom_column', array($this, 'manage_media_custom_column'), 10, 2);
+	}
+
+	public function manage_media_columns($columns) 
+	{
+	    $columns['rwp_attachment_id'] = __('File ID', 'reviewer');
+	    return $columns;
+	}
+
+	public function manage_media_custom_column( $column_name, $attachment_id ) 
+	{
+	    if( 'rwp_attachment_id' == $column_name ){
+	    	echo $attachment_id;
+	    }
 	}
 
 	public static function get_instance() 

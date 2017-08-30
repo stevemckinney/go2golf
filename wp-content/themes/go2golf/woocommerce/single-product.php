@@ -48,9 +48,9 @@ get_header( 'shop' ); ?>
 								</div><!--/.o-grid__col -->
 								<div class="o-grid__col o-grid__col--7/12--small">
 									<h2 class="c-course-detail-box__name"><?php the_title(); ?></h2>
-									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id($post->id); ?></h3>
+									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id($post->ID); ?></h3>
 									<p class="u-visuallyhidden"><?php echo $average_course_review; ?> out of 10</p>
-									<div style="display:none" class="c-course-detail-box__average-review-stars">
+									<div class="c-course-detail-box__average-review-stars">
 										<div class="c-course-detail-box__average-review-active-stars" style="width:<?php echo $average_course_review * 100 / 10; ?>%">
 											<span>★</span>
 											<span>★</span>
@@ -278,8 +278,27 @@ get_header( 'shop' ); ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
-							<section style="display:none" id="reviews" class="o-panel o-panel--double">
-								<h1 class="o-heading--secondary">Reviews</h1>
+							<section id="reviews" class="o-panel o-panel--double">
+								<div class="c-reviews__header-strip">
+									<h1 class="o-heading--secondary">Reviews <span class="o-notification o-notification--small"><?php echo get_user_review_count($post->ID); ?></span></h1>
+									<a href="#" class="c-reviews__leave-review-prompt">Leave a review</a>
+								</div><!--/.c-reviews__header-strip -->
+								<div class="c-reviews__breakdowns">
+									<div class="c-reviews__breakdown">
+										<h2 class="c-reviews__breakdown-heading">Average course rating</h2>
+									</div><!--/.c-reviews__breakdown -->
+									<div class="c-reviews__breakdown">
+										<h2 class="c-reviews__breakdown-heading">Breakdown averages</h2>
+									</div><!--/.c-reviews__breakdown -->
+									<div class="c-reviews__breakdown">
+										<h2 class="c-reviews__breakdown-heading">Reviews breakdown</h2>
+									</div><!--/.c-reviews__breakdown -->
+								</div><!--/.c-reviews__breakdowns -->
+								<?php echo do_shortcode('[rwp_box id="-1" template="rwp_template_5872271b8991c"]'); ?>
+								<?php // echo do_shortcode('[rwp_box_recap id="-1" template="rwp_template_5872271b8991c"]'); ?>
+								<?php // echo do_shortcode('[rwp_box_criteria id="-1" template="rwp_template_5872271b8991c"]'); ?>
+								<?php // echo do_shortcode('[rwp_box_reviews id="-1" template="rwp_template_5872271b8991c"]'); ?>
+								<?php // echo do_shortcode('[rwp_box_form id="-1" template="rwp_template_5872271b8991c"]'); ?>
 							</section>
 						</div><!--/.o-grid__col -->
 					</div><!--/.o-grid -->
@@ -313,9 +332,6 @@ get_header( 'shop' ); ?>
 
 				//echo $html;
 			?>
-
-			<?php //echo do_shortcode('[rwp-review id="-1" template="rwp_template_5872271b8991c"]'); ?>
-			<?php //echo do_shortcode('[rwp-review-recap id="-1" template="rwp_template_5872271b8991c"]'); ?>
 
 		<?php endwhile; // end of the loop. ?>
 

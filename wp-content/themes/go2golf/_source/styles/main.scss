@@ -3,6 +3,7 @@
 @import '_settings/_settings.typography';
 @import '_settings/_settings.dimensions';
 @import '_settings/_settings.visual-enhancements';
+@import '_settings/_settings.z-index';
 
 @import '_tools/_tools.mixins';
 @import '_tools/_tools.functions';
@@ -17,6 +18,8 @@
 @import '_generic/_generic.views';
 
 @import '_elements/_elements.table';
+@import '_elements/_elements.headings';
+@import '_elements/_elements.links';
 
 @import '_trumps/_trumps.layout.scss';
 
@@ -38,3 +41,4 @@
 @import '_components/_components.breadcrumbs';
 @import '_components/_components.pagination';
 @import '_components/_components.embedded-map';
+@import '_components/_components.reviews';

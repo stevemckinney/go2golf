@@ -1,0 +1,23 @@
+.c-reviews__header-strip {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+}
+
+.c-reviews__breakdowns {
+	display: flex;
+	margin-left: -#{map-get($dimensions-map, quarter-spacing-unit)};
+	text-align: center;
+}
+
+.c-reviews__breakdown {
+	flex-grow: 1;
+	margin-left: map-get($dimensions-map, quarter-spacing-unit);
+	padding: map-get($dimensions-map, half-spacing-unit);
+	border: map-get($visual-enhancements-map, border-primary);
+}
+
+.c-reviews__breakdown-heading {
+	font-size: map-get($typography-map, s-font-size);
+	font-weight: map-get($typography-map, bold-font-weight);
+}

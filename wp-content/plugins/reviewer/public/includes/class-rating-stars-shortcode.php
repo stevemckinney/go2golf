@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.3.5
  * Created by Michele Ivani
  */
@@ -21,7 +21,9 @@ class RWP_Rating_Stars_Shortcode
 		$this->plugin_slug = 'reviewer';
 
 		add_shortcode( $this->reviewer_shortcode_tag , array( $this, 'do_shortcode_reviewer' ) );
+		add_shortcode( 'rwp_reviewer_rating_stars', array( $this, 'do_shortcode_reviewer' ) );
 		add_shortcode( $this->users_shortcode_tag , array( $this, 'do_shortcode_users' ) );
+		add_shortcode( 'rwp_users_rating_stars', array( $this, 'do_shortcode_users' ) );
 	}
 
 	public function do_shortcode_reviewer( $atts ) {
@@ -78,38 +80,59 @@ class RWP_Rating_Stars_Shortcode
 			'post'		=> get_the_ID(),
 			'size'		=> '24',
 			'stars'		=> '5',
+			'template' 	=> '',
 		), $atts ) );
 
-		$review_id 	= intval( $id ); 
-		$post_id 	= intval( $post );
-		$size 		= intval( $size );
-		$stars 		= intval( $stars );
+		$review_id 		= intval( $id ); 
+		$post_id 		= intval( $post );
+		$size 			= intval( $size );
+		$stars 			= intval( $stars );
+		$template_id 	= trim( $template );
 
+		if( $review_id == -1 ) { // Auto Review
+			$post_type 	= get_post_type( $post_id );
+			$auto_id 	= -1;
+			$review_id 	= md5( 'rwp-'. $template_id .'-'. $post_type . '-' . $post_id . '-' . $auto_id );
 
-		// Get post reviews
-		$reviews = get_post_meta( $post_id, 'rwp_reviews', true );
+			// Get Template
+			$templates 		= RWP_Reviewer::get_option('rwp_templates');
+			$this->template = (isset( $templates[ $template_id ] )) ? $templates[ $template_id ] : array();
+
+			$max = $this->template_field('template_maximum_score', true);
+			$min = $this->template_field('template_minimum_score', true);
+
+			$scores 	= RWP_Reviewer::get_ratings_single_scores( $post_id, $review_id, $template_id);
+			$avg 		= RWP_Reviewer::get_avg( $scores['scores'] );
+			$count 		= $scores['count'];
+			$score 		= $this->map_range( $avg, $min, $max, 0, $stars );
+			$count_label = ( $count == 1 ) ? $this->template_field('template_users_count_label_s', true) : $this->template_field('template_users_count_label_p', true);
+
+		} else {
+			// Get post reviews
+			$reviews = get_post_meta( $post_id, 'rwp_reviews', true );
+			
+			// Check if user has inserted a valid review ID 
+			if( ! isset( $reviews[ $review_id ] ) ) 
+				return '<p>' . __('No review found! Insert a valid review ID.', $this->plugin_slug) . '</p>';
+
+			// Get Review
+			$this->review = $reviews[ $id ];
+
+			// Get Template
+			$templates 		= RWP_Reviewer::get_option('rwp_templates');
+			$this->template = (isset( $templates[ $this->review['review_template'] ] )) ? $templates[ $this->review['review_template'] ] : array();
+
+			$max = $this->template_field('template_maximum_score', true);
+			$min = $this->template_field('template_minimum_score', true);
+
+			$singles 	= RWP_Reviewer::get_ratings_single_scores( $post_id, $review_id, $this->review_field('review_template', true) );
+			$scores 	= RWP_Reviewer::get_users_overall_score( $singles, $post_id, $this->review_field('review_id', true) );
+			$avg 		= $scores['score'];
+			$count 		= $scores['count'];
+			$score 		= $this->map_range( $avg, $min, $max, 0, $stars );
+			$count_label = ( $count == 1 ) ? $this->template_field('template_users_count_label_s', true) : $this->template_field('template_users_count_label_p', true);
+		}
 		
-		// Check if user has inserted a valid review ID 
-		if( ! isset( $reviews[ $review_id ] ) ) 
-			return '<p>' . __('No review found! Insert a valid review ID.', $this->plugin_slug) . '</p>';
-
-		// Get Review
-		$this->review = $reviews[ $id ];
-
-		// Get Template
-		$templates 		= RWP_Reviewer::get_option('rwp_templates');
-		$this->template = (isset( $templates[ $this->review['review_template'] ] )) ? $templates[ $this->review['review_template'] ] : array();
-		
-		$max = $this->template_field('template_maximum_score', true);
-		$min = $this->template_field('template_minimum_score', true);
-
-		$singles 	= RWP_Reviewer::get_ratings_single_scores( $post_id, $review_id, $this->review_field('review_template', true) );
-		$scores 	= RWP_Reviewer::get_users_overall_score( $singles, $post_id, $this->review_field('review_id', true) );
-		$avg 		= $scores['score'];
-		$count 		= $scores['count'];
-		$score 		= $this->map_range( $avg, $min, $max, 0, $stars );
-		$count_label = ( $count == 1 ) ? $this->template_field('template_users_count_label_s', true) : $this->template_field('template_users_count_label_p', true);
-
 		ob_start();
 		echo $this->get_stars( $score, $size, $stars );
 		echo '<div class="rwp-rating-stars-count">('. $count .' '. $count_label .')</div>';
