@@ -22,9 +22,9 @@
 			$(window).scroll(function(event){
 				var st = $(this).scrollTop();
 				if (st > lastScrollTop){
-					$('[data-id="product-cta-sidebar"]').css('max-height', '60px');
+					$('[data-id="product-cta-sidebar"]').css('max-height', '90px');
 				} else {
-					$('[data-id="product-cta-sidebar"]').css('max-height', '30vh');
+					$('[data-id="product-cta-sidebar"]').css('max-height', '100vh');
 				}
 				lastScrollTop = st;
 			});
