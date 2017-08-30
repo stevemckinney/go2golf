@@ -8,7 +8,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="description" content="<?php bloginfo('description'); ?>">
 
 <meta name="B-verify" content="aaa8eeadd57f07a663c10005f5abd238fe5d875c" />
 <!-- TradeDoubler site verification 2972965 -->
