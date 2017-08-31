@@ -15,9 +15,39 @@
 	margin-left: map-get($dimensions-map, quarter-spacing-unit);
 	padding: map-get($dimensions-map, half-spacing-unit);
 	border: map-get($visual-enhancements-map, border-primary);
+	border-radius: map-get($dimensions-map, border-radius);
 }
 
 .c-reviews__breakdown-heading {
-	font-size: map-get($typography-map, s-font-size);
+	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+	font-size: map-get($typography-map, base-font-size);
 	font-weight: map-get($typography-map, bold-font-weight);
+}
+
+.c-reviews__breakdown-average-rating-text {
+	margin-top: -#{map-get($dimensions-map, quarter-spacing-unit)};
+	margin-bottom: -#{map-get($dimensions-map, quarter-spacing-unit)};
+	font-size: map-get($typography-map, xxl-font-size);
+	font-weight: map-get($typography-map, medium-font-weight);
+	color: map-get($colors-map, bondi-blue);
+}
+
+.c-reviews__breakdown-average-rating-seperator {
+	font-weight: map-get($typography-map, light-font-weight);
+	color: map-get($colors-map, mystic);
+}
+
+.c-reviews__breakdown-average-rating-count {
+	font-size: map-get($typography-map, s-font-size);
+}
+
+.c-reviews__breakdown-of-averages {
+	margin-left: map-get($dimensions-map, base-spacing-unit);
+	text-align: left;
+	font-weight: map-get($typography-map, medium-font-weight);
+}
+
+.c-reviews__breakdown-of-averages-number {
+	display: inline-block;
+	width: 20%;
 }

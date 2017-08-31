@@ -32,30 +32,11 @@
 }
 
 .c-course-detail-box__average-review-stars {
-	display: inline-block;
 	position: absolute;
 	top: map-get($dimensions-map, half-spacing-unit);
 	right: map-get($dimensions-map, base-spacing-unit);
-	color: map-get($colors-map, mystic);
 }
 
-.c-course-detail-box__average-review-active-stars,
-.c-course-detail-box__average-review-inactive-stars {
-	font-size: 0;
-
-	> span {
-		font-size: 1.4rem;
-	}
-}
-
-.c-course-detail-box__average-review-active-stars {
-	position: absolute;
-	top: 0;
-	left: 0;
-	white-space: nowrap;
-	overflow: hidden;
-	color: map-get($colors-map, gold);
-}
 
 .c-course-detail-box__key-features {
 	padding-top: map-get($dimensions-map, half-spacing-unit);

@@ -63,12 +63,10 @@
 }
 
 .c-course-result-item__average-review-stars {
-	//display: inline-block;
 	position: absolute;
 	top: map-get($dimensions-map, half-spacing-unit);
 	right: map-get($dimensions-map, base-spacing-unit);
 	color: map-get($colors-map, mystic);
-	display: none;
 }
 
 .c-course-result-item__average-review-active-stars,

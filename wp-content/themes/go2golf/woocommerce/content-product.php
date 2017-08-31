@@ -28,11 +28,6 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 }
 ?>
 
-<?php
-// Define variables to use on page
-$average_course_review = get_user_review_average($post->ID);
-?>
-
 <li <?php post_class('o-list--naked__item c-course-result-item'); ?>>
 	<a href="<?php the_permalink() ?>">
 
@@ -56,22 +51,8 @@ $average_course_review = get_user_review_average($post->ID);
 
 					<?php the_title('<h2 class="c-course-result-item__name">', '</h2>'); ?>
 					<h3 class="c-course-result-item__location"><?php echo get_first_product_category_from_id($post->id); ?></h3>
-					<p class="u-visuallyhidden"><?php echo $average_course_review; ?> out of 10</p>
 					<div class="c-course-result-item__average-review-stars">
-						<div class="c-course-result-item__average-review-active-stars" style="width:<?php echo $average_course_review * 100 / 10; ?>%">
-							<span>★</span>
-							<span>★</span>
-							<span>★</span>
-							<span>★</span>
-							<span>★</span>
-						</div>
-						<div class="c-course-result-item__average-review-inactive-stars">
-							<span>★</span>
-							<span>★</span>
-							<span>★</span>
-							<span>★</span>
-							<span>★</span>
-						</div>
+						<?php wc_get_template_part( 'single-product/reviews-average', 'stars' ); ?>
 					</div>
 					<span class="o-btn o-btn--primary c-course-result-item__cta">View course</span>
 

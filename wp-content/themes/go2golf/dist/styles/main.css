@@ -988,8 +988,7 @@ a {
   position: absolute;
   top: 20px;
   right: 40px;
-  color: #e4edeb;
-  display: none; }
+  color: #e4edeb; }
 
 .c-course-result-item__average-review-active-stars,
 .c-course-result-item__average-review-inactive-stars {
@@ -1035,26 +1034,9 @@ a {
   border-radius: 4px 0 0 4px; }
 
 .c-course-detail-box__average-review-stars {
-  display: inline-block;
   position: absolute;
   top: 20px;
-  right: 40px;
-  color: #e4edeb; }
-
-.c-course-detail-box__average-review-active-stars,
-.c-course-detail-box__average-review-inactive-stars {
-  font-size: 0; }
-  .c-course-detail-box__average-review-active-stars > span,
-  .c-course-detail-box__average-review-inactive-stars > span {
-    font-size: 1.4rem; }
-
-.c-course-detail-box__average-review-active-stars {
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  color: #f0d000; }
+  right: 40px; }
 
 .c-course-detail-box__key-features {
   padding-top: 20px;
@@ -1314,10 +1296,55 @@ a {
   flex-grow: 1;
   margin-left: 10px;
   padding: 20px;
-  border: 1px solid #e4edeb; }
+  border: 1px solid #e4edeb;
+  border-radius: 4px; }
 
 .c-reviews__breakdown-heading {
-  font-size: 14px;
+  margin-bottom: 10px;
+  font-size: 16px;
   font-weight: 600; }
+
+.c-reviews__breakdown-average-rating-text {
+  margin-top: -10px;
+  margin-bottom: -10px;
+  font-size: 40px;
+  font-weight: 500;
+  color: #00adb5; }
+
+.c-reviews__breakdown-average-rating-seperator {
+  font-weight: 400;
+  color: #e4edeb; }
+
+.c-reviews__breakdown-average-rating-count {
+  font-size: 14px; }
+
+.c-reviews__breakdown-of-averages {
+  margin-left: 40px;
+  text-align: left;
+  font-weight: 500; }
+
+.c-reviews__breakdown-of-averages-number {
+  display: inline-block;
+  width: 20%; }
+
+.c-reviews-average-stars {
+  display: inline-block;
+  position: relative;
+  color: #e4edeb; }
+
+.c-reviews-average-stars__active-stars,
+.c-reviews-average-stars__inactive-stars {
+  font-size: 0; }
+  .c-reviews-average-stars__active-stars > span,
+  .c-reviews-average-stars__inactive-stars > span {
+    font-size: 1.4rem; }
+
+.c-reviews-average-stars__active-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #f0d000; }
 
 /*# sourceMappingURL=main.css.map */
