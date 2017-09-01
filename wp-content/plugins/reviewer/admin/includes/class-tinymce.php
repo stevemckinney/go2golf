@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -47,7 +47,7 @@ class RWP_TinyMCE
 			$reviews 	= get_post_meta( get_the_ID(), $this->reviews_meta_key, true );
 			$tables 	= get_post_meta( get_the_ID(), $this->tables_meta_key, true );
 			
-			$content = array('reviews' => array(), 'tables' => array(), 'msg' => __( 'Insert a review or a table', $this->plugin_slug) );
+			$content = array('reviews' => array(), 'tables' => array(), 'msg' => __( 'Create a review box or comparison table', $this->plugin_slug) );
 						
 			if( !empty( $reviews ) ) 
 				foreach( $reviews as $r)

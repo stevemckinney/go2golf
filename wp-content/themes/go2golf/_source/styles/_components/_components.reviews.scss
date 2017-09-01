@@ -1,0 +1,100 @@
+.c-reviews__header-strip {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+}
+
+.c-reviews__breakdowns {
+	margin-left: -#{map-get($dimensions-map, quarter-spacing-unit)};
+	text-align: center;
+
+	@include respond-to-min(get-breakpoint(med)) {
+		display: flex;
+		align-items: flex-start;
+	}
+}
+
+.c-reviews__breakdown {
+	padding: map-get($dimensions-map, half-spacing-unit);
+	border: map-get($visual-enhancements-map, border-primary);
+	border-radius: map-get($dimensions-map, border-radius);
+
+	@include respond-to-min(get-breakpoint(med)) {
+		flex-grow: 1;
+		margin-left: map-get($dimensions-map, quarter-spacing-unit);
+	}
+
+	@include respond-to-max(get-breakpoint(med)) {
+		margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+	}
+}
+
+.c-reviews__breakdown-heading {
+	margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+	font-size: map-get($typography-map, base-font-size);
+	font-weight: map-get($typography-map, bold-font-weight);
+}
+
+.c-reviews__breakdown-average-rating-text {
+	margin-top: -#{map-get($dimensions-map, quarter-spacing-unit)};
+	margin-bottom: -#{map-get($dimensions-map, quarter-spacing-unit)};
+	font-size: map-get($typography-map, xxl-font-size);
+	font-weight: map-get($typography-map, medium-font-weight);
+	color: map-get($colors-map, bondi-blue);
+}
+
+.c-reviews__breakdown-average-rating-seperator {
+	font-weight: map-get($typography-map, light-font-weight);
+	color: map-get($colors-map, mystic);
+}
+
+.c-reviews__breakdown-average-rating-count {
+	font-size: map-get($typography-map, s-font-size);
+}
+
+.c-reviews__breakdown-of-averages {
+	margin-left: map-get($dimensions-map, base-spacing-unit);
+	text-align: left;
+	font-weight: map-get($typography-map, medium-font-weight);
+}
+
+.c-reviews__breakdown-of-averages-number {
+	display: inline-block;
+	width: 20%;
+}
+
+.c-reviews__breakdown-of-ratings-spread-item {
+	display: flex;
+	align-items: center;
+}
+
+.c-reviews__breakdown-of-ratings-spread-bar {
+	display: block;
+	position: relative;
+	background: map-get($colors-map, mystic);
+	height: 5px;
+	width: 100%;
+
+	> span {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		height: 100%;
+		background: map-get($colors-map, java);
+	}
+}
+
+.c-reviews__breakdown-of-ratings-spread-scale-value,
+.c-reviews__breakdown-of-ratings-spread-count {
+	flex-basis: 15%;
+	font-size: map-get($typography-map, s-font-size);
+}
+
+.c-reviews__breakdown-of-ratings-spread-scale-value {
+	margin-right: map-get($dimensions-map, quarter-spacing-unit) /2;
+}
+
+.c-reviews__breakdown-of-ratings-spread-count {
+	margin-left: map-get($dimensions-map, quarter-spacing-unit) /2;
+}

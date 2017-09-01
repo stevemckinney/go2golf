@@ -6,33 +6,33 @@ class RWP_Reviews_Widget extends WP_Widget {
 	public $widget_fields;
 	public $templates;
 
-	/*  for PRO users! - *
+	/**
 	 * Sets up the widgets name etc
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		// widget actual processes
 
 		$this->plugin_slug = 'reviewer';
 		$this->templates = RWP_Reviewer::get_option('rwp_templates');
-		
+
 		add_action( 'init', array( $this ,'set_widget_fields') );
 
 		$options = array(
 			'description'	=> __( 'Reviewer Plugin Widget allows you to display your latest, top score, top rated reviews boxes.', $this->plugin_slug),
 			'name'			=> 'Reviewer | Reviews Boxes'
 		);
-		
+
 		parent::__construct('rwp-reviews-widget', '', $options);
 	}
 
-	/*  for PRO users! - *
+	/**
 	 * Outputs the content of the widget
 	 *
 	 * @param array $args
 	 * @param array $instance
 	 */
-	public function widget( $args, $instance ) 
+	public function widget( $args, $instance )
 	{
 		//$this->pretty_print($instance);
 
@@ -52,11 +52,11 @@ class RWP_Reviews_Widget extends WP_Widget {
 
 		// Theme
 		$theme = $this->widget_field( $instance, 'theme', true );
-		// Sort 
+		// Sort
 		$sort = $this->widget_field( $instance, 'to_display', true );
-		//Limit 
+		//Limit
 		$limit = $this->widget_field( $instance, 'to_display_count', true );
-		
+
 		// Get Reviews
 		$reviews = self::query_reviews( $template, $sort, $limit );
 
@@ -85,15 +85,15 @@ class RWP_Reviews_Widget extends WP_Widget {
                     	$post_id = $this->review_field('review_post_id', $review, true );
                        	$review_title = get_the_title( $post_id );
                         break;
-                    
+
                     default:
                         $review_title = $this->review_field('review_title', $review, true );
                         break;
-                } 
+                }
 
 			switch ( $theme ) {
 
-				case 'theme-3': 
+				case 'theme-3':
 					// Has Image
 					$img = $review['review_image'];
 					if( $review['review_use_featured_image'] == 'no' ) {
@@ -114,15 +114,22 @@ class RWP_Reviews_Widget extends WP_Widget {
 
 							echo '<span class="rwp-title">'. $review_title .'</span>';
 
-							echo RWP_Reviewer::get_stars( $review['review_score']['overall'], $this->templates[ $review[ 'review_template' ] ] );
+							$review_template = $this->templates[ $review[ 'review_template' ] ];
 
+							echo RWP_Reviewer::get_stars( $review['review_score']['overall'], $review_template );
+
+							if( $review['review_type'] == 'UR' ) {
+								$count = $review['review_score']['count'];
+								$count_label = ( $count == 1 ) ? self::template_field('template_users_count_label_s', $template, true) : self::template_field('template_users_count_label_p', $template, true);
+								echo '<div class="rwp-rating-stars-count">('. $count .' '. $count_label .')</div>';
+							}
 						echo '</a>';
 					echo '</li>';
 
 					break;
 
-				case 'theme-2': 
-					
+				case 'theme-2':
+
 					echo '<li class="'. $has_rank .'">';
 						echo $rank_num;
 						echo '<span class="rwp-overall" style="background-color: '. $review['review_color'] .';">'.$review['review_score']['overall'].'<em>'. $review['review_score']['label'] .'</em></span>';
@@ -157,7 +164,7 @@ class RWP_Reviews_Widget extends WP_Widget {
 						echo '</a>';
 					echo '</li>';
 					break;
-			}	
+			}
 		}
 
 		echo '</ul>';
@@ -165,12 +172,12 @@ class RWP_Reviews_Widget extends WP_Widget {
 		echo $args['after_widget'];
 	}
 
-	/*  for PRO users! - *
+	/**
 	 * Ouputs the options form on admin
 	 *
 	 * @param array $instance The widget options
 	 */
-	public function form( $instance ) 
+	public function form( $instance )
 	{
 		// outputs the options form on admin
 
@@ -196,7 +203,7 @@ class RWP_Reviews_Widget extends WP_Widget {
 
 					if( !is_array( $value )  )
 						$value = ( $value == 'all' ) ? array_keys( $this->templates ) : array( $value );
-					
+
 					foreach ($this->templates as $key => $t) {
 						$ck = ( in_array($key, $value) ) ? 'checked' : '';
 						echo '<span class="rwp-block"><input type="checkbox" id="'. $this->get_field_id( $field_key.$key ) .'" name="'. $this->get_field_name( $field_key ) .'[]" value="'. $key .'" '. $ck .'/> ' .$t['template_name'] . '</span>';
@@ -215,13 +222,13 @@ class RWP_Reviews_Widget extends WP_Widget {
 		echo '</div><!--/widget-form-wrap-->';
 	}
 
-	/*  for PRO users! - *
+	/**
 	 * Processing widget options on save
 	 *
 	 * @param array $new_instance The new options
 	 * @param array $old_instance The previous options
 	 */
-	public function update( $new_instance, $old_instance ) 
+	public function update( $new_instance, $old_instance )
 	{
 		//return array();
 
@@ -276,7 +283,7 @@ class RWP_Reviews_Widget extends WP_Widget {
 		echo $value;
 	}
 
-	public static function query_reviews( $template, $sort, $limit ) 
+	public static function query_reviews( $template, $sort, $limit )
 	{
 		global $wpdb;
 
@@ -290,21 +297,25 @@ class RWP_Reviews_Widget extends WP_Widget {
 			$post_id	= $meta['post_id'];
 			$post 		= get_post( $post_id, 'OBJECT');
 			$post_date 	= strtotime( $post->post_date, current_time('timestamp') );
-			
+
 			// Reviews
 			$reviews = unserialize( $meta['meta_value'] );
+
+			if( ! is_array( $reviews ) ) {
+				continue;
+			}
 
 			foreach( $reviews as $review ) {
 
 				if( !in_array( $review['review_template'], $template) )
 					continue;
 
-				if( isset( $review['review_status'] ) && $review['review_status'] == 'draft' )
+				if( get_post_status( $post_id ) != 'publish' )
 					continue;
 
-				if( isset( $review['review_type'] ) && $review['review_type'] == 'UR' && ( $sort == 'latest' || $sort == 'top_score' ) )
+				if( isset( $review['review_type'] ) && $review['review_type'] == 'UR' && ( $sort == 'top_score' ) )
 					continue;
-				
+
 				$r = self::manage_review( $review, $post_id, $sort );
 				$r['review_permalink'] 	= get_permalink( $post_id );
 				$r['review_post_date'] 	= $post_date;
@@ -317,12 +328,15 @@ class RWP_Reviews_Widget extends WP_Widget {
 		}
 
 		switch ( $sort ) {
-			
+
 			case 'top_score':
 			case 'top_users_scores':
 			case 'combo_1':
-			case 'top_rated':
 				usort( $result, array( 'RWP_Reviews_Widget', 'sort_score' ) );
+				break;
+
+			case 'top_rated':
+				usort( $result, array( 'RWP_Reviews_Widget', 'sort_rated' ) );
 				break;
 
 			case 'latest':
@@ -357,7 +371,7 @@ class RWP_Reviews_Widget extends WP_Widget {
 		$template_tabs = self::template_field('template_custom_tabs', $template, true);
 
 		foreach ($return['review_custom_tabs'] as $tab_key => $tab_value) {
-			
+
 			$return['review_custom_tabs'][ $tab_key ]['tab_label'] = $template_tabs[ $tab_key ]['tab_label'];
 		}
 
@@ -366,37 +380,46 @@ class RWP_Reviews_Widget extends WP_Widget {
 		switch ($sort) {
 
 			case 'top_users_scores':
-				$ratings_scores = RWP_Reviewer::get_ratings_single_scores( $post_id, $return['review_id'], self::review_field( 'review_template', $review, true ) );
-				$data 			= RWP_Reviewer::get_users_overall_score( $ratings_scores, $post_id, $return['review_id'] );
-				$overall 		= array( 'overall' => $data['score'], 'label' => $template['template_users_score_label'] );
+				$data 	 	= RWP_User_Review::users_reviews( $post_id, $return['review_id'], self::review_field( 'review_template', $review, true ) );
+				$overall 	= array( 'overall' => $data['overall'], 'count' => $data['count'], 'label' => $template['template_users_score_label'] );
 				break;
 
 			case 'combo_1':
 
 				$author_custom_score = self::review_field( 'review_custom_overall_score', $review, true );
 				$author_score 	  	 =  ( empty( $custom_score ) ) ? RWP_Reviewer::get_review_overall_score( $review )  : $custom_score;
-				
-				$ratings_scores = RWP_Reviewer::get_ratings_single_scores( $post_id, $return['review_id'], self::review_field( 'review_template', $review, true ) );
-				$users_score 	= RWP_Reviewer::get_users_overall_score( $ratings_scores, $post_id, $return['review_id'] );
-				
-				$o = ( $users_score['count'] > 0 ) ? round( ( $author_score + $users_score['score'] ) / 2 , 1 ) : $author_score; 
-				
-				$overall = array( 'overall' => $o, 'label' => __('Score', 'reviewer') );
+
+				$users_data = RWP_User_Review::users_reviews( $post_id, $return['review_id'], self::review_field( 'review_template', $review, true ) );
+
+				if( $return['review_type'] != 'UR' ) {
+					$o = ( $users_data['count'] > 0 ) ? round( ( $author_score + $users_data['overall'] ) / 2 , 1 ) : $author_score;
+				} else {
+					$o = $users_data['overall'];
+				}
+				$c = ( $return['review_type'] != 'UR' ) ?  $users_data['count'] + 1 : $users_data['count'];
+				$overall = array( 'overall' => $o, 'count' => $c, 'label' => __('Score', 'reviewer') );
 				break;
 
 			case 'top_rated':
-				$ratings_scores = RWP_Reviewer::get_ratings_single_scores( $post_id, $return['review_id'], self::review_field( 'review_template', $review, true ) );
-				$data 			= RWP_Reviewer::get_users_overall_score( $ratings_scores, $post_id, $return['review_id'] );
-				$overall 		= array( 'overall' => $data['count'], 'label' => __('Ratings', 'reviewer') );
+				$data 	 = RWP_User_Review::users_reviews( $post_id, $return['review_id'], self::review_field( 'review_template', $review, true ) );
+				$overall = array( 'overall' => $data['overall'], 'count' => $data['count'], 'label' => $template['template_users_score_label'] );
 				break;
 
-			case 'latest':
 			case 'top_score':
-			default:
-
 				$custom_score 	= self::review_field( 'review_custom_overall_score', $review, true );
-				$data 	  	  	=  ( empty( $custom_score ) ) ? RWP_Reviewer::get_review_overall_score( $review )  : $custom_score;
-				$overall 		= array( 'overall' => $data, 'label' => $template['template_total_score_label'] );
+				$data	 = ( empty( $custom_score ) ) ? RWP_Reviewer::get_review_overall_score( $review )  : $custom_score;
+				$overall = array( 'overall' => $data, 'count' => 1, 'label' => $template['template_total_score_label'] );
+
+			case 'latest':
+			default:
+				if( $return['review_type'] == 'UR' ) {
+					$data 	 = RWP_User_Review::users_reviews( $post_id, $return['review_id'], self::review_field( 'review_template', $review, true ) );
+					$overall = array( 'overall' => $data['overall'], 'count' => $data['count'], 'label' => $template['template_users_score_label'] );
+				} else {
+					$custom_score 	= self::review_field( 'review_custom_overall_score', $review, true );
+					$data	 = ( empty( $custom_score ) ) ? RWP_Reviewer::get_review_overall_score( $review )  : $custom_score;
+					$overall = array( 'overall' => $data, 'count' => 1, 'label' => $template['template_total_score_label'] );
+				}
 				break;
 		}
 
@@ -432,30 +455,52 @@ class RWP_Reviews_Widget extends WP_Widget {
 	{
 		if ($a["review_post_date"] == $b["review_post_date"])
         	return 0;
-   
+
    		return ($a["review_post_date"] > $b["review_post_date"]) ? -1 : 1;
+	}
+
+	public static function sort_score2( $a, $b )
+	{
+		if (  floatval($a["review_score"]['overall']) ==  floatval($b["review_score"]['overall']) )
+        	return 0;
+
+   		return ( floatval($a["review_score"]['overall']) >  floatval($b["review_score"]['overall']) ) ? -1 : 1;
 	}
 
 	public static function sort_score( $a, $b )
 	{
-		if (  floatval($a["review_score"]['overall']) ==  floatval($b["review_score"]['overall']) )
-        	return 0;
-   
+		// echo '<pre>'; print_r($a); echo '</pre>';
+		if (  floatval($a["review_score"]['overall']) ==  floatval($b["review_score"]['overall']) ) {
+			if ( floatval($a["review_score"]['count']) ==  floatval($b["review_score"]['count']) ) {
+				return 0;
+			}
+
+   			return ( floatval($a["review_score"]['count']) >  floatval($b["review_score"]['count']) ) ? -1 : 1;
+		}
+
    		return ( floatval($a["review_score"]['overall']) >  floatval($b["review_score"]['overall']) ) ? -1 : 1;
 	}
 
-	public function set_widget_fields() 
+	public static function sort_rated( $a, $b )
+	{
+		if (  floatval($a["review_score"]['count']) ==  floatval($b["review_score"]['count']) )
+        	return 0;
+
+   		return ( floatval($a["review_score"]['count']) >  floatval($b["review_score"]['count']) ) ? -1 : 1;
+	}
+
+	public function set_widget_fields()
 	{
 		$this->widget_fields = array(
 			'title' => array(
-				'label' 		=> __( 'Title', $this->plugin_slug ), 
+				'label' 		=> __( 'Title', $this->plugin_slug ),
 				//'default'		=> __( 'Reviews', $this->plugin_slug ),
 				'default'		=> '',
 				'description' 	=> ''
 			),
 
 			'template' => array(
-				'label' 		=> __( 'Template', $this->plugin_slug ), 
+				'label' 		=> __( 'Template', $this->plugin_slug ),
 				'default'		=> array_keys($this->templates),
 				'description' 	=> ''
 			),
@@ -486,28 +531,28 @@ class RWP_Reviews_Widget extends WP_Widget {
 
 			'to_display_count' => array(
 				'label' 	=> __( 'Number of reviews to display', $this->plugin_slug ),
-				'default'	=> '5' 
+				'default'	=> '5'
 			),
 
-			/*  for PRO users! - 'box_color' => array(
+			/*'box_color' => array(
 				'label' 		=> __( 'Background Color of total score value', $this->plugin_slug ),
 				'default'		=> '',
 				'description' 	=> __( 'HEX Color', $this->plugin_slug )
 			),*/
 
-			/*  for PRO users! - '' => array(
+			/*'' => array(
 				'label' 	=> __( '', $this->plugin_slug ),
-				'default'	=> '' 
+				'default'	=> ''
 			),*/
 		);
-		
+
 	}
 
-	// Method that well print data - debug 
-	public function pretty_print( $data = array() ) 
+	// Method that well print data - debug
+	public function pretty_print( $data = array() )
 	{
-		echo "<pre>"; 
-		print_r($data); 
+		echo "<pre>";
+		print_r($data);
 		echo "</pre>";
 	}
 }

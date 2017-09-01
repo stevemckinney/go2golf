@@ -1,5 +1,5 @@
 <?php 
-/*  for PRO users! - *
+/**
  * The plugin admin notification.
  *
  * This is used to define and manage admin notification for Reviewer plugin
@@ -36,7 +36,7 @@ class RWP_Notification {
 	
 	}
 
-	/*  for PRO users! - *
+	/**
 	 * Getters
 	 */
 	public function get_id() { return $this->id; }
@@ -45,7 +45,7 @@ class RWP_Notification {
 	public function get_class() { return $this->class; }
 	public function get_hidden() { return $this->hidden; }
 
-	/*  for PRO users! - *
+	/**
 	 *	Display all registered notifications
 	 */
 	public static function display_notifications() {
@@ -59,10 +59,10 @@ class RWP_Notification {
 		// Echo notifications
 		foreach ( $notifications as $key => $notification ) {
 
-			if( $notification->id == 'support'  && RWP_EXTENDED_LICENSE ) continue;
+			//if( $notification->id == 'license' ) continue;
 
 			$hidden = $notification->get_hidden() ? 'rwp-hidden' : '';
-			echo '<div class="rwp-admin-notice '. $notification->get_class() .' '. $hidden .'"><p>'. $notification->get_message() .'</p></div>';
+			echo '<div class="rwp-admin-notice notice '. $notification->get_class() .' '. $hidden .'"><p>'. $notification->get_message() .'</p></div>';
 			
 			if( $notification->get_flash() ) {
 				$flash_notifications[] = $key;
@@ -77,7 +77,7 @@ class RWP_Notification {
 
 	}
 
-	/*  for PRO users! - *
+	/**
 	 * Add new notification to display
 	 */
 	public static function push( $id = null, $message = '', $class = 'updated', $flash = true, $hidden = false ) {
@@ -90,7 +90,7 @@ class RWP_Notification {
 
 	}
 
-	/*  for PRO users! - *
+	/**
 	 * Remove a notification
 	 */
 	public static function delete( $id = '' ) {
@@ -101,4 +101,12 @@ class RWP_Notification {
 
 	}
 
+	/**
+	 * Add License notice
+	 */
+	public static function pushLicenseNotice()
+	{
+		$url = admin_url('admin.php?page=reviewer-license-page');
+		self::push( 'license', __('Thank you for purchasing the Reviewer Plugin. It is necessary to register your license for using the plugin.', 'reviewer' ) .' <a href="'. $url .'">'. __('Register now', 'reviewer') .'</a>', 'update-nag', false );
+	}
 }

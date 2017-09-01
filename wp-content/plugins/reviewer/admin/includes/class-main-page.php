@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -8,7 +8,7 @@ class RWP_Main_Page extends RWP_Admin_Page
 {
 	protected static $instance = null;
 	protected $templates_option;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -18,16 +18,16 @@ class RWP_Main_Page extends RWP_Admin_Page
 		$this->add_menu_page();
 		$this->templates_option = RWP_Reviewer::get_option( 'rwp_templates' );
 
-		// Localize 
+		// Localize
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_script') );
 	}
 
 	public function add_menu_page()
 	{
 		add_submenu_page( $this->parent_menu_slug, __( 'Templates', $this->plugin_slug), __( 'Templates', $this->plugin_slug), $this->capability, $this->menu_slug, array( $this, 'display_plugin_admin_page' ) );
-	} 
+	}
 
-	public function localize_script() 
+	public function localize_script()
 	{
 		$action_name = 'rwp_ajax_action_delete_template';
 		wp_localize_script( $this->plugin_slug . '-admin-script', 'deleteTemplateObj', array('ajax_nonce' => wp_create_nonce( $action_name ), 'ajax_url' => admin_url('admin-ajax.php'), 'action' => $action_name ) );
@@ -39,7 +39,7 @@ class RWP_Main_Page extends RWP_Admin_Page
 	public static function ajax_callback()
 	{
 		if ( isset( $_POST['templateId'] ) ) {
-		
+
 			$templates = RWP_Reviewer::get_option( 'rwp_templates' );
 
 			if(isset( $templates[ $_POST['templateId'] ])) {
@@ -55,13 +55,13 @@ class RWP_Main_Page extends RWP_Admin_Page
 	public static function ajax_callback_duplicate()
 	{
 		if ( isset( $_POST['templateId'] ) ) {
-		
+
 			$templates = RWP_Reviewer::get_option( 'rwp_templates' );
 
 			if(isset( $templates[ $_POST['templateId'] ])) {
 
 				$id = uniqid('rwp_template_');
-				
+
 				$new = $templates[ $_POST['templateId'] ];
 				$new['template_id']   = $id;
 				$new['template_name'] = $new['template_name'] . ' ' . __( 'Copy', 'reviewer');
@@ -79,21 +79,21 @@ class RWP_Main_Page extends RWP_Admin_Page
 	{
 		?>
 		<div class="wrap">
+			<?php if($this->is_licensed()): ?>
 			<h2 class="rwp-h2">
 				<?php _e( 'Templates', $this->plugin_slug ); ?>
 				<span class="rwp-template-count"><?php echo count( $this->templates_option ); ?></span>
 				<a href="?page=reviewer-template-manager-page" class="add-new-h2"><?php _e( 'Add new template', $this->plugin_slug ); ?></a>
 				<img class="rwp-loader rwp-restore" src="<?php echo admin_url(); ?>images/spinner.gif" alt="loading" />
-
 			</h2>
-			
+
 			<div class="theme-browser redered">
 				<div class="themes">
 
-					<?php 
+					<?php
 					foreach ($this->templates_option as $template_id => $template) {
 						echo self::get_template_thumb( $template );
-					} 
+					}
 					?>
 
 					<div class="theme add-new-theme">
@@ -106,6 +106,9 @@ class RWP_Main_Page extends RWP_Admin_Page
 				</div><!--/themes-->
 			</div><!--/theme-browser-->
 
+			<?php else: ?>
+			<?php $this->license_notice() ?>
+			<?php endif; ?>
 			<?php //RWP_Reviewer::pretty_print( $this->templates_option ); ?>
 		</div><!--/wrap-->
 		<?php
@@ -116,7 +119,7 @@ class RWP_Main_Page extends RWP_Admin_Page
 
 		$html  = '';
 		$html .= '<div class="theme" id="rwp-theme-wrap-'. $template['template_id'] .'">';
-	
+
 			$html .= '<div class="theme-screenshot">';
 				$html .= '<img src="'.RWP_PLUGIN_URL . 'admin/assets/images/template-preview.png" alt="">';
 			$html .= '</div>';
@@ -133,7 +136,7 @@ class RWP_Main_Page extends RWP_Admin_Page
 		return $html;
 	}
 
-	public static function get_instance() 
+	public static function get_instance()
 	{
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {

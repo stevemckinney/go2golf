@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -16,24 +16,24 @@ class RWP_Rating
 		add_action( 'wp_enqueue_scripts', array( $this, 'localize_script') );
 	}
 
-	public function localize_script() 
+	public function localize_script()
 	{
 		$action_name = 'rwp_ajax_action_rating';
-		wp_localize_script( $this->plugin_slug . '-public-script', 'reviewerRatingObj', array('ajax_nonce' => wp_create_nonce( $action_name ), 'ajax_url' => admin_url('admin-ajax.php'), 'action' => $action_name ) );
-		
+		wp_localize_script( $this->plugin_slug .'-front-end-script', 'reviewerRatingObj', array('ajax_nonce' => wp_create_nonce( $action_name ), 'ajax_url' => admin_url('admin-ajax.php'), 'action' => $action_name ) );
+
 		$action_name = 'rwp_ajax_action_like';
-		wp_localize_script( $this->plugin_slug . '-public-script', 'reviewerLikeObj', array('ajax_nonce' => wp_create_nonce( $action_name ), 'ajax_url' => admin_url('admin-ajax.php'), 'action' => $action_name ) );
-		
-		$action_name = 'rwp_ajax_action_refresh_captcha';
-		wp_localize_script( $this->plugin_slug . '-public-script', 'rwpCaptchaObj', array('ajax_nonce' => wp_create_nonce( $action_name ), 'ajax_url' => admin_url('admin-ajax.php'), 'action' => $action_name ) );
-		
+		wp_localize_script( $this->plugin_slug .'-front-end-script', 'reviewerJudgeObj', array('ajax_nonce' => wp_create_nonce( $action_name ), 'ajax_url' => admin_url('admin-ajax.php'), 'action' => $action_name ) );
+
+		//$action_name = 'rwp_ajax_action_refresh_captcha';
+		//wp_localize_script( $this->plugin_slug . '-public-script', 'rwpCaptchaObj', array('ajax_nonce' => wp_create_nonce( $action_name ), 'ajax_url' => admin_url('admin-ajax.php'), 'action' => $action_name ) );
+
 	}
 
 	public static function refresh_captcha() {
 
 		$fields = array(
-			'post_id',		 	
-			'review_id'	
+			'post_id',
+			'review_id'
 		);
 
 		$res = array( 'code' => 400, 'data'=> array( 'msg' => __( 'The form was not submitted correctly!', 'reviewer' ) ) );
@@ -47,30 +47,30 @@ class RWP_Rating
 		$post_id 	= intval( $_POST['post_id'] );
 		$review_id 	= intval( $_POST['review_id'] );
 
-		$captcha = RWP_Captcha::get_instance(); 
+		$captcha = RWP_Captcha::get_instance();
 		$image = $captcha->generate( $post_id, $review_id );
 
 		$res['code'] = 200;
 		$res['captcha'] = $image;
-			
+
 		die( json_encode( $res ) );
 	}
 
 	public static function ajax_callback_like() {
 
-		$fields = array(
-			'post_id',		 	
-			'rating_id',	
-			'method',
-			'user_id'		
-		);
+		check_ajax_referer( $_POST['action'], 'security' );
 
-		$res = array( 'code' => 400, 'data'=> array( 'msg' => __( 'The form was not submitted correctly!', 'reviewer' ) ) );
+		$fields = array(
+			'post_id',
+			'rating_id',
+			'method',
+			'user_id'
+		);
 
 		// Check if fields are set
 		foreach ($fields as $key) {
 			if( !isset( $_POST[ $key ] ) )
-				die( json_encode( $res ) );
+				wp_send_json_error( __( 'Bad request! :(', 'reviewer' ) );
 		}
 
 		$rating_id 	= $_POST['rating_id'];
@@ -78,59 +78,63 @@ class RWP_Rating
 		$method 	= $_POST['method'];
 
 		$user 		= wp_get_current_user();
-		$user_id 	= (($user instanceof WP_User) && $user->ID == intval($_POST['user_id']) ) ?  $user->ID : 0;; 
+		$user_id 	= (($user instanceof WP_User) && $user->ID == intval($_POST['user_id']) ) ?  $user->ID : 0;;
 
 		$cookie_name	= 'rwp_like_' . $rating_id . '_' . $user_id;
 
 		// Check if user already rated
 		if( isset( $_COOKIE[ $cookie_name ] ) ) {
-			$res['data']['msg'] = __( 'You have already rated!', 'reviewer' );
-			die( json_encode( $res ) );
-		} 
+			wp_send_json_error( __( 'You already judged this review', 'reviewer' ) );
+		}
 
-		// Blacklist 
+		// Blacklist
 		$blacklist = get_post_meta( $post_id, 'rwp_likes_blacklist', true );
 
 		if( isset( $blacklist[ $rating_id ] ) && in_array( $user_id, $blacklist[ $rating_id ] ) ) {
-			$res['data']['msg'] = __( 'You have already rated.', 'reviewer' );
-			die( json_encode( $res ) );
+			wp_send_json_error( __( 'You already judged this review', 'reviewer' ) );
 		}
 
-		// Likes 
+		// Likes
 		$likes = get_post_meta( $post_id, 'rwp_likes', true );
 
 		// Check if rating exists
-		if( !isset( $likes[ $rating_id ] ) )
-			die( json_encode( $res ) );
+		if( !isset( $likes[ $rating_id ] ) ) {
+			if( is_array( $likes ) ) {
+				$likes[ $rating_id ]['yes'] = 0;
+				$likes[ $rating_id ]['no'] = 0;
+			} else {
+				$likes = array();
+				$likes[ $rating_id ]['yes'] = 0;
+				$likes[ $rating_id ]['no'] = 0;
+			}
+		}
 
 		// Incrementing count
 		if( $method == 'like' ) {
-			$likes[ $rating_id ]['yes']++; 
+			$likes[ $rating_id ]['yes']++;
 		} else {
 			$likes[ $rating_id ]['no']++;
-		} 
+		}
 
 		// Update
 		$process = update_post_meta( $post_id, 'rwp_likes', $likes);
 
 		// Check process res
 		if ($process === FALSE) {
-			$res['data']['msg'] = __( 'Unable to make like/dislike', 'reviewer' );
-			die( json_encode( $res ) );
+			 wp_send_json_error( __( 'Unable to judge this review', 'reviewer' ) );
 		}
 
 		// Success!
-		$res['code'] = 200;
-		$res['data'] = array(
+		$res = array(
 			'msg' => __( 'Done', 'reviewer' ),
-			'like' => $likes[ $rating_id ]['yes'],
-			'dislike' => $likes[ $rating_id ]['no']
+			'helpful' => $likes[ $rating_id ]['yes'],
+			'unhelpful' => $likes[ $rating_id ]['no']
 		);
 
 		// Set the cookie
 		setcookie( $cookie_name , 'true', time() + 60 * 60 * 24 * 30, '/' );
 
-		// Update Blacklist 
+		// Update Blacklist
 		if( $user_id > 0 ) {
 			if( is_array( $blacklist ) ) {
 				$blacklist[ $rating_id ][] = $user_id;
@@ -142,16 +146,18 @@ class RWP_Rating
 			update_post_meta( $post_id, 'rwp_likes_blacklist', $blacklist);
 		}
 
-		exit(json_encode($res));
+		wp_send_json_success( $res );
 	}
 
 	public static function ajax_callback()
 	{
-		$res = array( 'code' => 400, 'data'=> array( 'msg' => __( 'The form was not submitted correctly', 'reviewer' ) ) );
+
+		// var_dump( $_POST); die();
+
+		$res = array( 'code' => 400, 'data'=> array( 'msg' =>  '') );
 
 		if( RWP_DEMO_MODE ) {
-			$res['data']['msg'] = __( 'The user review feature is disabled for demo mode.', 'reviewer' );
-			die( json_encode( $res ) );
+			wp_send_json_error( __( 'The user review feature is disabled for demo mode.', 'reviewer' ) );
 		}
 
 		$fields = array(
@@ -165,13 +171,18 @@ class RWP_Rating
             'comment',
             'method',
             'template',
-            'captcha'
+            'captcha',
         );
+
+        // Fix no scores.
+        if( !isset( $_POST['scores'] ) ) {
+        	$_POST['scores'] = 0;
+        }
 
         // Check if fields are set
 		foreach ($fields as $key) {
 			if( !isset( $_POST[ $key ] ) )
-				die( json_encode( $res ) );
+				wp_send_json_error( __( 'The form was not submitted correctly', 'reviewer' ) );
 		}
 
 		// Review ID
@@ -180,45 +191,48 @@ class RWP_Rating
 		// Post ID
 		$post_id 	= intval( $_POST['post_id'] );
 
-		// User ID 
+		// User ID
 		$user 		= wp_get_current_user();
-		$user_id 	= (($user instanceof WP_User) && $user->ID == intval($_POST['user_id'] ) ) ?  $user->ID : 0;	
+		$user_id 	= (($user instanceof WP_User) && $user->ID == intval($_POST['user_id'] ) ) ?  $user->ID : 0;
 
-		// Cookie name
-		$cookie_name 	= 'rwp_rating_' . $post_id .'_' . $review_id .'_' . $user_id;
+		// Preferences
+		$preferences_option = RWP_Reviewer::get_option( 'rwp_preferences' );
 
-		// Check if user already rated
-		if( isset( $_COOKIE[ $cookie_name ] ) ) {
-			$res['data']['msg'] = __( 'You have already rated.', 'reviewer' );
-			die( json_encode( $res ) );
-		} 
+		$rating_limit = self::preferences_field( 'preferences_rating_limit', $preferences_option, true );
 
-		// Blacklist 
-		$blacklist = get_post_meta( $post_id, 'rwp_rating_blacklist', true );
+		if( $rating_limit == 'single' ) {
+			// Cookie name
+			$cookie_name 	= 'rwp_rating_' . $post_id .'_' . $review_id .'_' . $user_id;
 
-		if( isset( $blacklist[ $post_id . '-' . $review_id ] ) && in_array( $user_id, $blacklist[ $post_id . '-' . $review_id ] ) ) {
-			$res['data']['msg'] = __( 'You have already rated!', 'reviewer' );
-			die( json_encode( $res ) );
+			// Check if user already rated
+			if( isset( $_COOKIE[ $cookie_name ] ) ) {
+				wp_send_json_error( __( 'You already reviewed this item', 'reviewer' ) );
+			}
+
+			// Blacklist
+			$blacklist = get_post_meta( $post_id, 'rwp_rating_blacklist', true );
+
+			if( isset( $blacklist[ $post_id . '-' . $review_id ] ) && in_array( $user_id, $blacklist[ $post_id . '-' . $review_id ] ) ) {
+				wp_send_json_error( __( 'You already reviewed this item', 'reviewer' ) . '!!' );
+			}
 		}
 
-		// Get post reviews 
+		// Get post reviews
 		$reviews = get_post_meta( $post_id, 'rwp_reviews', true );
-		
+
 		// Review
 		$review = ( isset( $reviews[ $review_id ] ) ) ? $reviews[ $review_id ] : array();
 
 		// Templates
 		$templates_option = RWP_Reviewer::get_option( 'rwp_templates' );
 
-		if( !isset( $templates_option[ $_POST['template'] ] ))
-			die( json_encode( $res ) );
-
-		// Preferences
-		$preferences_option = RWP_Reviewer::get_option( 'rwp_preferences' );
+		if( !isset( $templates_option[ $_POST['template'] ] )) {
+			wp_send_json_error( __( 'The form was not submitted correctly', 'reviewer' ) );
+		}
 
 		// Review Template
 		$template = $templates_option[ $_POST['template'] ];
-		
+
 		// Review rating options
 		//$rating_options = self::review_field( 'review_user_rating_options', $review, true );
 		$rating_options = self::template_field('template_user_rating_options', $template, true);
@@ -227,27 +241,29 @@ class RWP_Rating
 		$errors = array();
 
 		// Captcha
-		if( in_array( 'rating_option_captcha', $rating_options ) ) {
+		if( isset( $preferences_option['preferences_users_reviews_captcha']['enabled'] ) && $preferences_option['preferences_users_reviews_captcha']['enabled'] ) {
 
-			$session_key = 'rwp-captcha-' . $post_id . '-' . $review_id;
+			// Send reCapatcha response token
+			$response = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array(
+				'body' => array(
+					'secret' 	=> isset( $preferences_option['preferences_users_reviews_captcha']['secret_key'] ) ? $preferences_option['preferences_users_reviews_captcha']['secret_key'] : '',
+					'response' 	=> $_POST['captcha']
+				)
+			) );
 
-			if( !isset( $_SESSION[ $session_key ] ) ) {
-				$res['data']['msg'] = __( 'Captcha is not set, contact the Support Team', 'reviewer' );
-				die( json_encode( $res ) );
+            // Check for error
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error( __( 'Secure code is not correct', 'reviewer' ) . '!!' );
 			}
 
-			//echo  $_SESSION[ $session_key ].  ' - ' . $_POST['captcha'];
+             // Parse remote HTML file
+			$data = wp_remote_retrieve_body( $response );
+			$data = json_decode( $data, true );
 
-			if( $_SESSION[ $session_key ] != $_POST['captcha']  ) {
-
-				$captcha = RWP_Captcha::get_instance(); 
-				$image = $captcha->generate( $post_id, $review_id );
-
-				$res['code'] = 401;
-				$res['data']['msg'] = __( 'Secure code is not correct', 'reviewer' );
-				$res['data']['captcha'] = $image;
-				die( json_encode( $res ) );
+			if( !isset( $data['success'] ) ||  $data['success'] === false ) {
+				wp_send_json_error( __( 'Secure code is not correct', 'reviewer' ) );
 			}
+
 		}
 
 		// Name
@@ -257,19 +273,19 @@ class RWP_Rating
 
 				$user_name = trim( $_POST['user_name'] );
 
-				if( empty( $user_name ) ) 
+				if( empty( $user_name ) )
 					$errors[] = __( 'Your name is required', 'reviewer' );
 
 				//$user_name = wp_kses_post( $user_name );
 				$user_name = sanitize_text_field( stripslashes_deep( $user_name ) );
-			} else 
+			} else
 				$user_name = '';
 
 		} else {
 			$user_name = '';
 		}
 
-		// Email 
+		// Email
 		if( in_array( 'rating_option_email', $rating_options ) ) {
 
 			if( $user_id == 0 ) {
@@ -285,17 +301,17 @@ class RWP_Rating
 				$email = '';
 			}
 
-		} else 
+		} else
 			$email = '';
 
 
-		// Title 
+		// Title
 		if( in_array( 'rating_option_title', $rating_options ) ) {
 
 			$title = trim( $_POST['title'] );
 
-			if( empty( $title ) ) 
-				$errors[] = __( 'A review title is required', 'reviewer' );
+			// if( empty( $title ) )
+			// 	$errors[] = __( 'A review title is required', 'reviewer' );
 
 			$title = sanitize_text_field( stripslashes_deep( $title ) );
 
@@ -308,7 +324,7 @@ class RWP_Rating
 			$len = strlen( $title );
 
 			if( $len < $min ) {
-				$errors[] = sprintf( __( 'The minimum number of characters is %d for review title', 'reviewer' ), $min );
+				$errors[] = __( 'A review title is required', 'reviewer' ) . '. ' . sprintf( __( 'The minimum number of characters is %d for review title', 'reviewer' ), $min );
 			}
 
 			if( $max !== false && $len > $max ) {
@@ -318,17 +334,17 @@ class RWP_Rating
 			//$title = wp_kses_post( $title );
 
 
-		} else 
+		} else
 			$title = '';
 
 
-		// Comment 
+		// Comment
 		if( in_array( 'rating_option_comment', $rating_options ) ) {
 
 			$comment = trim( $_POST['comment'] );
 
-			if( empty( $comment ) ) 
-				$errors[] = __( 'A review comment is required', 'reviewer' );
+			// if( empty( $comment ) )
+			// 	$errors[] = __( 'A review comment is required', 'reviewer' );
 
 			$comment = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", stripslashes_deep( $comment ) ) ) );
 
@@ -341,7 +357,7 @@ class RWP_Rating
 			$len = strlen( $comment );
 
 			if( $len < $min ) {
-				$errors[] = sprintf( __( 'The minimum number of characters is %d for review comment', 'reviewer' ), $min );
+				$errors[] = __( 'A review comment is required', 'reviewer' ) . '. ' . sprintf( __( 'The minimum number of characters is %d for review comment', 'reviewer' ), $min );
 			}
 
 			if( $max !== false && $len > $max ) {
@@ -350,7 +366,7 @@ class RWP_Rating
 
 			//$comment = wp_kses_post( $comment );
 
-		} else 
+		} else
 			$comment = '';
 
 		// Method
@@ -365,16 +381,16 @@ class RWP_Rating
 		switch ( $method ) {
 
 			case 'five_stars':
-				
+
 				$score_value = floatval($_POST['scores']);
 
 				// Check if the 0 <= score <= 5
 				if( $score_value < 0 || $score_value > 5)
-					die( json_encode( $res ) );
+					wp_send_json_error( __( 'The form was not submitted correctly', 'reviewer' ) );
 
 				$score_value = RWP_Reviewer::get_in_base( 5, $template['template_maximum_score'], $score_value);
-				$precision   = RWP_Reviewer::get_decimal_places( self::preferences_field( 'preferences_step', $preferences_option, true ) ); 
-				
+				$precision   = RWP_Reviewer::get_decimal_places( self::preferences_field( 'preferences_step', $preferences_option, true ) );
+
 				$score_value = round( $score_value, $precision );
 
 				$order 		= self::template_field('template_criteria_order', $template, true);
@@ -396,7 +412,7 @@ class RWP_Rating
 
 						// Check if the 0 <= score <= 5
 						if( $score_value < 0 || $score_value > 5)
-							die( json_encode( $res ) );
+							wp_send_json_error( __( 'The form was not submitted correctly', 'reviewer' ) );
 
 						$score_value = RWP_Reviewer::get_in_base( 5, $template['template_maximum_score'], $score_value);
 						$precision   = RWP_Reviewer::get_decimal_places( self::preferences_field( 'preferences_step', $preferences_option, true ) );
@@ -408,12 +424,12 @@ class RWP_Rating
 
 				} else {
 
-					for ($i=0; $i < $criteria_count; $i++) { 
+					for ($i=0; $i < $criteria_count; $i++) {
 						$score[] = 0;
-					} 
+					}
 				}
 				break;
-			
+
 			default: // Slider rating mode
 
 				if( is_array( $_POST['scores'] ) && count( $_POST['scores'] ) == $criteria_count ) {
@@ -424,9 +440,9 @@ class RWP_Rating
 
 				} else {
 
-					for ($i=0; $i < $criteria_count; $i++) { 
+					for ($i=0; $i < $criteria_count; $i++) {
 						$score[] = 0;
-					} 
+					}
 				}
 				break;
 		}
@@ -437,7 +453,7 @@ class RWP_Rating
 		if( $allow_zero_pref == 'no') {
 
 			foreach ($score as $value) {
-				
+
 				if( $value == 0 ) {
 					$errors[] = __( 'Scores with zero value are not allowed', 'reviewer' );
 					break;
@@ -445,24 +461,26 @@ class RWP_Rating
 			}
 		}
 
+		// Validate Images
+		$reviewImages = ( isset($_POST['images']) && is_array( $_POST['images'] ) ) ? $_POST['images'] : array();
+		$imageSettings = self::preferences_field( 'preferences_user_review_images', $preferences_option, true );
+		$vmin = isset( $imageSettings['field_min'] ) ? intval( $imageSettings['field_min'] ) : 0;
+		if( count( $reviewImages ) < $vmin  ) {
+			if( $vmin > 1 ){
+				$errors[] = sprintf( __( 'You need to upload at least %d images', 'reviewer' ), $vmin);
+			} else {
+				$errors[] = sprintf( __( 'You need to upload at least %d image', 'reviewer' ), $vmin);
+			}
+		}
+
+		$images = array();
+		foreach ( $reviewImages as $image ) {
+			$images[] = intval( $image );
+		}
+
 		// Check errors
 		if( !empty( $errors ) ) {
-
-			if( in_array( 'rating_option_captcha', $rating_options ) ) {
-
-				$captcha = RWP_Captcha::get_instance(); 
-				$image = $captcha->generate( $post_id, $review_id );
-
-				$res['captcha'] = $image;
-
-			} else {
-				$res['captcha'] = '';
-			}
-
-			$res['code'] = 405;
-			$res['data'] = $errors;
-
-			die( json_encode( $res ) );
+			wp_send_json_error( $errors );
 		}
 
 		// Status
@@ -480,29 +498,40 @@ class RWP_Rating
 
 		$rating = array(
 			'rating_id'				=> uniqid('rwp_rating_'),
-			'rating_post_id'		=> $post_id,	 	
+			'rating_post_id'		=> $post_id,
 			'rating_review_id'		=> $review_id,
-			'rating_score'	 		=> $score,	
-			'rating_user_id'		=> $user_id,		 	
+			'rating_score'	 		=> $score,
+			'rating_user_id'		=> $user_id,
 			'rating_user_name'		=> $user_name,
-			'rating_user_email'		=> $email,		 	
-			'rating_title'			=> $title,		 		
-			'rating_comment'		=> $comment,				 	
+			'rating_user_email'		=> $email,
+			'rating_title'			=> $title,
+			'rating_comment'		=> $comment,
+			'rating_images'			=> $images,
 			'rating_date'			=> current_time( 'timestamp' ),
 			'rating_status'			=> $status,
+			'rating_verified'		=> false,
 			'rating_template'		=> $template['template_id'],
 		);
+
+		// RWP_Reviewer::pretty_print($rating); die();
+
+		// Apply rwp_before_saving_review filter hook
+		$rating = apply_filters('rwp_before_saving_review', $rating);
 
 		// Save ratings
 		$process = add_post_meta( $post_id, 'rwp_rating_' . $review_id, $rating );
 
 		// Check process res
 		if ($process === FALSE) {
-			$res['data']['msg'] = $template['template_failure_message'];
-			die( json_encode( $res ) );
+			wp_send_json_error( $template['template_failure_message'] );
 		}
 
-		// Likes 
+		$review_db_id = $process;
+
+		// Map the review to user.
+		RWP_User::map_review( $user_id, $review_db_id );
+
+		// Likes
 		$likes = get_post_meta( $post_id, 'rwp_likes', true );
 
 		if( is_array( $likes ) ) {
@@ -515,40 +544,36 @@ class RWP_Rating
 		update_post_meta( $post_id, 'rwp_likes', $likes);
 
 		if( $moderation == 'nothing' ) {
-			
+
 			// Success!
 			$res['code'] = 200;
-			$res['data'] = array(
-				'msg' => $template['template_success_message'],
-				'rating' => $rating,
-			);
+			$res['msg'] = $template['template_success_message'];
+
 
 		} else {
 
 			// Success!
 			$res['code'] = 201;
-			$res['data'] = array(
-				'msg' => self::template_field('template_moderation_message', $template, true),
-				'rating' => $rating,
-			);
+			$res['msg'] = self::template_field('template_moderation_message', $template, true);
 
 		}
-		
-		// Set the cookie
-		setcookie( $cookie_name , 'true', time() + 60 * 60 * 24 * 30, '/' );
 
-		// Update Blacklist 
-		if( $user_id > 0 ) {
-			if( is_array( $blacklist ) ) {
-				$blacklist[ $post_id . '-' . $review_id ][] = $user_id;
-			} else {
-				$blacklist = array();
-				$blacklist[ $post_id . '-' . $review_id ][] = $user_id;
+		if( $rating_limit == 'single' ) {
+			// Set the cookie
+			setcookie( $cookie_name , 'true', time() + 60 * 60 * 24 * 30, '/' );
+
+			// Update Blacklist
+			if( $user_id > 0 ) {
+				if( is_array( $blacklist ) ) {
+					$blacklist[ $post_id . '-' . $review_id ][] = $user_id;
+				} else {
+					$blacklist = array();
+					$blacklist[ $post_id . '-' . $review_id ][] = $user_id;
+				}
+
+				update_post_meta( $post_id, 'rwp_rating_blacklist', $blacklist);
 			}
-
-			update_post_meta( $post_id, 'rwp_rating_blacklist', $blacklist);
 		}
-
 
 		// Notification
 		$notification_pref 	= intval( self::preferences_field( 'preferences_notification', $preferences_option, true ) );
@@ -558,52 +583,84 @@ class RWP_Rating
 
 			$notification_key 		= 'rwp_notification_ratings';
 			$notification_ratings 	= RWP_Reviewer::get_option( $notification_key );
-			$notification_ratings[]	= $rating['rating_id'];
+			$notification_ratings[]	= $review_db_id;
 			$notification_count	 	= count( $notification_ratings );
 
 			if( $notification_count >= $notification_pref ) {
-
-				$sending = self::send_notification( $notification_ratings, $notification_email );
-				
-				if( $sending ) {
-					update_option( $notification_key, array() );
-				} else {
-					update_option( $notification_key, $notification_ratings );
-				}
-
+				static::schedule_reviews_notice( $notification_ratings, $notification_email );
 			} else {
 				update_option( $notification_key, $notification_ratings );
 			}
 		}
 
-		die( json_encode( $res ) );
+		// Apply rwp_after_saving_review filter hook
+		$rating = do_action('rwp_after_saving_review', $rating, $review_db_id);
+
+		wp_send_json_success( $res );
+
 	}
 
-	public static function send_notification( $ratings = array(), $email = '' ) 
+	public static function send_notification( $args = array(), $email = '' )
 	{
-		if( !is_email( $email ) ) return false;
+		global $wpdb;
 
-		$count = count( $ratings );
+		if( !is_email( $email ) || count( $args ) < 1 ) return false;
+
+		// Query reviews
+		$result = $wpdb->get_results( "SELECT * FROM $wpdb->postmeta WHERE meta_id IN (". implode(',', $args) .")", ARRAY_A );
+
+		$reviews = array();
+		foreach ($result as $meta) {
+			$r = maybe_unserialize( $meta['meta_value'] );
+
+			if( !isset( $r['rating_id']) ) {
+				continue;
+			}
+
+			$review = new stdClass();
+			$review->post_title = get_the_title( $r['rating_post_id'] );
+			$review->post_permalink = get_permalink( $r['rating_post_id'] );
+
+			$user_id = intval($r['rating_user_id']);
+			if( $user_id > 0 ) {
+				$user = get_userdata( $user_id );
+				$display_name = $user->display_name;
+				$user_email = $user->user_email;
+			} else {
+				$display_name = $r['rating_user_name'];
+				$user_email = empty($r['rating_user_email']) ? '<em>User has no email</em>' : $r['rating_user_email'];
+			}
+			$review->author = $display_name;
+			$review->author_email = $user_email;
+
+			$review->title 		= strlen( $r['rating_title'] ) > 100 ? substr( $r['rating_title'], 0, 100 )."..." : $r['rating_title'];
+			$review->comment 	= strlen( $r['rating_comment'] ) > 200 ? substr( $r['rating_comment'], 0, 200 )."..." : $r['rating_comment'];
+
+			$review->score = round( RWP_User_Review::get_avg( $r['rating_score'] ) );
+
+			$reviews[] = $review;
+		}
+
+		ob_start();
+		include(RWP_PLUGIN_PATH . 'share/email-templates/template.php');
+		$message = ob_get_clean();
 
 		$domain_name =  preg_replace('/^www\./','',$_SERVER['SERVER_NAME']);
 
 		$to 		= $email;
-		$subject	= '[RWP] New ratings have been posted';
-		$headers	= array('From: Reviewer <do-not-reply@' . $domain_name);
+		$subject	= __('[Reviewer] New reviews', 'reviewer');
+		$headers	= array(
+			'From: Reviewer Plugin <do-not-reply@' . $domain_name,
+			'Content-Type: text/html; charset=UTF-8'
+		);
 
-		$eol		= "\r\n";
+		$result = wp_mail( $to, $subject, $message, $headers );
 
-		$message 	 = "Reviewer Wordpress Plugin" . $eol;
-		$message    .= "--------------------------------------" . $eol . $eol;
-		$message    .= ( $count > 1 ) ? $count . " new ratings have been submitted."  : $count . " new rating has been submitted.";
-		$message 	.= " You can manage it inside the Users Ratings page of Reviewer Plugin." . $eol;
-		$message    .= $eol . "Reviewer Team". $eol;
-
-		$message = wordwrap( $message, 70, $eol );
-
-		$sending = wp_mail( $to, $subject, $message, $headers );
-
-		return $sending;
+		if( $result ) {
+			update_option( 'rwp_notification_ratings', array() );
+		} else {
+			update_option( 'rwp_notification_ratings', $args );
+		}
 	}
 
 	public static function review_field( $field, $review, $return = false ) {
@@ -627,7 +684,7 @@ class RWP_Rating
 		if( $return )
 			return $value;
 
-		echo $value; 
+		echo $value;
 	}
 
 	public static function template_field( $field, $template, $return = false ) {
@@ -642,7 +699,7 @@ class RWP_Rating
 		echo $value;
 	}
 
-	public static function get_instance() 
+	public static function get_instance()
 	{
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
@@ -650,5 +707,15 @@ class RWP_Rating
 		}
 
 		return self::$instance;
+	}
+
+	public static function schedule_reviews_notice( $reviews = array(), $email = '') {
+		if(! wp_next_scheduled( 'reviewer_notify_about_new_reviews' ) ) {
+			wp_schedule_single_event( time() + 10, 'reviewer_notify_about_new_reviews', array( $reviews, $email ) );
+	    }
+	}
+
+	public static function unschedule_reviews_notice() {
+		wp_clear_scheduled_hook('reviewer_notify_about_new_reviews');
 	}
 }

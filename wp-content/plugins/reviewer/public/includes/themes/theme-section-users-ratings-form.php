@@ -56,15 +56,26 @@
 
 			<?php if( in_array( 'rating_option_title', $rating_options ) ): ?>
 			<p>
-				<input type="text" name="rwp-ur[title]" value="" placeholder="<?php _e( 'Write your review title', $this->plugin_slug); ?>" style="font-size: <?php echo $font_size ?>px; color: <?php echo $text_color ?>;">
+				<input type="text" name="rwp-ur[review_title]" value="" placeholder="<?php _e( 'Write your review title', $this->plugin_slug); ?>" style="font-size: <?php echo $font_size ?>px; color: <?php echo $text_color ?>;">
 			</p>
 			<?php endif; ?>
 
 			<?php if( in_array( 'rating_option_comment', $rating_options ) ): ?>
 			<p>
-				<textarea name="rwp-ur[comment]" value="" placeholder="<?php _e( 'Write your review', $this->plugin_slug); ?>" style="font-size: <?php echo $font_size ?>px; color: <?php echo $text_color ?>;"></textarea>
+				<textarea name="rwp-ur[comment]" placeholder="<?php _e( 'Write your review', $this->plugin_slug); ?>" style="font-size: <?php echo $font_size ?>px; color: <?php echo $text_color ?>;"></textarea>
 			</p>
 			<?php endif; ?>
+			
+			<?php 
+				$attachments = $this->preferences_field('preferences_user_review_images', true);
+				if( $attachments['field_enabled'] ):
+			?>
+			<div class="rwp-form-upload-images">
+	            <div class="rwp-dropzone dropzone" id="<?php echo $this->vueID ?>-dropzone">
+	                <div class="fallback"><p><?php _e('Your browser does not support images upload. Please choose a modern one', $this->plugin_slug) ?></p></div><!-- dropzone fallback -->
+	            </div>
+	        </div><!-- /form-field -->
+		    <?php endif; ?>
 
 			<?php if( in_array( 'rating_option_score', $rating_options ) ) {
 
@@ -72,8 +83,12 @@
 
 				switch ( $mode ) {
 					case 'five_stars':
-
-						echo $this->get_stars_form( $this->review_field('review_id', true) );
+						$step		= $this->preferences_field('preferences_step', true);
+						if( floatval( $step ) == 1 ){
+							echo $this->get_stars_form2( $this->review_field('review_id', true) );
+						} else {
+							echo $this->get_stars_form( $this->review_field('review_id', true) );
+						}
 						break;
 
 					case 'full_five_stars':
@@ -90,7 +105,11 @@
 						foreach ($order as $i) {
 							echo '<li>';
 								echo '<label class="rwp-lab">'. $criteria[$i] .'</label>';
-								echo $this->get_stars_form( $this->review_field('review_id', true), 5, true, $i );
+								if( floatval( $step ) == 1 ){
+									echo $this->get_stars_form2( $this->review_field('review_id', true), 5, true, $i );
+								} else {
+									echo $this->get_stars_form( $this->review_field('review_id', true), 5, true, $i );
+								}
 							echo '</li>';
 						}
 
@@ -123,24 +142,23 @@
 
 			} // if rating option ?>
 
-			<?php if( in_array( 'rating_option_captcha', $rating_options ) ): ?>
+			<?php  $captcha = $this->preferences_field('preferences_users_reviews_captcha', true );
+				   if( isset( $captcha['enabled'] ) && isset( $captcha['site_key'] ) && isset( $captcha['secret_key'] ) && $captcha['enabled'] && !empty( $captcha['site_key'] ) && !empty( $captcha['secret_key'] ) ): ?>
 			<p>
-				<?php $captcha = RWP_Captcha::get_instance(); $image = $captcha->generate( $this->post_id, $this->review_field('review_id', true) ); ?>
-				<img class="rwp-captcha-image" src="<?php echo $image ?>" alt="" />
-				<span class="rwp-refresh-captcha-btn" data-post-id="<?php echo $this->post_id ?>"  data-review-id="<?php $this->review_field('review_id') ?>"></span>
-				<input class="rwp-captcha-input" type="text" name="rwp-ur[captcha]" value="" placeholder="?" style="font-size: <?php echo $font_size ?>px; color: <?php echo $text_color ?>;">
+				<div class="rwp-recaptcha" data-sitekey="<?php echo $captcha['site_key'] ?>" data-grcid="" id="<?php echo 'rwp-recaptcha-' . $this->post_id . '-' . $this->review_field('review_id', true) ?>"></div>
 			</p>
 			<?php endif; ?>
 
 			<p class="rwp-submit-wrap">
-				<input class="rwp-submit-ur" type="button" value="<?php _e('Submit', $this->plugin_slug) ?>" style="background-color: <?php $this->template_field('template_users_score_box_color') ?>; " />
+				<input v-on:click.prevent="submitUserReview"  type="button" value="<?php _e('Submit', $this->plugin_slug) ?>" style="background-color: <?php $this->template_field('template_users_score_box_color') ?>; " />
 				<span class="rwp-loader"></span><!-- /loader-->	
-				<span class="rwp-notification"></span>
 			</p>
 
 		</div> <!-- /rating-form-content -->
 		
 	</div><!-- /rating-form -->
+
+	<div class="rwp-notification --rwp-notice-with-error"></div>
 
 </div> <!-- /ratings-form-wrap -->
 <?php endif ?>

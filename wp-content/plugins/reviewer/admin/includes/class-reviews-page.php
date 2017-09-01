@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -24,7 +24,7 @@ class RWP_Reviews_Page extends RWP_Admin_Page
 
 	public function add_menu_page()
 	{
-		add_submenu_page( $this->parent_menu_slug, __( 'Reviews Boxes', $this->plugin_slug), __( 'Reviews Boxes', $this->plugin_slug), $this->capability, $this->menu_slug, array( $this, 'display_plugin_admin_page' ) );
+		add_submenu_page( $this->parent_menu_slug, __( 'Review Boxes', $this->plugin_slug), __( 'Review Boxes', $this->plugin_slug), $this->capability, $this->menu_slug, array( $this, 'display_plugin_admin_page' ) );
 	} 
 
     public function localize_script() 
@@ -85,13 +85,19 @@ class RWP_Reviews_Page extends RWP_Admin_Page
 	public function display_plugin_admin_page()
 	{
 		echo '<div class="wrap">';
-		echo '<h2>'. __( 'Reviews Boxes', $this->plugin_slug ) .'</h2>';
+		echo '<h2>'. __( 'Review Boxes', $this->plugin_slug ) .'</h2>';
+
+        if($this->is_licensed()):
 
 		$reviews = $this->get_reviews();
 
 		$reviews_table = new RWP_Reviews_List_Table( $this->templates_option, $reviews );
 		$reviews_table->prepare_items();
 		$reviews_table->display();
+
+        else:
+            $this->license_notice();
+        endif;
 
 		echo '</div><!--/wrap-->';
 	}
@@ -112,10 +118,18 @@ class RWP_Reviews_Page extends RWP_Admin_Page
 		$result = array();
 
 		$post_meta = $wpdb->get_results( "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'rwp_reviews';", ARRAY_A );
+
+        if( ! is_array( $post_meta ) ) {
+            return $result;
+        }
 		
 		foreach( $post_meta as $meta ) {
 		
 			$reviews = unserialize( $meta['meta_value'] );
+
+            if( ! is_array( $reviews ) ) {
+                continue;
+            }
 			
 			foreach( $reviews as $review ){
 				$review['review_post_id'] = $meta['post_id'];
@@ -173,13 +187,13 @@ class RWP_Reviews_List_Table extends WP_List_Table {
     // Get table columns
     function get_columns() {
         $columns = array(
-            'rwp_reviews_table_review_title'		=> __( 'Title', 'reviewer' ),
+            'rwp_reviews_table_review_title'		=> __( 'Box Title', 'reviewer' ),
             'rwp_reviews_table_review_post'			=> __( 'Post', 'reviewer' ),
             'rwp_reviews_table_review_template'		=> __( 'Template', 'reviewer' ),
-			'rwp_reviews_table_review_score'		=> __( 'Overall Score', 'reviewer' ),
-            'rwp_reviews_table_review_users_score'	=> __( 'Users Score', 'reviewer' ),
+			'rwp_reviews_table_review_score'		=> __( 'Reviewer Score', 'reviewer' ),
+            'rwp_reviews_table_review_users_score'	=> __( 'User Score', 'reviewer' ),
             'rwp_reviews_table_review_post_id'      => __( 'Post ID', 'reviewer' ),
-            'rwp_reviews_table_review_id'           => __( 'Review ID', 'reviewer' ),
+            'rwp_reviews_table_review_id'           => __( 'Box ID', 'reviewer' ),
             'rwp_reviews_table_review_actions'		=> __( 'Actions', 'reviewer' )  
         );
 

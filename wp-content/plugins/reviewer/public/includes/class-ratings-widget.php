@@ -10,17 +10,17 @@ class RWP_Ratings_Widget extends WP_Widget {
 
 	private $comment_limit = 100;
 
-	/*  for PRO users! - *
+	/**
 	 * Sets up the widgets name etc
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		// widget actual processes
 
 		$this->plugin_slug 		= 'reviewer';
 		$this->templates 		= RWP_Reviewer::get_option('rwp_templates');
 		$this->preferences 		= RWP_Reviewer::get_option('rwp_preferences');
-		
+
 		$template_fields 		= RWP_Template_Manager_Page::get_template_fields();
 		$this->ratings_options 	= $template_fields['template_user_rating_options']['options'];
 		unset( $this->ratings_options['rating_option_captcha'], $this->ratings_options['rating_option_email'], $this->ratings_options['rating_option_like'] );
@@ -33,174 +33,146 @@ class RWP_Ratings_Widget extends WP_Widget {
 			'description'	=> __( 'Reviewer Plugin Widget allows you to display your latest, top score users reviews.', $this->plugin_slug),
 			'name'			=> 'Reviewer | Users Reviews'
 		);
-		
+
 		parent::__construct('rwp-ratings-widget', '', $options);
 	}
 
-	/*  for PRO users! - *
+	/**
 	 * Outputs the content of the widget
 	 *
 	 * @param array $args
 	 * @param array $instance
 	 */
-	public function widget( $args, $instance ) 
+	public function widget( $args, $instance )
 	{
 		extract( $instance );
 
-		echo $args['before_widget'];
-
-		if(  isset( $title ) && !empty( $title ) )
-			echo $args['before_title'] . $title . $args['after_title'];
-
 		// Templates
 		if( isset( $template ) && !is_array( $template ) ) {
-			$template = ( $template == 'all' ) ? array_keys( $this->templates ) : array( $template );
+			$templates = ( $template == 'all' ) ? array_keys( $this->templates ) : array( $template );
 		} elseif ( !isset( $template ) ) {
-			$template = array_keys( $this->templates );
+			$templates = array_keys( $this->templates );
+		} else {
+			$templates = $template;
 		}
 
-		// Sort 
+		// Sort
 		$sort = $this->widget_field( $instance, 'to_display', true );
-		//Limit 
+		//Limit
 		$limit = $this->widget_field( $instance, 'to_display_count', true );
-		
-		// Get Ratings
-		$ratings = self::query_ratings( $template, $sort, $limit );
 
 		$options = $this->widget_field( $instance, 'options' ,true);
 
-		echo '<ul class="rwp-widget-ratings">';
-
-		foreach ($ratings as $i => $rating ) {
-
-			//RWP_Reviewer::pretty_print( $rating );
-
-			$rank_num = '';
-
-			if( $sort != 'latest' ) {
-				$rank_num = '<span class="rwp-ranking-number">'. ($i + 1) .'</span>';
-			}
-
-			$has_rank = ( !empty( $rank_num ) ) ? 'rwp-has-ranking' : '';
-
-			echo '<li class="'. $has_rank .'">';
-
-				echo $rank_num;
-				
-				echo '<div class="rwp-wdj-content">'; 
-					// Post
-					if( in_array( 'rating_option_post_title', $options ) ) {
-						
-						echo '<span class="rwp-w-post-title">' . get_the_title( $rating['rating_post_id']) . '</span>';	
-
-					} // Post
-					echo '<div class="rwp-cell">';
-
-					// Avatar
-					$has_avatar = '';
-
-					if( in_array( 'rating_option_avatar' , $options ) ) {
-
-						$avatar = ( $rating['rating_user_id'] == 0 && isset( $rating['rating_user_email'] ) && !empty( $rating['rating_user_email'] ) ) ? $rating['rating_user_email'] : $rating['rating_user_id'];
-						echo get_avatar( $avatar, 30 );
-
-						$has_avatar = 'rwp-has-avatar';
-					} // Avatar
-
-						echo '<div class="rwp-cell-content '. $has_avatar .'">';
-
-						// Username
-						if( in_array( 'rating_option_name', $options ) ) {
-
-							$name = ( $rating['rating_user_id'] > 0 ) ? get_user_by( 'id', $rating['rating_user_id'] )->display_name : $rating['rating_user_name'];
-							
-							echo '<span class="rwp-w-name">'. $name .'</span>';
-						
-						} // Username
-
-						// Date
-						echo '<span class="rwp-w-date"> '. date_i18n( get_option( 'date_format' ) . ', ' . get_option( 'time_format' ), $rating['rating_date'] ) . '</span>';
-
-						// Score
-						if( in_array( 'rating_option_score', $options ) ) {
-							
-							$mode 		= $this->preferences['preferences_rating_mode'];
-							$template 	= (isset( $rating['rating_template'] ) ) ? $this->templates[ $rating['rating_template'] ] : array();
-
-							switch ( $mode ) {
-
-								case 'five_stars':
-								case 'full_five_stars':
-
-									echo RWP_Reviewer::get_stars( $rating['rating_score'], $template );									
-									break;
-
-								default:
-
-									echo '<div class="rwp-criterion">';
-
-										echo '<div class="rwp-criterion-bar-base">';
-											echo RWP_Reviewer::get_score_bar( $rating['rating_score'], $template );
-										echo '</div><!-- /criterion-bar -->';
-
-										echo '<span class="rwp-criterion-score">'. round( RWP_Reviewer::get_avg(  $rating['rating_score'] ), 1 )  .'</span>';
-
-
-									echo '</div><!-- /criterion -->';
-									break;
-							}
-			
-						} // Score
-
-						echo '</div><!-- /cell-content -->';
-
-					echo '</div><!-- /cell -->';
-
-					// Title
-					if( in_array( 'rating_option_title', $options ) && !empty( $rating['rating_title'] ) ) {
-						
-						echo '<span class="rwp-w-title">' . $rating['rating_title'] . '</span>';	
-
-					} // Title
-
-					// Comment
-					if( in_array( 'rating_option_comment', $options ) && !empty( $rating['rating_comment'] ) ) {
-
-						$comment = $rating['rating_comment'];
-
-						if ( strlen( $comment ) >  $this->comment_limit )
-  							$comment = substr( $comment, 0, $this->comment_limit ) . '...';
-						
-						echo '<p class="rwp-w-comment">' . $comment . '</p>';	
-
-					} // Comment
-
-					// Show Link
-					if( in_array( 'rating_option_link', $options ) ) {
-						$url = add_query_arg( 'rwpurid', $rating['rating_id'], get_permalink( $rating['rating_post_id'] ) );
-						echo '<a href="'. esc_url( $url) .'">'. $this->widget_field( $instance, 'show', true ) .'</a>';
-					} // link
-
-				echo '</div> <!-- /content -->';
-
-			echo '</li>';		
+		echo $args['before_widget'];
+		if(  isset( $title ) && !empty( $title ) ) {
+			echo $args['before_title'] . $title . $args['after_title'];
 		}
+		echo '<div class="rwp-widget-ratings-wrap" id="'. uniqid('rwp-widget-ratings-') .'" data-templates="'. implode(':', $templates) .'" data-limit="'. $limit .'" data-sorting="'. $sort .'" data-comment-limit="'. $this->comment_limit .'" >';
+			echo '<span class="rwp-loading-icon" v-show="loading"></span><!-- /loader-->';
+			echo '<p v-show="!loading && !successs" v-text="errorMsg"></p>';
 
-		echo '</ul>';
+			echo '<ul class="rwp-widget-ratings">';
 
+				$has_rank = ( $sort != 'latest' ) ? 'rwp-has-ranking' : '';
+				echo '<li v-for="review in reviews" class="'. $has_rank .'">';
+					if( !empty( $has_rank ) ) { echo '<span class="rwp-ranking-number" v-text="$index + 1"></span>'; }
+					echo '<div class="rwp-wdj-content">';
+						// Post title
+						if( in_array( 'rating_option_post_title', $options ) ) {
+							echo '<span class="rwp-w-post-title">{{{ review.rating_post_title }}}</span>';
+						}
+						echo '<div class="rwp-cell">';
+							// Avatar
+							$has_avatar = '';
+							if( in_array( 'rating_option_avatar' , $options ) ) {
+								$has_avatar = 'rwp-has-avatar';
+								echo '<img v-bind:src="review.rating_user_avatar" alt="User Avatar"/>';
+							}
+
+							echo '<div class="rwp-cell-content '. $has_avatar .'">';
+
+								// Username
+								if( in_array( 'rating_option_name', $options ) ) {
+									echo '<span class="rwp-w-name" v-text="review.rating_user_name"></span>';
+								}
+
+								// Date
+								echo '<span class="rwp-w-date" v-text="review.rating_formatted_date"></span>';
+
+								// Score
+								if( in_array( 'rating_option_score', $options ) ) {
+
+									$mode = $this->preferences['preferences_rating_mode'];
+
+									switch ( $mode ) {
+
+										case 'five_stars':
+										case 'full_five_stars':
+
+											echo '<rwp-score-5-star
+												v-bind:score="parseFloat(review.rating_overall)"
+												v-bind:min="parseFloat(review.rating_template_minimum_score)"
+												v-bind:max="parseFloat(review.rating_template_maximum_score)"
+												v-bind:icon="review.rating_template_rate_image"></rwp-score-5-star>';
+											break;
+
+										default:
+											echo '<rwp-widget-score-bar
+												v-bind:score="parseFloat(review.rating_overall)"
+												v-bind:min="parseFloat(review.rating_template_minimum_score)"
+												v-bind:max="parseFloat(review.rating_template_maximum_score)"
+												v-bind:low="parseInt(review.rating_template_low_pct)"
+												v-bind:high="parseInt(review.rating_template_high_pct)"
+												v-bind:color-low="review.rating_template_low_score_color"
+												v-bind:color-medium="review.rating_template_medium_score_color"
+												v-bind:color-high="review.rating_template_high_score_color"
+												></rwp-widget-score-bar>';
+											break;
+									}
+
+								}
+
+							echo '</div><!-- /cell-content -->';
+						echo '</div><!-- /cell -->';
+
+						// Title
+						if( in_array( 'rating_option_title', $options ) ) {
+							echo '<span class="rwp-w-title" v-show="review.rating_title.length > 0">{{{ review.rating_title }}}</span>';
+						}
+
+						// Comment
+						if( in_array( 'rating_option_comment', $options ) ) {
+							echo '<p class="rwp-w-comment" v-show="review.rating_comment.length > 0">{{{review.rating_comment | sstr | nl2br}}}</p>';
+						}
+
+						// Show Link
+						if( in_array( 'rating_option_link', $options ) ) {
+							if( isset( $instance['custom_url'] ) && !empty( $instance['custom_url'] ) ) {
+								$url = $instance['custom_url'];
+								echo '<a v-bind:href="\''. $url .'?rwpurid=\'+review.rating_id">'. $this->widget_field( $instance, 'show', true ) .'</a>';
+							} else {
+								echo '<a v-bind:href="review.rating_url">'. $this->widget_field( $instance, 'show', true ) .'</a>';
+							}
+						} // link
+
+					echo '</div> <!-- /content -->';
+				echo '</li>';
+
+			echo '</ul>';
+		echo '</div>';
 		echo $args['after_widget'];
 	}
 
-	/*  for PRO users! - *
+	/**
 	 * Ouputs the options form on admin
 	 *
 	 * @param array $instance The widget options
 	 */
-	public function form( $instance ) 
+	public function form( $instance )
 	{
 		// outputs the options form on admin
 
-		//$this->pretty_print ($instance);
+		// $this->pretty_print ($instance);
 		//$this->pretty_print ($this->templates);
 		echo '<div class="rwp-widget-form-wrap">';
 
@@ -234,7 +206,7 @@ class RWP_Ratings_Widget extends WP_Widget {
 
 					if( !is_array( $value )  )
 						$value = ( $value == 'all' ) ? array_keys( $this->templates ) : array( $value );
-					
+
 					foreach ($this->templates as $key => $t) {
 						$ck = ( in_array($key, $value) ) ? 'checked' : '';
 						echo '<span class="rwp-block"><input type="checkbox" id="'. $this->get_field_id( $field_key.$key ) .'" name="'. $this->get_field_name( $field_key ) .'[]" value="'. $key .'" '. $ck .'/> ' .$t['template_name'] . '</span>';
@@ -253,13 +225,13 @@ class RWP_Ratings_Widget extends WP_Widget {
 		echo '</div><!--/widget-form-wrap-->';
 	}
 
-	/*  for PRO users! - *
+	/**
 	 * Processing widget options on save
 	 *
 	 * @param array $new_instance The new options
 	 * @param array $old_instance The previous options
 	 */
-	public function update( $new_instance, $old_instance ) 
+	public function update( $new_instance, $old_instance )
 	{
 		//return array();
 
@@ -311,7 +283,7 @@ class RWP_Ratings_Widget extends WP_Widget {
 		$result = array();
 
 		$post_meta = $wpdb->get_results( "SELECT * FROM $wpdb->postmeta WHERE meta_key LIKE 'rwp_rating%';", ARRAY_A );
-		
+
 		foreach( $post_meta as $meta ) {
 
 			$rating = unserialize( $meta['meta_value'] );
@@ -328,7 +300,7 @@ class RWP_Ratings_Widget extends WP_Widget {
 		}
 
 		switch ( $sort ) {
-			
+
 			case 'top_score':
 				usort( $result, array( 'RWP_Ratings_Widget', 'sort_score' ) );
 				break;
@@ -349,7 +321,7 @@ class RWP_Ratings_Widget extends WP_Widget {
 	{
 		if ($a["rating_date"] == $b["rating_date"])
         	return 0;
-   
+
    		return ($a["rating_date"] > $b["rating_date"]) ? -1 : 1;
 	}
 
@@ -360,7 +332,7 @@ class RWP_Ratings_Widget extends WP_Widget {
 
 		if (  $avg_a ==  $avg_b )
         	return 0;
-   
+
    		return ( $avg_a >  $avg_b ) ? -1 : 1;
 	}
 
@@ -386,7 +358,7 @@ class RWP_Ratings_Widget extends WP_Widget {
 		echo $value;
 	}
 
-	public function set_widget_fields() 
+	public function set_widget_fields()
 	{
 		$this->widget_fields = array(
 			'title' => array(
@@ -396,13 +368,13 @@ class RWP_Ratings_Widget extends WP_Widget {
 			),
 
 			'template' => array(
-				'label' 		=> __( 'Template', $this->plugin_slug ), 
+				'label' 		=> __( 'Template', $this->plugin_slug ),
 				'default'		=> array_keys($this->templates),
 				'description' 	=> ''
 			),
 
 			'options' => array(
-				'label' 		=> __( 'Rating Options', $this->plugin_slug ), 
+				'label' 		=> __( 'Rating Options', $this->plugin_slug ),
 				'default'		=> array_keys($this->ratings_options),
 				'description' 	=> ''
 			),
@@ -417,7 +389,7 @@ class RWP_Ratings_Widget extends WP_Widget {
 				'description' 	=> ''
 			),
 
-			/*  for PRO users! - 'theme' => array(
+			/*'theme' => array(
 				'label' 		=> __( 'Theme', $this->plugin_slug ),
 				'options' 		=> array(
 					'theme-1'			=> __( 'Theme 1 - Big Format', $this->plugin_slug ),
@@ -432,19 +404,24 @@ class RWP_Ratings_Widget extends WP_Widget {
 				'default'	=> __( 'Show', $this->plugin_slug ),
 			),
 
+			'custom_url' => array(
+				'label' 	=> __( 'Custom redirect URL', $this->plugin_slug ),
+				'default'	=> '',
+			),
+
 			'to_display_count' => array(
 				'label' 	=> __( 'Number of ratings to display', $this->plugin_slug ),
-				'default'	=> '5' 
+				'default'	=> '5'
 			),
 		);
-		
+
 	}
 
-	// Method that well print data - debug 
-	public function pretty_print( $data = array() ) 
+	// Method that well print data - debug
+	public function pretty_print( $data = array() )
 	{
-		echo "<pre>"; 
-		print_r($data); 
+		echo "<pre>";
+		print_r($data);
 		echo "</pre>";
 	}
 }

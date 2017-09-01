@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -38,14 +38,14 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 
 	public function add_menu_page()
 	{
-		add_submenu_page( null, __( 'Add new template', $this->plugin_slug), __( 'Add new template', $this->plugin_slug), $this->capability, $this->menu_slug, array( $this, 'display_plugin_admin_page' ) );
+		add_submenu_page( null, __( 'Template Manager', $this->plugin_slug), __( 'Template Manager', $this->plugin_slug), $this->capability, $this->menu_slug, array( $this, 'display_plugin_admin_page' ) );
 	} 
 
 	public function display_plugin_admin_page()
 	{
 		?>
 		<div class="wrap">
-			<h2><?php _e( 'Add new template', $this->plugin_slug ); ?></h2>
+			<h2><?php _e( 'Template Manager', $this->plugin_slug ); ?></h2>
 			<?php settings_errors(); ?>
 			<form method="post" action="options.php">
 			<?php
@@ -63,7 +63,7 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 	public function register_page_fields()
 	{
 		// Add sections
-		$sections = array( 'rwp_general_section' => __( 'General Preferences', $this->plugin_slug), 'rwp_review_section' => __( 'Review Preferences', $this->plugin_slug),  'rwp_theme_section' => __( 'Theme Preferences', $this->plugin_slug), 'rwp_colors_section' => __( 'Theme Colors', $this->plugin_slug), 'rwp_customization_section' => __( 'Customization Preferences', $this->plugin_slug), 'rwp_template_users_ratings_section' => __( 'Users Ratings', $this->plugin_slug), 'rwp_template_reviews_section' => __( 'Auto Reviews', $this->plugin_slug) );
+		$sections = array( 'rwp_general_section' => __( 'General Preferences', $this->plugin_slug), 'rwp_review_section' => __( 'Review Preferences', $this->plugin_slug),  'rwp_theme_section' => __( 'Theme Preferences', $this->plugin_slug), 'rwp_colors_section' => __( 'Theme Colors', $this->plugin_slug), 'rwp_customization_section' => __( 'Customization Preferences', $this->plugin_slug), 'rwp_template_users_ratings_section' => __( 'Users Ratings', $this->plugin_slug), 'rwp_template_reviews_section' => __( 'Auto Box Type', $this->plugin_slug) );
 
 		foreach ( $sections as $section_id => $section_title )	
 			add_settings_section( $section_id, $section_title, array( $this, 'display_section'), $this->menu_slug );
@@ -330,6 +330,15 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 					$valids[ $field_id ] = $tabs;
 
 					break;
+
+				case 'checkbox':
+
+					if ( isset( $fields[ $field_id ] ) ) {
+						$valids[ $field_id ] = 'yes';
+					} else {
+						$valids[ $field_id ] = 'no';
+					}
+					break;
 			
 				case 'text' : // text or default type
 				default:
@@ -509,6 +518,22 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 				'default'		=> array('Criterion 1'),
 				'description'	=> '',
 				'type'			=> 'criterias'
+			),
+
+			'template_schema_type' => array(
+				'title' 		=> __( 'Schema.org Type', $plugin_slug ), 
+				'section'		=> 'rwp_review_section',
+				'default'		=> 'Product',
+				'options'		=> array(  
+					'Product'		=> array('IndividualProduct', 'ProductModel', 'SomeProducts', 'Vehicle'),
+					'Place'			=> array('AdministrativeArea', 'CivicStructure', 'Landform', 'LandmarksOrHistoricalBuildings', 'LocalBusiness', 'Residence', 'TouristAttraction'),
+					'CreativeWork' 	=> array('Article', 'Blog', 'Book', 'Clip', 'Code', 'Comment', 'CreativeWorkSeason', 'CreativeWorkSeries', 'DataCatalog', 'Dataset', 'Diet', 'EmailMessage', 'Episode', 'ExercisePlan', 'Game', 'Map', 'MediaObject', 'Movie', 'MusicComposition', 'MusicPlaylist', 'MusicRecording', 'Painting', 'Photograph', 'PublicationIssue', 'PublicationVolume', 'Question', 'Recipe', 'Sculpture', 'Season', 'Series', 'SoftwareApplication', 'SoftwareSourceCode', 'TVSeason', 'TVSeries', 'VisualArtwork', 'WebPage', 'WebPageElement', 'WebSite'),
+					'Organization' 	=> array('Airline', 'Airline', 'Corporation', 'EducationalOrganization', 'GovernmentOrganization', 'LocalBusiness', 'NGO', 'PerformingGroup', 'SportsOrganization'),
+					'Services'		=> array('BroadcastService', 'CableOrSatelliteService', 'GovernmentService', 'Taxi', 'TaxiService'),
+					'Event'			=> array(),
+				),
+				'description'	=> sprintf(__( 'The plugin uses Review type (for Reviewer Box) and AggregateRating type (for Users and Auto Boxes) for implementing %s. To define the item reviewed type, choose one option of the most common %s types.', $plugin_slug ),'<a href="https://developers.google.com/structured-data/rich-snippets/reviews" target="_blanck">Google Rich Snippets</a>', '<a href="http://schema.org/" target="_blanck">Schema.org</a>'),
+				'type'			=> 'text'
 			),
 
 			'template_theme' => array(
@@ -777,11 +802,19 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 			),
 
 			'template_auto_reviews' => array(
-				'title' 		=> __( 'Add an Users Review Box automatically', $plugin_slug ), 
+				'title' 		=> __( 'Enable Auto Boxes type', $plugin_slug ), 
 				'section'		=> 'rwp_template_reviews_section',
 				'default'		=>  array(),
-				'description'	=> 'Skip this setting if you are going to add reviews box manually. Checking the post types in which you want to add an auto review box for your users with the current template settings. Please read the documentation for more informations.',
+				'description'	=> 'Skip this section if you are going to use Users Box type. Checking the post types in which you want to add an reviews box. Please read the documentation for more informations.',
 				'type'			=> 'posts_types'
+			),
+
+			'template_auto_reviews_featured_image' => array(
+				'title' 		=> __( 'Enable Featured Image', $plugin_slug ), 
+				'section' 		=> 'rwp_template_reviews_section',
+				'default'		=> 'no',
+				'description' 	=> __( "Add Post's Featured Image (if it is set) to Auto Boxes", $plugin_slug ),
+				'type'			=> 'checkbox',
 			),
 
 			'template_exclude_terms' => array(
@@ -805,7 +838,7 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 					'rating_option_score'	=> __( 'User Review Score ( Five Stars or Full Rating )', $plugin_slug ), 
 					'rating_option_like' 	=> __( 'User Review Like/Dislike Counter', $plugin_slug ),
 					'rating_option_share' 	=> __( 'User Review Sharing', $plugin_slug ),
-					'rating_option_captcha' => __( 'User Review Secure Code', $plugin_slug)
+					//'rating_option_captcha' => __( 'User Review Secure Code', $plugin_slug)
 				),
 				'description'	=> __( 'Choose the options you want to include in Users Rating', $plugin_slug ),
 				'type'			=> 'opts'
@@ -842,7 +875,7 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 		);
 	}
 
-/*  for PRO users! - ----------------------------------------------------------------------------*
+/*----------------------------------------------------------------------------*
  * Callbacks for form fields
  *----------------------------------------------------------------------------*/
 
@@ -891,7 +924,7 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 		extract( $args );
 		echo '<span class="rwp-field-desc description">'. $description .'</span>';
 		echo '<input type="button" id="rwp-add-criteria-btn" class="button" value="'. __( 'Add Criterion', $this->plugin_slug ) .'" />';
-		echo '<ul id="rwp-criterias" data-placeholder="' . __( 'Criterion Label', $this->plugin_slug ) . '" data-remove-label="' . __( 'Remove', $this->plugin_slug ) . '">';
+		echo '<ul id="rwp-criterias" data-placeholder="' . __( 'Criterion Label', $this->plugin_slug ) . '" data-remove-label="' . __( 'Remove', $this->plugin_slug ) . '" data-id-label="' . __( 'ID', $this->plugin_slug ) . '">';
 
 		$value = ( is_array( $value ) ) ? $value : array('');
 		$order = isset( $this->temp['template_criteria_order'] ) ? $this->temp['template_criteria_order'] : array_keys( $value );
@@ -902,9 +935,39 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 
 			echo '<li><span class="dashicons dashicons-menu"></span><input type="text" name="'. $this->option_name .'[' . $field_id . ']['.$key.']" value="'. $value[ $key ] .'" placeholder="' . __( 'Criterion Label', $this->plugin_slug ) . '" />';
 				echo ' <a class="rwp-remove-criteria-btn" href="#">'. __( 'Remove', $this->plugin_slug ) .'</a>';
+				echo ' <em>'. __( 'ID', $this->plugin_slug ) .': c'. $key .'</em>';
 			echo '</li>';
 		}
 
+		echo '</ul>';
+	}
+
+	public function template_schema_type_cb( $args ) 
+	{	
+		extract( $args );
+		$options = $this->template_fields[ $field_id ]['options'];
+		$value 	 = empty( $value ) ? $default : $value;
+
+		echo '<p class="description">'. $description .'</p>';
+		echo '<ul class="rwp-schema-types">';
+		foreach ($options as $type => $type_data) {
+			$ck = ($value == $type ) ? 'checked' : '';
+			echo '<li>'; 
+				echo '<input type="radio" id="rwp-radio-scheme-type-'. $type .'" name="'. $this->option_name .'[' . $field_id . ']" value="'. $type .'" '. $ck .' />';
+				echo '<label title="" for="rwp-radio-scheme-type-'. $type .'" class="rwp-schema-types__main">'. $type .'</label>'; 
+				if( !empty( $type_data ) ) {
+					echo '<ul>';
+					foreach ($type_data as $subtype) {
+						echo '<li>'; 
+							$ck2 = ($value == $subtype ) ? 'checked' : '';
+							echo '<input type="radio" id="rwp-radio-scheme-type-'. $subtype .'" name="'. $this->option_name .'[' . $field_id . ']" value="'. $subtype .'" '. $ck2 .' />';
+							echo '<label title="" for="rwp-radio-scheme-type-'. $subtype .'">'. $subtype .'</label>'; 
+						echo'</li>';
+					}
+					echo '</ul>';
+				}
+			echo'</li>';
+		}
 		echo '</ul>';
 	}
 
@@ -912,8 +975,11 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 	{
 		extract( $args );
 
+		$value = ( empty( $value ) || $value == 'rwp-theme-7' ) ? 'rwp-theme-1': $value;
+		
 		echo '<ul id="rwp-themes">';
 		for ($i=1; $i <= 9; $i++) {
+			if( $i == 7 ) continue;
 			$ck = ($value == 'rwp-theme-'. $i ) ? 'checked' : '';
 
 			echo '<li><input type="radio" id="rwp-radio-theme-'. $i .'" name="'. $this->option_name .'[' . $field_id . ']" value="rwp-theme-'. $i .'" '. $ck .' /><label title="" for="rwp-radio-theme-'. $i .'" class="rwp-theme-name" data-preview="'. RWP_PLUGIN_URL .'admin/assets/images/themes/theme-preview-'. $i .'.png">'. __( 'Theme', $this->plugin_slug ) .' '. $i .'</label></li>';
@@ -1221,12 +1287,30 @@ class RWP_Template_Manager_Page extends RWP_Admin_Page
 		foreach ($post_types as $type) {
 			
 			$ck = ( in_array( $type, $value ) ) ? 'checked' : '';
+			$post_type = get_post_type_object( $type );
+            $label   = $post_type->labels->name;
 
-			echo '<li><input type="checkbox" name="'. $this->option_name .'[' . $field_id . '][]" value="' . $type . '" '. $ck .' /> <label>' . $type . '</label></li>';
+			echo '<li><input type="checkbox" name="'. $this->option_name .'[' . $field_id . '][]" value="' . $type . '" '. $ck .' /> <label>'. $label . ' - <em style="color:#666">' . $type . '</em></label></li>';
 		}		
 
 		echo '</ul>';
 
+	}
+
+	public function template_auto_reviews_featured_image_cb( $args ) 
+	{
+		extract( $args );
+
+		if( $value == 'yes' ) {
+			$ck = 'checked';
+			$value = 'yes';
+		} else {
+			$ck = '';
+			$value = 'no';
+		}
+
+		echo '<input type="checkbox" name="'. $this->option_name .'['. $field_id .']" value="'. $value .'" '.$ck.'/>';
+		echo '<span class="description">'. $description.'</span>';
 	}
 
 	public function template_exclude_terms_cb( $args )
