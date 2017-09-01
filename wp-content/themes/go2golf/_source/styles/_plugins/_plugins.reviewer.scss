@@ -1,0 +1,202 @@
+.rwp-review-wrap {
+	margin-bottom: map-get($dimensions-map, base-spacing-unit);
+	padding-bottom: map-get($dimensions-map, base-spacing-unit);
+	border-bottom: map-get($visual-enhancements-map, border-primary);
+}
+
+.rwp-users-reviews {
+	color: map-get($colors-map, default-text-color);
+}
+
+.rwp-people-label {
+	visibility: hidden;
+
+	> em {
+		visibility: visible;
+		float: left !important;
+		font-style: normal;
+		font-size: map-get($typography-map, base-font-size) !important;
+		font-weight: map-get($typography-map, bold-font-weight) !important;
+		max-width: none !important;
+		color: map-get($colors-map, default-text-color) !important;
+
+		@include respond-to-max(get-breakpoint(small)) {
+			margin-bottom: map-get($dimensions-map, half-spacing-unit);
+		}
+	}
+
+	@include respond-to-max(get-breakpoint(small)) {
+		display: none !important;
+	}
+}
+
+.rwp-box__sorting {
+
+	i, select {
+		font-size: map-get($typography-map, base-font-size);
+		font-style: normal;
+		color: map-get($colors-map, default-text-color);
+	}
+
+	i {
+		margin-right: 15px;
+		flex-basis: auto;
+		font-weight: map-get($typography-map, bold-font-weight);
+	}
+
+	select {
+		width: initial;
+		flex-grow: 1;
+	}
+}
+
+.rwp-review-criterion {
+
+	@include respond-to-max(get-breakpoint(med)) {
+		margin-bottom: map-get($dimensions-map, half-spacing-unit)
+	}
+}
+
+.rwp-review-criterion__label {
+	display: inline-block;
+	margin-bottom: map-get($dimensions-map, quarter-spacing-unit) /2;
+	font-size: map-get($typography-map, base-font-size);
+	font-weight: map-get($typography-map, light-font-weight);
+}
+
+.rwp-u-review {
+	border-bottom: map-get($visual-enhancements-map, border-primary);
+	margin-bottom: map-get($dimensions-map, base-spacing-unit);
+	padding-bottom: map-get($dimensions-map, base-spacing-unit);
+}
+
+.rwp-u-review__user {
+
+	@include respond-to-max(get-breakpoint(med)) {
+		display: none;
+	}
+}
+
+.rwp-rating-form-user-info {
+	
+	@include respond-to-max(get-breakpoint(med)) {
+		position: relative !important;
+	}
+}
+
+.rwp-u-review__content {
+	
+	@include respond-to-max(get-breakpoint(med)) {
+		margin-left: 0 !important;
+	}
+}
+
+.rwp-u-review__username {
+	font-size: map-get($typography-map, l-font-size);
+	font-weight: map-get($typography-map, medium-font-weight);
+}
+
+.rwp-u-review__title,
+.rwp-u-review__comment {
+	font-size: map-get($typography-map, base-font-size);
+}
+
+.rwp-u-review__date {
+	color: initial;
+}
+
+.rwp-u-review__likes,
+.rwp-u-review__sharing {
+
+	@include respond-to-max(get-breakpoint(small)) {
+		float: none !important;
+		display: block;
+		margin-bottom: map-get($dimensions-map, quarter-spacing-unit) !important;
+	}
+}
+
+.rwp-more-urs-btn {
+	@extend .o-btn;
+	@extend .o-btn--secondary;
+	font-size: map-get($typography-map, base-font-size);
+	text-transform: none;
+	display: block;
+
+	@include respond-to-min(get-breakpoint(med)) {
+		margin-left: 80px;
+	}
+}
+
+.rwp-ratings-form-label {
+	margin-bottom: map-get($dimensions-map, base-spacing-unit) !important;
+	text-transform: none !important;
+	font-size: map-get($typography-map, l-font-size) !important;
+	line-height: 1 !important;
+}
+
+.rwp-rating-form-content  {
+
+	input,
+	textarea {
+		padding: map-get($dimensions-map, half-spacing-unit) !important;
+		font-size: map-get($typography-map, base-font-size) !important;
+		color: map-get($colors-map, default-text-color) !important;
+		border: map-get($visual-enhancements-map, border-primary) !important;
+		border-radius: map-get($dimensions-map, border-radius) !important;
+	}
+
+	textarea {
+		min-height: 200px !important;
+	}
+
+	@include respond-to-max(get-breakpoint(med)) {
+		margin-left: 0 !important;
+	}
+}
+
+.rwp-scores-sliders {
+	margin-top: map-get($dimensions-map, half-spacing-unit) !important;
+
+	li {
+		
+		@include respond-to-max(get-breakpoint(med)) {
+			margin-bottom: map-get($dimensions-map, half-spacing-unit) !important;
+		}
+	}
+}
+
+.rwp-lab {
+	font-size: map-get($typography-map, base-font-size) !important;
+	color: map-get($colors-map, default-text-color) !important;
+	margin-bottom: map-get($dimensions-map, quarter-spacing-unit) /2 !important;
+}
+
+.dz-default.dz-message {
+	color: map-get($colors-map, default-text-color) !important;
+	font-size: map-get($typography-map, base-font-size) !important;
+}
+
+.rwp-submit-wrap {
+
+	input {
+		@extend .o-btn;
+		@extend .o-btn--primary;
+		@extend .o-btn--no-icon;
+		color: map-get($colors-map, white) !important;
+		background-color:  map-get($colors-map, java) !important;
+		text-transform: none !important;
+
+		&:hover,
+		&:focus,
+		&:active {
+			color: map-get($colors-map, bondi-blue) !important;
+			background-color: map-get($colors-map, white) !important;
+		}
+
+		@include respond-to-max(get-breakpoint(small)) {
+			float: none !important;
+			display: block;
+			width: 100% !important;
+		}
+	}
+}

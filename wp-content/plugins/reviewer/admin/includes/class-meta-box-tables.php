@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -29,7 +29,7 @@ class RWP_Tables_Meta_Box
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_script') );
 	}
 
-	public function localize_script() 
+	public function localize_script()
 	{
 		$action_name = 'rwp_ajax_action_get_table_form';
 		wp_localize_script( $this->plugin_slug . '-admin-script', 'tablesMetaBoxObj', array('ajax_nonce' => wp_create_nonce( $action_name ), 'ajax_url' => admin_url('admin-ajax.php'), 'action' => $action_name ) );
@@ -47,8 +47,9 @@ class RWP_Tables_Meta_Box
 		$this->set_table_fields();
 		$this->post_tables = get_post_meta( get_the_ID(), $this->post_meta_key, true );
 
-		foreach ($this->preferences_option['preferences_post_types'] as $post_type) {
-			
+		$types = is_array( $this->preferences_option['preferences_post_types'] ) ? $this->preferences_option['preferences_post_types'] : array();
+		foreach ( $types as $post_type) {
+
 			add_meta_box( 'rwp-tables-meta-box', 'Reviewer | ' . __( 'Post Comparison Tables', $this->plugin_slug ), array( $this, 'render_meta_box'), $post_type );
 		}
 	}
@@ -56,7 +57,7 @@ class RWP_Tables_Meta_Box
 	public function save_meta_box( $post_id )
 	{
 		// Check nonce
-		if ( ! isset( $_POST['rwp_tables_meta_box_nonce'] ) ) 
+		if ( ! isset( $_POST['rwp_tables_meta_box_nonce'] ) )
 			return $post_id;
 
 		$nonce = $_POST['rwp_tables_meta_box_nonce'];
@@ -84,7 +85,7 @@ class RWP_Tables_Meta_Box
 			$_POST[ $this->post_meta_key ] = array();
 
 		// Check if is a valid array
-		if( ! is_array( $_POST[ $this->post_meta_key ] ) ) 
+		if( ! is_array( $_POST[ $this->post_meta_key ] ) )
 			return $post_id;
 
 		// Validate reviews
@@ -93,7 +94,7 @@ class RWP_Tables_Meta_Box
 		foreach ( $_POST[ $this->post_meta_key ] as $table_id => $table) {
 
 			foreach ( $this->table_fields as $field_id => $field) {
-				
+
 				switch ( $field_id ) {
 					case 'table_title':
 
@@ -105,12 +106,12 @@ class RWP_Tables_Meta_Box
 						$value = trim($table[ $field_id ]);
 						$tables[ $table_id ][ $field_id ] = ( empty( $value ) ) ? $field['default'] . ' ' . $table_id : wp_kses_post($value);
 						break;
-					
+
 					case 'table_template':
 
 						$default_v = array_values( $this->templates_option );
 						$default = $default_v[0]['template_id'];
-						
+
 
 						if( ! isset( $table[ $field_id ] ) ){ //if field is not set
 							$tables[ $table_id ][ $field_id ] = $default;
@@ -122,7 +123,8 @@ class RWP_Tables_Meta_Box
 						break;
 
 					case 'table_theme':
-						
+					case 'table_sorting':
+
 
 						if( ! isset( $table[ $field_id ] ) ){ //if field is not set
 							$tables[ $table_id ][ $field_id ] = $field['default'];
@@ -134,7 +136,7 @@ class RWP_Tables_Meta_Box
 						break;
 
 					case 'table_reviews':
-						
+
 						if( ! isset( $table[ $field_id ] ) ){ //if field is not set
 							$tables[ $table_id ][ $field_id ] = array();
 							break;
@@ -153,6 +155,15 @@ class RWP_Tables_Meta_Box
 
 						break;
 
+					case 'table_reviews_boxes_image':
+						if( ! isset( $table[ $field_id ] ) ) { //if field is not set
+							$tables[ $table_id ][ $field_id ] = $field['default'];
+							break;
+						}
+
+						$tables[ $table_id ][ $field_id ] = 'yes';
+						break;
+
 					case 'table_id':
 					default:
 						$tables[ $table_id ][ $field_id ] = $table_id;
@@ -169,21 +180,21 @@ class RWP_Tables_Meta_Box
 	{
 		// Add an nonce field
 		wp_nonce_field( 'rwp_save_tables_meta_box', 'rwp_tables_meta_box_nonce' );
-		
+
 		// Check if there is at least one reviews template
 		if( empty( $this->templates_option ) ) {
-			
+
 			echo '<p>' . __( 'Please insert a reviews template before adding a new comparison table.', $this->plugin_slug ) . '</p>';
 			return;
 		}
 		?>
-		
+
 		<p class="description"><?php _e( 'In this meta box you can manage the post comparison tebles; save/update the post to save comparison tables.', $this->plugin_slug ); ?></p>
-		
+
 		<div class="rwp-metabox-elems">
 			<a href="#" class="button button-primary" id="rwp-add-table-form-btn"><?php _e( 'Add new comparison table', $this->plugin_slug ); ?></a><img class="rwp-loader" src="<?php echo admin_url(); ?>images/spinner.gif" alt="loading" />
 		</div>
-		
+
 		<ul class="rwp-tabs-wrap" data-placehoder="<?php _e( 'Table', $this->plugin_slug ); ?>">
 		<?php
 		if ($this->post_tables != null && ! empty( $this->post_tables ) ) {
@@ -201,43 +212,43 @@ class RWP_Tables_Meta_Box
 
 		<div id="rwp-tables-wrap">
 		<?php
-		if ($this->post_tables != null && ! empty( $this->post_tables ) ) 
+		if ($this->post_tables != null && ! empty( $this->post_tables ) )
 			foreach ( $this->post_tables as $table_id => $table) {
-				$this->get_table_form( $table ); 
+				$this->get_table_form( $table );
 			}
 		?>
 		</div><!--/rwp-tables-wrap-->
 		<?php
-		
-		//RWP_Reviewer::pretty_print(  $this->post_tables ); 
+
+		//RWP_Reviewer::pretty_print(  $this->post_tables );
 	}
-	
+
 	public function get_table_form( $table = array( 'table_id' => 0 ) )
 	{
 		$table_id = $table['table_id']; // Get the table ID
 		//$first_table_id = ($this->post_tables != null && ! empty( $this->post_tables ) ) ? array_keys( $this->post_tables )[0] : -1; // First Table ID
-		
+
 		if($this->post_tables != null && ! empty( $this->post_tables ) ) {
 			$pt = array_keys( $this->post_tables );
 			$first_table_id = $pt[0];
 		} else {
 			$first_table_id = -1;
 		}
-		
-		$hide = ( $table_id != $first_table_id ) ? 'style="display:none;"' : ''; 
+
+		$hide = ( $table_id != $first_table_id ) ? 'style="display:none;"' : '';
 
 		?>
 
 		<div id="rwp-table-<?php echo $table_id ?>" class="rwp-table-form rwp-tabs-panel" data-table-id="<?php echo $table_id ?>" <?php echo $hide; ?>>
-			
+
 			<table class="form-table">
-				
+
 				<tbody>
 				<?php
 				foreach( $this->table_fields as $field_id => $field ) {
 
 					$default = $field['default'];
-					
+
 					echo '<tr valign="top">';
 					echo '<th scope="row">' . $field['label'] . '</th>';
 					echo '<td>';
@@ -260,7 +271,7 @@ class RWP_Tables_Meta_Box
 							$table_theme = ( isset( $table['table_theme'] ) ) ? $table['table_theme'] : $default;
 
 							$i = 0;
-							
+
 							foreach ($field['options'] as $theme_id => $theme_label) {
 
 								$ck = ( $theme_id == $table_theme ) ? 'checked' : '';
@@ -271,7 +282,7 @@ class RWP_Tables_Meta_Box
 
 									echo '<div class="rwp-table-theme-icon" style="'. $style .'"></div>';
 
-									echo '<input type="radio" name="'. $this->post_meta_key .'['. $table_id .'][' . $field_id . ']" value="'. $theme_id .'" '.$ck.'/>'; 
+									echo '<input type="radio" name="'. $this->post_meta_key .'['. $table_id .'][' . $field_id . ']" value="'. $theme_id .'" '.$ck.'/>';
 
 									echo '<span class="rwp-table-theme-label">'. $theme_label .'</span>';
 
@@ -310,10 +321,41 @@ class RWP_Tables_Meta_Box
 							echo '</div><!--/rwp-templates-reviews-wrap-->';
 							break;
 
+						case 'table_sorting':
+
+							echo '<ul>';
+
+							$table_sorting = ( isset( $table['table_sorting'] ) ) ? $table['table_sorting'] : $default;
+
+							foreach ($field['options'] as $sorting_id => $sorting_label) {
+								$ck = ( $sorting_id == $table_sorting ) ? 'checked' : '';
+								echo '<li>';
+									echo '<input type="radio" name="'. $this->post_meta_key .'['. $table_id .'][' . $field_id . ']" value="'. $sorting_id .'" '.$ck.'/>';
+									echo '<label>'. $sorting_label .'</label>';
+								echo '</li>';
+							}
+
+							echo '</ul>';
+
+							break;
+
 						case 'table_id':
-							echo '<p class="rwp-shortcode-tag">[rwp-table id="'.$table_id.'"]</p>';
+							echo '<p class="rwp-shortcode-tag">[rwp_comparison_table id="'.$table_id.'"]</p>';
 							echo '<input type="hidden" name="'. $this->post_meta_key .'['. $table_id .'][' . $field_id . ']" value="'. $table_id .'" />';
 
+							break;
+
+						case 'table_reviews_boxes_image':
+							if( isset($table[ $field_id ]) && $table[ $field_id ] == 'yes' ) {
+								$ck = 'checked';
+								$value = 'yes';
+							} else {
+								$ck = '';
+								$value = 'no';
+							}
+
+							echo '<input type="checkbox" name="'. $this->post_meta_key .'['. $table_id .'][' . $field_id . ']" value="'. $value .'" '.$ck.'/>';
+							echo '<span class="description">'. $field['description'] .'</span>';
 							break;
 
 						case 'table_title':
@@ -328,12 +370,12 @@ class RWP_Tables_Meta_Box
 				}
 				?>
 				</tbody>
-			
+
 			</table>
 
 			<input class="button rwp-delete-table-btn" type="button"  value="<?php _e( 'Delete table', $this->plugin_slug ); ?>" data-table-id="<?php echo $table_id ?>" />
 
-		</div> <!--/review-<?php echo $review_id; ?>--> 
+		</div> <!--/review-<?php echo $review_id; ?>-->
 		<?php
 	}
 
@@ -343,24 +385,24 @@ class RWP_Tables_Meta_Box
 		$result = array();
 
 		$post_meta = $wpdb->get_results( "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'rwp_reviews';", ARRAY_A );
-		
+
 		foreach( $post_meta as $meta ) {
-		
+
 			$reviews = unserialize( $meta['meta_value'] );
-			
+
 			foreach( $reviews as $review ) {
-				
+
 				$res_rev = array(
-					
+
 					'review_post_id' => $meta['post_id'],
 					'review_id' => $review['review_id'],
 					'review_title' => $review['review_title']
 				);
-				
+
 				foreach( $this->templates_option as $template ) {
-					
+
 					if( $template['template_id'] == $review['review_template'] ) {
-						
+
 						$result[$template['template_id']][] = $res_rev;
 						break;
 					}
@@ -372,7 +414,7 @@ class RWP_Tables_Meta_Box
 		return $result;
 	}
 
-	public static function get_instance() 
+	public static function get_instance()
 	{
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
@@ -381,17 +423,17 @@ class RWP_Tables_Meta_Box
 
 		return self::$instance;
 	}
-	
+
 	public function set_table_fields()
 	{
 		$this->table_fields = array(
-			
+
 			'table_title' => array(
 				'label' => __('Table Title', $this->plugin_slug ),
 				'default' => 'Table',
 				'description'	=> ''
 			),
-			
+
 			'table_template' => array(
 				'label' => __('Table Template', $this->plugin_slug ),
 				'default' => '',
@@ -417,13 +459,31 @@ class RWP_Tables_Meta_Box
 				'default' => array(),
 				'description'	=> ''
 			),
-			
+
+			'table_sorting' => array(
+				'label' => __( 'Table Sorting', $this->plugin_slug ),
+				'default' => 'latest',
+				'options' => array(
+					'latest' 			=> __('Sort by Latest Boxes', $this->plugin_slug ),
+					'reviewer_score' 	=> __('Sort by Reviewer Score', $this->plugin_slug ),
+					'users_score' 		=> __('Sort by Users Score', $this->plugin_slug ),
+					'combo' 			=> __('Sort by Average of Reviewer and Users Scores', $this->plugin_slug )
+				),
+				'description'	=> ''
+			),
+
+			'table_reviews_boxes_image' => array(
+				'label' => __( 'Include Reviews Boxes Images', $this->plugin_slug ),
+				'default' => 'no',
+				'description'	=> __( 'Show the related review box image - if it is set - inside tables', $this->plugin_slug ),
+			),
+
 			'table_id' => array(
 				'label' => __( 'Table Shortcode', $this->plugin_slug ),
 				'default' => 0,
 				'description'	=> ''
 			)
-		
+
 		);
 	}
 }

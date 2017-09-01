@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -19,6 +19,7 @@ class RWP_Reviews_List_Shortcode
 		$this->plugin_slug = 'reviewer';
 
 		add_shortcode( $this->shortcode_tag , array( $this, 'do_shortcode' ) );
+		add_shortcode( 'rwp_boxes' , array( $this, 'do_shortcode' ) );
 	}
 
 	public function do_shortcode( $atts ) {
@@ -76,14 +77,14 @@ class RWP_Reviews_List_Shortcode
 				$form .= '<tbody>';
 
 					$form .= '<tr valign="top">';
-						$form .= '<th scope="row">' . __( 'Reviews List Title', 'reviewer' ) . '</th>';
+						$form .= '<th scope="row">' . __( 'Title', 'reviewer' ) . '</th>';
 						$form .= '<td><input type="text" name="'. $parent .'[title]" value="" /></td>';
 					$form .= '</tr>';
 
 					$templates = RWP_Reviewer::get_option( 'rwp_templates' );
 
 					$form .= '<tr valign="top">';
-						$form .= '<th scope="row">' . __( 'Reviews List Template', 'reviewer' ) . '</th>';
+						$form .= '<th scope="row">' . __( 'Template', 'reviewer' ) . '</th>';
 						$form .= '<td>';
 
 							foreach ($templates as $template_id => $template) {
@@ -109,7 +110,7 @@ class RWP_Reviews_List_Shortcode
 					);
 
 					$form .= '<tr valign="top">';
-						$form .= '<th scope="row">' . __( 'Reviews List Sorting', 'reviewer' ) . '</th>';
+						$form .= '<th scope="row">' . __( 'Order', 'reviewer' ) . '</th>';
 						$form .= '<td>';
 							$form .= '<select name="'. $parent .'[sorting]">';
 
@@ -127,7 +128,7 @@ class RWP_Reviews_List_Shortcode
 					$form .= '</tr>';
 
 					$form .= '<tr valign="top">';
-						$form .= '<th scope="row">' . __( 'Reviews List Layout', 'reviewer' ) . '</th>';
+						$form .= '<th scope="row">' . __( 'Layout', 'reviewer' ) . '</th>';
 						$form .= '<td>';
 						$form .= '<input type="radio" name="'. $parent .'[layout]" value="auto" checked /> Full width <br/>';
 						$form .= '<input type="radio" name="'. $parent .'[layout]" value="inline" /> Inline';

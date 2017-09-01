@@ -20,9 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-// Define variables to use on page
-$average_course_review = get_user_review_average($post->ID);
-
 get_header( 'shop' ); ?>
 
 	<?php
@@ -44,27 +41,13 @@ get_header( 'shop' ); ?>
 						<div class="c-course-detail-box">
 							<div class="o-grid">
 								<div class="o-grid__col o-grid__col--5/12--small">
-									<?php wc_get_template( 'single-product/product-image.php' ); ?>
+									<?php wc_get_template_part( 'single-product/product', 'image' ); ?>
 								</div><!--/.o-grid__col -->
 								<div class="o-grid__col o-grid__col--7/12--small">
 									<h2 class="c-course-detail-box__name"><?php the_title(); ?></h2>
-									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id($post->id); ?></h3>
-									<p class="u-visuallyhidden"><?php echo $average_course_review; ?> out of 10</p>
-									<div style="display:none" class="c-course-detail-box__average-review-stars">
-										<div class="c-course-detail-box__average-review-active-stars" style="width:<?php echo $average_course_review * 100 / 10; ?>%">
-											<span>★</span>
-											<span>★</span>
-											<span>★</span>
-											<span>★</span>
-											<span>★</span>
-										</div><!--/.c-course-detail-box__average-review-active-stars -->
-										<div class="c-course-detail-box__average-review-inactive-stars">
-											<span>★</span>
-											<span>★</span>
-											<span>★</span>
-											<span>★</span>
-											<span>★</span>
-										</div><!--/.c-course-detail-box__average-review-inactive-stars -->
+									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id($post->ID); ?></h3>
+									<div class="c-course-detail-box__average-review-stars">
+										<?php wc_get_template_part( 'single-product/reviews-average', 'stars' ); ?>
 									</div><!--/.c-course-detail-box__average-review-stars -->
 									<div class="c-course-detail-box__key-features">
 										<div class="c-course-detail-box__key-feature c-course-detail-box__key-feature--holes">
@@ -278,8 +261,69 @@ get_header( 'shop' ); ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
-							<section style="display:none" id="reviews" class="o-panel o-panel--double">
-								<h1 class="o-heading--secondary">Reviews</h1>
+							<section id="reviews" class="o-panel o-panel--double">
+								<div class="c-reviews__header-strip">
+									<h1 class="o-heading--secondary">Reviews <span class="o-notification o-notification--small"><?php echo get_user_review_count($post->ID); ?></span></h1>
+									<a href="#review-form" class="c-reviews__leave-review-prompt">Leave a review</a>
+								</div><!--/.c-reviews__header-strip -->
+								<div class="c-reviews__breakdowns">
+									<div class="c-reviews__breakdown">
+										<h2 class="c-reviews__breakdown-heading">Average course rating</h2>
+										<p class="c-reviews__breakdown-average-rating-text"><?php echo get_user_review_average($post->ID);?><span class="c-reviews__breakdown-average-rating-seperator">/</span>10</p>
+										<p class="c-reviews__breakdown-average-rating-count">(<?php echo get_user_review_count($post->ID) . ' review' . (get_user_review_count($post->ID) > 1 ? 's' : ''); ?>)</p>
+										<?php wc_get_template_part( 'single-product/reviews-average', 'stars' ); ?>
+									</div><!--/.c-reviews__breakdown -->
+									<div class="c-reviews__breakdown">
+										<h2 class="c-reviews__breakdown-heading">Breakdown averages</h2>
+										<?php
+											$review_averages = RWP_API::get_reviews_box_users_rating($post->ID, -1, 'rwp_template_5872271b8991c', true);
+											foreach ($review_averages['scores'] as $score) {
+												echo '<p class="c-reviews__breakdown-of-averages"><span class="c-reviews__breakdown-of-averages-number">'.$score['score'].'</span>'.$score['label'].'</p>';
+											}
+										?>
+									</div><!--/.c-reviews__breakdown -->
+									<div class="c-reviews__breakdown">
+										<h2 class="c-reviews__breakdown-heading">Reviews breakdown</h2>
+										<?php
+											$reviews = RWP_API::get_reviews_box_users_reviews($post->ID, -1, 'rwp_template_5872271b8991c');
+											$reviews_count = array();
+
+											foreach ($reviews['reviews'] as $review) {
+												foreach ($review['rating_score'] as $rating_value) {
+													$rating_value_as_integer = (int)$rating_value;
+													if (array_key_exists($rating_value_as_integer, $reviews_count)) {
+														$reviews_count[$rating_value_as_integer]++;
+													} else {
+														$reviews_count[$rating_value_as_integer] = 1;
+													}
+												}	
+											}
+											
+											$rating_scale = [0,1,2,3,4,5,6,7,8,9,10];
+											$total_number_of_individual_ratings = array_sum($reviews_count);
+											$html = '';
+											foreach ($rating_scale as $scale_value) {
+												echo '<div class="c-reviews__breakdown-of-ratings-spread-item">';
+												echo '<p class="c-reviews__breakdown-of-ratings-spread-scale-value">'.$scale_value.'</p>';
+
+												if (array_key_exists($scale_value, $reviews_count)) {
+													$percentage_rating_for_scale_value = floor($reviews_count[$scale_value] / $total_number_of_individual_ratings * 100);
+													//echo $percentage_rating_for_scale_value.' ';
+													echo '<div class="c-reviews__breakdown-of-ratings-spread-bar"><span style="width:'.$percentage_rating_for_scale_value.'%"></span></div>';
+													echo '<p class="c-reviews__breakdown-of-ratings-spread-count">'.$reviews_count[$scale_value].'</p>';
+												} else {
+													echo '<div class="c-reviews__breakdown-of-ratings-spread-bar"><span ></span></div>';
+													echo '<p class="c-reviews__breakdown-of-ratings-spread-count">0</p>';
+												}
+												echo '</div>';
+											}
+										?>
+									</div><!--/.c-reviews__breakdown -->
+								</div><!--/.c-reviews__breakdowns -->
+								<?php  echo do_shortcode('[rwp_box_reviews id="-1" template="rwp_template_5872271b8991c"]'); ?>
+								<div id="review-form">
+									<?php echo do_shortcode('[rwp_box_form id="-1" post="'.$post->ID.'" template="rwp_template_5872271b8991c"]'); ?>
+								</div><!--/#review-form -->
 							</section>
 						</div><!--/.o-grid__col -->
 					</div><!--/.o-grid -->
@@ -313,9 +357,6 @@ get_header( 'shop' ); ?>
 
 				//echo $html;
 			?>
-
-			<?php //echo do_shortcode('[rwp-review id="-1" template="rwp_template_5872271b8991c"]'); ?>
-			<?php //echo do_shortcode('[rwp-review-recap id="-1" template="rwp_template_5872271b8991c"]'); ?>
 
 		<?php endwhile; // end of the loop. ?>
 

@@ -1,6 +1,6 @@
 <?php
 
-/*  for PRO users! - *
+/**
  * Reviewer Plugin v.2
  * Created by Michele Ivani
  */
@@ -9,7 +9,7 @@ class RWP_API_Page extends RWP_Admin_Page
 	protected static $instance = null;
 	public $api_fields;
 	public $option_value;
-	public $api_version = '1.2';
+	public $api_version = '1.3';
 
 	public function __construct()
 	{
@@ -257,7 +257,8 @@ Array
 					<p>The api requires the following parameters:</p>
 					<ul>
 						<li><code>$post_id <em>(int)</em></code> The post id that contains the review</li>
-						<li><code>$review_id <em>(int)</em></code> The review id </li>
+						<li><code>$review_id <em>(int)</em></code> The review id. Use -1 if you setup Auto Box type</li>
+						<li><code>$template_id <em>(string)</em></code> The template id of review boxe. Required if you setup Auto Box type</li>
 					</ul>
 					
 					<h5>Return</h5>
@@ -276,7 +277,7 @@ Array
 )				</pre>
 
 					<h5>Usage</h5>
-					<p><code>&lt;?php $rating = RWP_API::get_review_users_rating( $post_id, $review_id); ?&gt;</code></p>
+					<p><code>&lt;?php $rating = RWP_API::get_review_users_rating( $post_id, $review_id, $template_id ); ?&gt;</code></p>
 
 				</div><!-- api-content -->
 
