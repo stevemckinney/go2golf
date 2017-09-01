@@ -5,17 +5,28 @@
 }
 
 .c-reviews__breakdowns {
-	display: flex;
 	margin-left: -#{map-get($dimensions-map, quarter-spacing-unit)};
 	text-align: center;
+
+	@include respond-to-min(get-breakpoint(med)) {
+		display: flex;
+		align-items: flex-start;
+	}
 }
 
 .c-reviews__breakdown {
-	flex-grow: 1;
-	margin-left: map-get($dimensions-map, quarter-spacing-unit);
 	padding: map-get($dimensions-map, half-spacing-unit);
 	border: map-get($visual-enhancements-map, border-primary);
 	border-radius: map-get($dimensions-map, border-radius);
+
+	@include respond-to-min(get-breakpoint(med)) {
+		flex-grow: 1;
+		margin-left: map-get($dimensions-map, quarter-spacing-unit);
+	}
+
+	@include respond-to-max(get-breakpoint(med)) {
+		margin-bottom: map-get($dimensions-map, quarter-spacing-unit);
+	}
 }
 
 .c-reviews__breakdown-heading {
@@ -50,4 +61,40 @@
 .c-reviews__breakdown-of-averages-number {
 	display: inline-block;
 	width: 20%;
+}
+
+.c-reviews__breakdown-of-ratings-spread-item {
+	display: flex;
+	align-items: center;
+}
+
+.c-reviews__breakdown-of-ratings-spread-bar {
+	display: block;
+	position: relative;
+	background: map-get($colors-map, mystic);
+	height: 5px;
+	width: 100%;
+
+	> span {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		height: 100%;
+		background: map-get($colors-map, java);
+	}
+}
+
+.c-reviews__breakdown-of-ratings-spread-scale-value,
+.c-reviews__breakdown-of-ratings-spread-count {
+	flex-basis: 15%;
+	font-size: map-get($typography-map, s-font-size);
+}
+
+.c-reviews__breakdown-of-ratings-spread-scale-value {
+	margin-right: map-get($dimensions-map, quarter-spacing-unit) /2;
+}
+
+.c-reviews__breakdown-of-ratings-spread-count {
+	margin-left: map-get($dimensions-map, quarter-spacing-unit) /2;
 }

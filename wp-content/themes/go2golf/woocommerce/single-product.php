@@ -264,12 +264,12 @@ get_header( 'shop' ); ?>
 							<section id="reviews" class="o-panel o-panel--double">
 								<div class="c-reviews__header-strip">
 									<h1 class="o-heading--secondary">Reviews <span class="o-notification o-notification--small"><?php echo get_user_review_count($post->ID); ?></span></h1>
-									<a href="#" class="c-reviews__leave-review-prompt">Leave a review</a>
+									<a href="#review-form" class="c-reviews__leave-review-prompt">Leave a review</a>
 								</div><!--/.c-reviews__header-strip -->
 								<div class="c-reviews__breakdowns">
 									<div class="c-reviews__breakdown">
 										<h2 class="c-reviews__breakdown-heading">Average course rating</h2>
-										<p class="c-reviews__breakdown-average-rating-text"><?php echo get_user_review_average($post->ID);?><span class="c-reviews__breakdown-average-rating-seperator">/</span>5</p>
+										<p class="c-reviews__breakdown-average-rating-text"><?php echo get_user_review_average($post->ID);?><span class="c-reviews__breakdown-average-rating-seperator">/</span>10</p>
 										<p class="c-reviews__breakdown-average-rating-count">(<?php echo get_user_review_count($post->ID) . ' review' . (get_user_review_count($post->ID) > 1 ? 's' : ''); ?>)</p>
 										<?php wc_get_template_part( 'single-product/reviews-average', 'stars' ); ?>
 									</div><!--/.c-reviews__breakdown -->
@@ -284,23 +284,6 @@ get_header( 'shop' ); ?>
 									</div><!--/.c-reviews__breakdown -->
 									<div class="c-reviews__breakdown">
 										<h2 class="c-reviews__breakdown-heading">Reviews breakdown</h2>
-										<style>
-											.c-reviews__breakdown-of-ratings-spread-bar {
-												display:block;
-												background:red;
-												height:5px;
-												width:100%;
-												position:relative;
-											}
-											.c-reviews__breakdown-of-ratings-spread-bar span {
-												display:block;
-												height:5px;
-												background:blue;
-												position:absolute;
-												top:0;
-												left:0;
-											}
-										</style>
 										<?php
 											$reviews = RWP_API::get_reviews_box_users_reviews($post->ID, -1, 'rwp_template_5872271b8991c');
 											$reviews_count = array();
@@ -320,25 +303,27 @@ get_header( 'shop' ); ?>
 											$total_number_of_individual_ratings = array_sum($reviews_count);
 											$html = '';
 											foreach ($rating_scale as $scale_value) {
-												echo '<p class="c-reviews__breakdown-of-ratings-spread">'.$scale_value.'</p>';
+												echo '<div class="c-reviews__breakdown-of-ratings-spread-item">';
+												echo '<p class="c-reviews__breakdown-of-ratings-spread-scale-value">'.$scale_value.'</p>';
 
 												if (array_key_exists($scale_value, $reviews_count)) {
 													$percentage_rating_for_scale_value = floor($reviews_count[$scale_value] / $total_number_of_individual_ratings * 100);
-													echo $percentage_rating_for_scale_value.' ';
+													//echo $percentage_rating_for_scale_value.' ';
 													echo '<div class="c-reviews__breakdown-of-ratings-spread-bar"><span style="width:'.$percentage_rating_for_scale_value.'%"></span></div>';
+													echo '<p class="c-reviews__breakdown-of-ratings-spread-count">'.$reviews_count[$scale_value].'</p>';
 												} else {
 													echo '<div class="c-reviews__breakdown-of-ratings-spread-bar"><span ></span></div>';
+													echo '<p class="c-reviews__breakdown-of-ratings-spread-count">0</p>';
 												}
+												echo '</div>';
 											}
 										?>
 									</div><!--/.c-reviews__breakdown -->
 								</div><!--/.c-reviews__breakdowns -->
-								<?php // echo do_shortcode('[rwp_box id="-1" template="rwp_template_5872271b8991c"]'); ?>
-								<?php // echo do_shortcode('[rwp_box_recap id="-1" template="rwp_template_5872271b8991c"]'); ?>
-								<?php // echo do_shortcode('[rwp_box_criteria id="-1" template="rwp_template_5872271b8991c"]'); ?>
-								<?php // echo do_shortcode('[rwp_box_reviews id="-1" template="rwp_template_5872271b8991c"]'); ?>
-								<?php // echo do_shortcode('[rwp_box_form id="-1" template="rwp_template_5872271b8991c"]'); ?>
-								<?php print('<pre>'.print_r(RWP_API::get_reviews_box_users_reviews($post->ID, -1, 'rwp_template_5872271b8991c'), true).'</pre>'); ?>
+								<?php  echo do_shortcode('[rwp_box_reviews id="-1" template="rwp_template_5872271b8991c"]'); ?>
+								<div id="review-form">
+									<?php echo do_shortcode('[rwp_box_form id="-1" post="'.$post->ID.'" template="rwp_template_5872271b8991c"]'); ?>
+								</div><!--/#review-form -->
 							</section>
 						</div><!--/.o-grid__col -->
 					</div><!--/.o-grid -->
