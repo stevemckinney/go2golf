@@ -2,7 +2,7 @@
 	margin-bottom: map-get($dimensions-map, double-spacing-unit);
 	background-color: map-get($colors-map, white);
 	box-shadow: map-get($visual-enhancements-map, box-shadow-primary);
-	color: map-get($colors-map, raven);
+	color: map-get($colors-map, bondi-blue);
 	font-weight: map-get($typography-map, medium-font-weight);
 	
 	padding: map-get($dimensions-map, half-spacing-unit)/2 0;
@@ -41,4 +41,5 @@
 .c-woocommerce-breadcrumb__delimiter {
 	padding-left: 5px;
 	padding-right: 5px;
+	color: map-get($colors-map, raven);
 }

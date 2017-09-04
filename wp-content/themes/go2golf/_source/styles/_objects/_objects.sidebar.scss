@@ -13,7 +13,7 @@
 		border-bottom: map-get($visual-enhancements-map, border-primary);
 
 		a {
-			display: block;
+			display: inline-block;
 			text-decoration: none;
 			padding-top: map-get($dimensions-map, quarter-spacing-unit);
 			padding-bottom: map-get($dimensions-map, quarter-spacing-unit);
@@ -76,6 +76,26 @@
 		width: 24px;
 		background-image: url('../../_source/images/icons/search-bondi-blue.svg');
 		background-repeat: no-repeat;
+	}
+
+	.product-categories {
+
+		> li > a {
+			font-weight: map-get($typography-map, bold-font-weight);
+		}
+
+		.children {
+			margin-left: map-get($dimensions-map, half-spacing-unit);
+		}
+
+		.current-cat-parent > a,
+		.current-cat > a {
+			color: map-get($colors-map, bondi-blue);
+		}
+
+		.count {
+			font-size: map-get($typography-map, s-font-size);
+		}
 	}
 }
 
