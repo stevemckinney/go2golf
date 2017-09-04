@@ -811,7 +811,7 @@ a {
     list-style: none;
     border-bottom: 1px solid #e4edeb; }
     .o-sidebar li a {
-      display: block;
+      display: inline-block;
       text-decoration: none;
       padding-top: 10px;
       padding-bottom: 10px;
@@ -863,6 +863,15 @@ a {
     width: 24px;
     background-image: url("../../_source/images/icons/search-bondi-blue.svg");
     background-repeat: no-repeat; }
+  .o-sidebar .product-categories > li > a {
+    font-weight: 600; }
+  .o-sidebar .product-categories .children {
+    margin-left: 20px; }
+  .o-sidebar .product-categories .current-cat-parent > a,
+  .o-sidebar .product-categories .current-cat > a {
+    color: #00adb5; }
+  .o-sidebar .product-categories .count {
+    font-size: 14px; }
 
 .o-sidebar__section {
   padding: 0 20px; }
@@ -1213,7 +1222,7 @@ a {
   margin-bottom: 80px;
   background-color: #fff;
   box-shadow: 0 1px 9px -1px rgba(16, 37, 64, 0.3);
-  color: #707c8c;
+  color: #00adb5;
   font-weight: 500;
   padding: 10px 0; }
   @media screen and (min-width: 600px) {
@@ -1241,7 +1250,8 @@ a {
 
 .c-woocommerce-breadcrumb__delimiter {
   padding-left: 5px;
-  padding-right: 5px; }
+  padding-right: 5px;
+  color: #707c8c; }
 
 .c-pagination {
   margin-bottom: 40px;
