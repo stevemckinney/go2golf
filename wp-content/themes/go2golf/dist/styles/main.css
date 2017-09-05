@@ -1521,6 +1521,20 @@ a {
   @media screen and (max-width: 669px) {
     .rwp-scores-sliders li {
       margin-bottom: 20px !important; } }
+  .rwp-scores-sliders input[type=text] {
+    text-align: center; }
+  .rwp-scores-sliders label {
+    margin-bottom: 10px !important; }
+  .rwp-scores-sliders .rwp-slider {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    width: 160px !important; }
+    .rwp-scores-sliders .rwp-slider.noUi-target {
+      border: 1px solid #e4edeb !important;
+      background-color: #1ACAB6 !important; }
+
+.rwp-review-wrap .rwp-review .rwp-ratings-form .rwp-rating-form-content .rwp-scores-sliders input[type=text] {
+  width: 75px !important; }
 
 .rwp-lab {
   font-size: 16px !important;

@@ -163,6 +163,30 @@
 			margin-bottom: map-get($dimensions-map, half-spacing-unit) !important;
 		}
 	}
+
+	input[type=text] {
+		text-align: center;
+	}
+
+	label {
+		margin-bottom: map-get($dimensions-map, quarter-spacing-unit) !important;
+	}
+
+	.rwp-slider {
+		margin-left: map-get($dimensions-map, quarter-spacing-unit) !important;
+		margin-right: map-get($dimensions-map, quarter-spacing-unit) !important;
+		width: 160px !important;
+
+		&.noUi-target {
+			border: map-get($visual-enhancements-map, border-primary) !important;
+			background-color: map-get($colors-map, java) !important;
+		}
+	}
+}
+
+// Override plugin specificity
+.rwp-review-wrap .rwp-review .rwp-ratings-form .rwp-rating-form-content .rwp-scores-sliders input[type=text] {
+	width: 75px !important;
 }
 
 .rwp-lab {
