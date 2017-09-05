@@ -215,6 +215,7 @@
 		&:active {
 			color: map-get($colors-map, bondi-blue) !important;
 			background-color: map-get($colors-map, white) !important;
+			background-image: none;
 		}
 
 		@include respond-to-max(get-breakpoint(small)) {

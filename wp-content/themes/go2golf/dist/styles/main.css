@@ -1551,7 +1551,8 @@ a {
   text-transform: none !important; }
   .rwp-submit-wrap input:hover, .rwp-submit-wrap input:focus, .rwp-submit-wrap input:active {
     color: #00adb5 !important;
-    background-color: #fff !important; }
+    background-color: #fff !important;
+    background-image: none; }
   @media screen and (max-width: 419px) {
     .rwp-submit-wrap input {
       float: none !important;

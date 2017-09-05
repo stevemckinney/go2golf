@@ -13,7 +13,7 @@ function get_user_review_count($post_id) {
 	return count($reviews);
 }
 
-function get_user_review_average($post_id) {
+function get_user_review_average($post_id, $include_difficulty_in_rating = false) {
 
 	if(!$post_id) {
 		trigger_error('No post ID supplied to function', E_USER_ERROR);
@@ -28,8 +28,15 @@ function get_user_review_average($post_id) {
 	// Init total of the average number of user ratings by criteria
 	$total_of_average_user_ratings = 0;
 
+	// Set the index key number for the "difficulty" criterion
+	$difficulty_criterion_index_key = 2;
+
 	// For every complete review
 	foreach ($reviews as $review_key => $review_set) {
+
+		if (!$include_difficulty_in_rating) {
+			unset($review_set['rating_score'][$difficulty_criterion_index_key]);
+		}
 
 		$rating_total = 0;
 		$average_rating_for_review = 0;
