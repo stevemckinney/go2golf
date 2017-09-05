@@ -84,6 +84,19 @@
 			font-weight: map-get($typography-map, bold-font-weight);
 		}
 
+		.cat-item {
+			cursor: pointer;
+
+			&:hover,
+			&:active,
+			&:focus {
+				
+				> a {
+					text-decoration: underline;
+				}
+			}
+		}
+
 		.children {
 			margin-left: map-get($dimensions-map, half-spacing-unit);
 		}

@@ -865,6 +865,10 @@ a {
     background-repeat: no-repeat; }
   .o-sidebar .product-categories > li > a {
     font-weight: 600; }
+  .o-sidebar .product-categories .cat-item {
+    cursor: pointer; }
+    .o-sidebar .product-categories .cat-item:hover > a, .o-sidebar .product-categories .cat-item:active > a, .o-sidebar .product-categories .cat-item:focus > a {
+      text-decoration: underline; }
   .o-sidebar .product-categories .children {
     margin-left: 20px; }
   .o-sidebar .product-categories .current-cat-parent > a,

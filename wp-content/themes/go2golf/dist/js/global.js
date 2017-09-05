@@ -55,4 +55,9 @@
         }
 	});
 
+	$('.product-categories .cat-item').click(function() {
+		var linkForCategory = $(this).children('a').attr('href');
+		window.location = linkForCategory;
+	});
+
 })(window);
