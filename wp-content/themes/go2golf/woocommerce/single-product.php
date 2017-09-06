@@ -319,19 +319,19 @@ get_header( 'shop' ); ?>
 
 												$stars_html = '
 												<div class="c-reviews-average-stars">
-												<div class="c-reviews-average-stars__active-stars" style="width:'.$stars_width.'%; font-family:serif;">
-													<span>&#9733;&#xFE0E</span>
-													<span>&#9733;&#xFE0E</span>
-													<span>&#9733;&#xFE0E</span>
-													<span>&#9733;&#xFE0E</span>
-													<span>&#9733;&#xFE0E</span>
+												<div class="c-reviews-average-stars__active-stars" style="width:'.$stars_width.'%;">
+													<img src="'.getThemePath(true).'/_source/images/mark-as-favorite-star-active.png">
+													<img src="'.getThemePath(true)	.'/_source/images/mark-as-favorite-star-active.png">
+													<img src="'.getThemePath(true).'/_source/images/mark-as-favorite-star-active.png">
+													<img src="'.getThemePath(true).'/_source/images/mark-as-favorite-star-active.png">
+													<img src="'.getThemePath(true).'/_source/images/mark-as-favorite-star-active.png">
 												</div><!--/.c-reviews-average-stars__active-stars -->
 												<div class="c-reviews-average-stars__inactive-stars">
-													<span>&#9733;&#xFE0E</span>
-													<span>&#9733;&#xFE0E</span>
-													<span>&#9733;&#xFE0E</span>
-													<span>&#9733;&#xFE0E</span>
-													<span>&#9733;&#xFE0E</span>
+													<img src="'.getThemePath(true).'/_source/images/mark-as-favorite-star-inactive.png">
+													<img src="'.getThemePath(true).'/_source/images/mark-as-favorite-star-inactive.png">
+													<img src="'.getThemePath(true).'/_source/images/mark-as-favorite-star-inactive.png">
+													<img src="'.getThemePath(true).'/_source/images/mark-as-favorite-star-inactive.png">
+													<img src="'.getThemePath(true).'/_source/images/mark-as-favorite-star-inactive.png">
 												</div><!--/.c-reviews-average-stars__inactive-stars -->
 												</div><!--/.c-reviews-average-stars -->
 												';

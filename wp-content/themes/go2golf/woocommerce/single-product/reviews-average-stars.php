@@ -26,17 +26,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="c-reviews-average-stars">
 	<p class="u-visuallyhidden"><?php echo get_user_review_average($post->ID); ?> out of 10</p>
 	<div class="c-reviews-average-stars__active-stars" style="width:<?php echo get_user_review_average($post->ID) * 100 / 10; ?>%">
-		<span>★</span>
-		<span>★</span>
-		<span>★</span>
-		<span>★</span>
-		<span>★</span>
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-active.png">
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-active.png">
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-active.png">
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-active.png">
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-active.png">
 	</div><!--/.c-reviews-average-stars__active-stars -->
 	<div class="c-reviews-average-stars__inactive-stars">
-		<span>★</span>
-		<span>★</span>
-		<span>★</span>
-		<span>★</span>
-		<span>★</span>
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-inactive.png">
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-inactive.png">
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-inactive.png">
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-inactive.png">
+		<img src="<?php getThemePath() ?>/_source/images/mark-as-favorite-star-inactive.png">
 	</div><!--/.c-reviews-average-stars__inactive-stars -->
 </div><!--/.c-reviews-average-stars -->

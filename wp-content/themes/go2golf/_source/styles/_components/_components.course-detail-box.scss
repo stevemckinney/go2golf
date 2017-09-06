@@ -55,6 +55,7 @@
 
 	@include respond-to-max(get-breakpoint(large)) {
 		display: inline-block;
+		vertical-align: middle;
 	}
 }
 
