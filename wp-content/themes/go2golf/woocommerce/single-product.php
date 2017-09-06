@@ -118,10 +118,10 @@ get_header( 'shop' ); ?>
 								</li>
 								<!--<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#courseInformation">Course information</a>
-								</li>
-								<li class="c-tabs__tab-label">
-									<a href="#reviews">Reviews <span class="o-notification o-notification--small">12</span></a>
 								</li>-->
+								<li class="c-tabs__tab-label">
+									<a href="#reviews">Reviews <span class="o-notification o-notification--small"><?php echo get_user_review_count($post->ID); ?></span></a>
+								</li>
 							</ul><!--/.c-tabs -->
 
 							<section id="contactInformation" class="o-panel o-panel--double o-panel--has-divider">
