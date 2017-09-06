@@ -319,7 +319,7 @@ get_header( 'shop' ); ?>
 
 												$stars_html = '
 												<div class="c-reviews-average-stars">
-												<div class="c-reviews-average-stars__active-stars" style="width:'.$stars_width.'%">
+												<div class="c-reviews-average-stars__active-stars" style="width:'.$stars_width.'%; font-family:serif;">
 													<span>&#9733;&#xFE0E</span>
 													<span>&#9733;&#xFE0E</span>
 													<span>&#9733;&#xFE0E</span>
