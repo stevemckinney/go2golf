@@ -987,6 +987,9 @@ a {
 @media screen and (max-width: 669px) {
   .c-course-result-item__info-section {
     padding: 20px; } }
+@media screen and (max-width: 959px) {
+  .c-course-result-item__info-section {
+    padding-right: 20px; } }
 
 .c-course-result-item__cta {
   border-radius: 4px;
@@ -995,25 +998,36 @@ a {
   background-repeat: no-repeat;
   background-position: 85% 50%;
   text-align: center; }
-  @media screen and (min-width: 670px) {
+  @media screen and (min-width: 960px) {
     .c-course-result-item__cta {
       position: absolute;
       bottom: 0;
       right: 0;
       border-radius: 4px 0 0 0; } }
-  @media screen and (max-width: 669px) {
+  @media screen and (max-width: 959px) {
     .c-course-result-item__cta {
       float: right;
       margin-bottom: 20px; } }
 
 .c-course-result-item__average-review-stars {
-  position: absolute;
-  top: 20px;
-  right: 40px;
+  display: block;
   color: #e4edeb; }
+  @media screen and (min-width: 960px) {
+    .c-course-result-item__average-review-stars {
+      position: absolute;
+      top: 20px;
+      right: 40px; } }
+  @media screen and (max-width: 959px) {
+    .c-course-result-item__average-review-stars {
+      margin-right: 5px;
+      margin-bottom: 20px; } }
 
-.c-course-result-item__average-review-stars-text {
-  text-align: right; }
+@media screen and (min-width: 960px) {
+  .c-course-result-item__average-review-stars-text {
+    text-align: right; } }
+@media screen and (max-width: 959px) {
+  .c-course-result-item__average-review-stars-text {
+    display: inline-block; } }
 
 .c-course-result-item__average-review-active-stars,
 .c-course-result-item__average-review-inactive-stars {
@@ -1059,12 +1073,24 @@ a {
   border-radius: 4px 0 0 4px; }
 
 .c-course-detail-box__average-review-stars {
-  position: absolute;
-  top: 20px;
-  right: 40px; }
+  display: inline-block; }
+  @media screen and (min-width: 960px) {
+    .c-course-detail-box__average-review-stars {
+      display: block;
+      position: absolute;
+      top: 20px;
+      right: 40px; } }
+  @media screen and (max-width: 959px) {
+    .c-course-detail-box__average-review-stars {
+      margin-right: 5px;
+      margin-bottom: 20px; } }
 
-.c-course-detail-box__average-review-stars-text {
-  text-align: right; }
+@media screen and (min-width: 960px) {
+  .c-course-detail-box__average-review-stars-text {
+    text-align: right; } }
+@media screen and (max-width: 959px) {
+  .c-course-detail-box__average-review-stars-text {
+    display: inline-block; } }
 
 .c-course-detail-box__key-features {
   padding-top: 20px;

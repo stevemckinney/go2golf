@@ -38,6 +38,10 @@
 	@include respond-to-max(get-breakpoint(med)) {
 		padding: map-get($dimensions-map, half-spacing-unit);
 	}
+
+	@include respond-to-max(get-breakpoint(large)) {
+		padding-right: map-get($dimensions-map, half-spacing-unit);
+	}
 }
 
 .c-course-result-item__cta {
@@ -49,28 +53,44 @@
 	background-position: 85% 50%;
 	text-align: center;
 
-	@include respond-to-min(get-breakpoint(med)) {
+	@include respond-to-min(get-breakpoint(large)) {
 		position: absolute;
 		bottom: 0;
 		right: 0;
 		border-radius: map-get($dimensions-map, border-radius) 0 0 0;
 	}
 
-	@include respond-to-max(get-breakpoint(med)) {
+	@include respond-to-max(get-breakpoint(large)) {
 		float: right;
 		margin-bottom: map-get($dimensions-map, half-spacing-unit);
 	}
 }
 
 .c-course-result-item__average-review-stars {
-	position: absolute;
-	top: map-get($dimensions-map, half-spacing-unit);
-	right: map-get($dimensions-map, base-spacing-unit);
+	display: block;
 	color: map-get($colors-map, mystic);
+	
+	@include respond-to-min(get-breakpoint(large)) {
+		position: absolute;
+		top: map-get($dimensions-map, half-spacing-unit);
+		right: map-get($dimensions-map, base-spacing-unit);
+	}
+
+	@include respond-to-max(get-breakpoint(large)) {
+		margin-right: map-get($dimensions-map, quarter-spacing-unit) /2;
+		margin-bottom: map-get($dimensions-map, half-spacing-unit);
+	}
 }
 
 .c-course-result-item__average-review-stars-text {
-	text-align: right;
+	
+	@include respond-to-min(get-breakpoint(large)) {
+		text-align: right;
+	}
+
+	@include respond-to-max(get-breakpoint(large)) {
+		display: inline-block;
+	}
 }
 
 .c-course-result-item__average-review-active-stars,
