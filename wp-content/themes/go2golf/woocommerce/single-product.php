@@ -320,18 +320,18 @@ get_header( 'shop' ); ?>
 												$stars_html = '
 												<div class="c-reviews-average-stars">
 												<div class="c-reviews-average-stars__active-stars" style="width:'.$stars_width.'%">
-													<span>★</span>
-													<span>★</span>
-													<span>★</span>
-													<span>★</span>
-													<span>★</span>
+													<span>&#9733;&#xFE0E</span>
+													<span>&#9733;&#xFE0E</span>
+													<span>&#9733;&#xFE0E</span>
+													<span>&#9733;&#xFE0E</span>
+													<span>&#9733;&#xFE0E</span>
 												</div><!--/.c-reviews-average-stars__active-stars -->
 												<div class="c-reviews-average-stars__inactive-stars">
-													<span>★</span>
-													<span>★</span>
-													<span>★</span>
-													<span>★</span>
-													<span>★</span>
+													<span>&#9733;&#xFE0E</span>
+													<span>&#9733;&#xFE0E</span>
+													<span>&#9733;&#xFE0E</span>
+													<span>&#9733;&#xFE0E</span>
+													<span>&#9733;&#xFE0E</span>
 												</div><!--/.c-reviews-average-stars__inactive-stars -->
 												</div><!--/.c-reviews-average-stars -->
 												';
