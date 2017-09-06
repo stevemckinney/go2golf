@@ -85,14 +85,9 @@
 	}
 }
 
-.c-reviews__breakdown-of-ratings-spread-scale-value,
 .c-reviews__breakdown-of-ratings-spread-count {
 	flex-basis: 15%;
 	font-size: map-get($typography-map, s-font-size);
-}
-
-.c-reviews__breakdown-of-ratings-spread-scale-value {
-	margin-right: map-get($dimensions-map, quarter-spacing-unit) /2;
 }
 
 .c-reviews__breakdown-of-ratings-spread-count {

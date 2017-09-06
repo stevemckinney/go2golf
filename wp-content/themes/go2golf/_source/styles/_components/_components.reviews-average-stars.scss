@@ -2,6 +2,12 @@
 	display: inline-block;
 	position: relative;
 	color: map-get($colors-map, mystic);
+
+	.c-reviews__breakdown-of-ratings-spread-item & {
+		margin-right: map-get($dimensions-map, quarter-spacing-unit);
+		text-align: left;
+		white-space: nowrap;
+	}
 }
 
 .c-reviews-average-stars__active-stars,
@@ -9,7 +15,14 @@
 	font-size: 0;
 
 	> span {
-		font-size: 1.4rem;
+		font-size: 1.4rem;		
+	}
+
+	.c-reviews__breakdown-of-ratings-spread-item & {
+
+		> span {
+			font-size: 1.2rem;
+		}
 	}
 }
 

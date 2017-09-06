@@ -286,37 +286,64 @@ get_header( 'shop' ); ?>
 										<h2 class="c-reviews__breakdown-heading">Reviews breakdown</h2>
 										<?php
 											$reviews = RWP_API::get_reviews_box_users_reviews($post->ID, -1, 'rwp_template_5872271b8991c');
-											$reviews_count = array();
+
+											$overall_average_ratings = [
+												'0.5 - 2' => 0,
+												'2.5 - 4' => 0,
+												'4.5 - 6' => 0,
+												'6.5 - 8' => 0,
+												'8.5 - 10' => 0 
+											];
 
 											foreach ($reviews['reviews'] as $review) {
-												foreach ($review['rating_score'] as $rating_value) {
-													$rating_value_as_integer = (int)$rating_value;
-													if (array_key_exists($rating_value_as_integer, $reviews_count)) {
-														$reviews_count[$rating_value_as_integer]++;
-													} else {
-														$reviews_count[$rating_value_as_integer] = 1;
-													}
-												}	
+												if ($review['rating_overall'] <= 2) {
+													$overall_average_ratings['0.5 - 2']++;
+												} else if ($review['rating_overall'] >= 2.5 && $review['rating_overall'] <= 4) {
+													$overall_average_ratings['2.5 - 4']++;
+												} else if ($review['rating_overall'] >= 4.5 && $review['rating_overall'] <= 6) {
+													$overall_average_ratings['4.5 - 6']++;
+												} else if ($review['rating_overall'] >= 6.5 && $review['rating_overall'] <= 8) {
+													$overall_average_ratings['6.5 - 8']++;
+												} else if ($review['rating_overall'] >= 8.5 && $review['rating_overall'] <= 10) {
+													$overall_average_ratings['8.5 - 10']++;
+												}
+											}
+
+											$stars_width = 20;
+											foreach ($overall_average_ratings as $average_rating_range => $average_rating_range_count) {
+												$total_number_of_reviews = $reviews['count'];
+												$percentage_rating_for_range = $average_rating_range_count / $total_number_of_reviews * 100;
+
+												echo '<div class="c-reviews__breakdown-of-ratings-spread-item">';
+
+												$stars_html = '
+												<div class="c-reviews-average-stars">
+												<div class="c-reviews-average-stars__active-stars" style="width:'.$stars_width.'%">
+													<span>★</span>
+													<span>★</span>
+													<span>★</span>
+													<span>★</span>
+													<span>★</span>
+												</div><!--/.c-reviews-average-stars__active-stars -->
+												<div class="c-reviews-average-stars__inactive-stars">
+													<span>★</span>
+													<span>★</span>
+													<span>★</span>
+													<span>★</span>
+													<span>★</span>
+												</div><!--/.c-reviews-average-stars__inactive-stars -->
+												</div><!--/.c-reviews-average-stars -->
+												';
+
+												echo $stars_html;
+
+												echo '<div class="c-reviews__breakdown-of-ratings-spread-bar"><span style="width:'.$percentage_rating_for_range.'%"></span></div>';
+												echo '<p class="c-reviews__breakdown-of-ratings-spread-count">'.$average_rating_range_count.'</p>';
+												echo '</div>';
+
+												$stars_width = $stars_width + 20;
 											}
 											
-											$rating_scale = [0,1,2,3,4,5,6,7,8,9,10];
-											$total_number_of_individual_ratings = array_sum($reviews_count);
-											$html = '';
-											foreach ($rating_scale as $scale_value) {
-												echo '<div class="c-reviews__breakdown-of-ratings-spread-item">';
-												echo '<p class="c-reviews__breakdown-of-ratings-spread-scale-value">'.$scale_value.'</p>';
-
-												if (array_key_exists($scale_value, $reviews_count)) {
-													$percentage_rating_for_scale_value = floor($reviews_count[$scale_value] / $total_number_of_individual_ratings * 100);
-													//echo $percentage_rating_for_scale_value.' ';
-													echo '<div class="c-reviews__breakdown-of-ratings-spread-bar"><span style="width:'.$percentage_rating_for_scale_value.'%"></span></div>';
-													echo '<p class="c-reviews__breakdown-of-ratings-spread-count">'.$reviews_count[$scale_value].'</p>';
-												} else {
-													echo '<div class="c-reviews__breakdown-of-ratings-spread-bar"><span ></span></div>';
-													echo '<p class="c-reviews__breakdown-of-ratings-spread-count">0</p>';
-												}
-												echo '</div>';
-											}
 										?>
 									</div><!--/.c-reviews__breakdown -->
 								</div><!--/.c-reviews__breakdowns -->

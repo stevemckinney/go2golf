@@ -306,12 +306,6 @@ class RWP_Preferences_Page extends RWP_Admin_Page
 				continue;
 			}
 
-			if( ( $field_id != 'preferences_rating_allow_zero' || $field_id != 'preferences_numeric_rating_in_user_review' ) && ! isset( $fields[ $field_id ] ) ) { // The field is not set
-
-				$valids[ $field_id ] = $default;
-				continue;
-			}
-
 			switch ( $field_id ) {
 
 				case 'preferences_users_reviews_per_page':
@@ -492,6 +486,18 @@ class RWP_Preferences_Page extends RWP_Admin_Page
 
 					$valids[ $field_id ] = $value;
 					$valids[ 'preferences_authorization_roles' ] = $vroles;
+					break;
+
+				case 'preferences_sharing_networks': 
+				case 'preferences_nofollow': 
+				case 'preferences_post_types':
+					if( !isset( $fields[ $field_id ] ) || !is_array( $fields[ $field_id ] ) ) {
+						$valids[ $field_id ] = $default;
+					} else {
+						foreach ( $fields[ $field_id ] as $post_type) {
+							$valids[ $field_id ][] = esc_sql( esc_html( $post_type ) ); 							
+						}
+					}
 					break;
 
 				default:
