@@ -29,7 +29,7 @@ $tabs-top-offset: - $tabs-spacing * 1.5;
 
 	@supports (display: flex) {
 		display: flex;
-		// justify-content: space-around;
+		flex-wrap: wrap;
 	}
 }
 
@@ -45,6 +45,10 @@ $tabs-top-offset: - $tabs-spacing * 1.5;
 
 	@include respond-to-min(get-breakpoint(small)) {
 		margin-right: map-get($dimensions-map, half-spacing-unit);
+	}
+
+	@include respond-to-max(get-breakpoint(med)) {
+		flex-basis: 100%;
 	}
 
 	@supports (display: flex) {
@@ -64,11 +68,9 @@ $tabs-top-offset: - $tabs-spacing * 1.5;
 }
 
 .c-tabs__tab-label--has-sibling {
-	border-right: map-get($visual-enhancements-map, border-primary);
-	margin-right: map-get($dimensions-map, quarter-spacing-unit);
-	padding-right: map-get($dimensions-map, quarter-spacing-unit);
 
-	@include respond-to-min(get-breakpoint(small)) {
+	@include respond-to-min(get-breakpoint(med)) {
+		border-right: map-get($visual-enhancements-map, border-primary);
 		margin-right: map-get($dimensions-map, base-spacing-unit);
 		padding-right: map-get($dimensions-map, base-spacing-unit);
 	}

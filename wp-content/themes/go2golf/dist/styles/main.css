@@ -1207,7 +1207,8 @@ a {
   border-radius: 4px; }
   @supports (display: flex) {
     .c-tabs {
-      display: flex; } }
+      display: flex;
+      flex-wrap: wrap; } }
 
 .c-tabs--pull-top {
   position: relative;
@@ -1220,6 +1221,9 @@ a {
   @media screen and (min-width: 420px) {
     .c-tabs__tab-label {
       margin-right: 20px; } }
+  @media screen and (max-width: 669px) {
+    .c-tabs__tab-label {
+      flex-basis: 100%; } }
   @supports (display: flex) {
     .c-tabs__tab-label {
       margin-right: 0;
@@ -1232,14 +1236,11 @@ a {
     text-decoration: none;
     color: #102540; }
 
-.c-tabs__tab-label--has-sibling {
-  border-right: 1px solid #e4edeb;
-  margin-right: 10px;
-  padding-right: 10px; }
-  @media screen and (min-width: 420px) {
-    .c-tabs__tab-label--has-sibling {
-      margin-right: 40px;
-      padding-right: 40px; } }
+@media screen and (min-width: 670px) {
+  .c-tabs__tab-label--has-sibling {
+    border-right: 1px solid #e4edeb;
+    margin-right: 40px;
+    padding-right: 40px; } }
 
 .c-facility-indicator {
   padding: 20px;

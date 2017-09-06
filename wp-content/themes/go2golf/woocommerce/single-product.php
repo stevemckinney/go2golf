@@ -113,7 +113,7 @@ get_header( 'shop' ); ?>
 								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#contactInformation">Contact information</a>
 								</li>
-								<li style="text-align:left; border:0" class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
+								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#facilities">Facilities</a>
 								</li>
 								<!--<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
