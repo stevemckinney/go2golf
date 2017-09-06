@@ -48,6 +48,7 @@ get_header( 'shop' ); ?>
 									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id($post->ID); ?></h3>
 									<div class="c-course-detail-box__average-review-stars">
 										<?php wc_get_template_part( 'single-product/reviews-average', 'stars' ); ?>
+										<p class="c-course-detail-box__average-review-stars-text"><?php echo get_user_review_average($post->ID); ?> / 10</p>
 									</div><!--/.c-course-detail-box__average-review-stars -->
 									<div class="c-course-detail-box__key-features">
 										<div class="c-course-detail-box__key-feature c-course-detail-box__key-feature--holes">

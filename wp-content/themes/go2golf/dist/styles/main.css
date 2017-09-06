@@ -1012,6 +1012,9 @@ a {
   right: 40px;
   color: #e4edeb; }
 
+.c-course-result-item__average-review-stars-text {
+  text-align: right; }
+
 .c-course-result-item__average-review-active-stars,
 .c-course-result-item__average-review-inactive-stars {
   font-size: 0; }
@@ -1059,6 +1062,9 @@ a {
   position: absolute;
   top: 20px;
   right: 40px; }
+
+.c-course-detail-box__average-review-stars-text {
+  text-align: right; }
 
 .c-course-detail-box__key-features {
   padding-top: 20px;

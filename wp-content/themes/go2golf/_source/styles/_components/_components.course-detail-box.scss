@@ -37,6 +37,9 @@
 	right: map-get($dimensions-map, base-spacing-unit);
 }
 
+.c-course-detail-box__average-review-stars-text {
+	text-align: right;
+}
 
 .c-course-detail-box__key-features {
 	padding-top: map-get($dimensions-map, half-spacing-unit);

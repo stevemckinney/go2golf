@@ -69,6 +69,10 @@
 	color: map-get($colors-map, mystic);
 }
 
+.c-course-result-item__average-review-stars-text {
+	text-align: right;
+}
+
 .c-course-result-item__average-review-active-stars,
 .c-course-result-item__average-review-inactive-stars {
 	font-size: 0;
