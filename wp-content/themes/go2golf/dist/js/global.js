@@ -60,4 +60,10 @@
 		window.location = linkForCategory;
 	});
 
+	$('[data-nav-toggle]').click(function() {
+		$('.c-primary-nav').toggleClass('c-primary-nav--active');
+		$('body').toggleClass('no-scrolling');
+		($('[data-nav-toggle]').attr('data-nav-toggle') === 'active') ? $('[data-nav-toggle]').attr('data-nav-toggle', 'inactive').text('Menu') : $('[data-nav-toggle]').attr('data-nav-toggle', 'active').text('Close');
+	});
+
 })(window);

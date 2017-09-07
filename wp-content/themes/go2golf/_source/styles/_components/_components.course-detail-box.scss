@@ -102,7 +102,7 @@
 		width: 100%;
 		bottom: 0;
 		display: flex;
-		z-index: 2;
+		z-index: map-get($z-index-map, course-detail-ctas);
 		padding: map-get($dimensions-map, quarter-spacing-unit);
 		background-color: map-get($colors-map, white);
 		box-shadow: map-get($visual-enhancements-map, box-shadow-primary);

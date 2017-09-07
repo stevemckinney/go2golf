@@ -21,3 +21,10 @@
 	position: absolute;
 	width: 100%;
 }
+
+.c-masthead__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
