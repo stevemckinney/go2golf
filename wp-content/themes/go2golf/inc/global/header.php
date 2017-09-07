@@ -19,6 +19,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					<h1>
 						<img src="<?php echo bloginfo('template_directory'); ?>/_source/images/icons/logo.svg" alt="Go 2 Golf">
 					</h1>
+					<span class="c-primary-nav__toggle" data-nav-toggle="inactive">Menu</span>
 					<nav class="c-primary-nav">
 						<ul class="c-primary-nav__list">
 							<?php wp_list_categories($nav_menu_args); ?>
@@ -36,6 +37,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 							<img src="<?php echo bloginfo('template_directory'); ?>/_source/images/icons/logo-white.svg" alt="Go 2 Golf">
 						</a>
 					</h1>
+					<span class="c-primary-nav__toggle" data-nav-toggle="inactive">Menu</span>
 					<nav class="c-primary-nav">
 						<ul class="c-primary-nav__list">
 							<?php wp_list_categories($nav_menu_args); ?>

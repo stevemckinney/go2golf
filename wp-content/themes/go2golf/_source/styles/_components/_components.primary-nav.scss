@@ -98,3 +98,56 @@
 		}
 	}
 }
+
+
+
+/**
+* Responsive nav
+**/
+
+.c-primary-nav {
+
+	@include respond-to-max(get-breakpoint(large)) {
+		display: none;
+	}
+}
+
+.c-primary-nav--active {
+
+	@include respond-to-max(get-breakpoint(large)) {
+		display: block;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		padding-top: map-get($dimensions-map, base-spacing-unit) *1.5;
+		background-color: map-get($colors-map, white);
+		z-index: map-get($z-index-map, primary-nav-active);
+
+		.c-primary-nav__list {
+			display: block;
+			text-align: center;
+		}
+
+		.c-primary-nav__list .cat-item > a {
+			color: map-get($colors-map, default-text-color);
+		}
+	}
+}
+
+.c-primary-nav__toggle {
+	display: none;
+	padding: map-get($dimensions-map, quarter-spacing-unit);
+	margin-right: -#{map-get($dimensions-map, quarter-spacing-unit)};
+	color: map-get($colors-map, white);
+
+	&[data-nav-toggle="active"] {
+		color: map-get($colors-map, default-text-color);
+		z-index: map-get($z-index-map, primary-nav-toggle);
+	}
+
+	@include respond-to-max(get-breakpoint(large)) {
+		display:block;
+	}
+}
