@@ -1,0 +1,100 @@
+// This code contains some styling for the instance of having two children navs (i.e. a grandchild menu)
+
+.c-primary-nav {
+
+	.c-primary-nav__list {
+		display: flex;
+		list-style: none;
+	
+		> .cat-item {
+			margin-left: map-get($dimensions-map, quarter-spacing-unit);
+			margin-right: map-get($dimensions-map, quarter-spacing-unit);
+
+			> a {
+				display: inline-block;
+				padding-bottom: map-get($dimensions-map, quarter-spacing-unit) /2;
+			}
+		}
+
+		.cat-item > .children {
+			display: none;
+			list-style: none;
+			padding-top: map-get($dimensions-map, half-spacing-unit);
+			padding-bottom: map-get($dimensions-map, half-spacing-unit);
+			background-color: map-get($colors-map, white);
+			box-shadow: map-get($visual-enhancements-map, box-shadow-primary);
+			z-index: map-get($z-index-map, primary-nav-children);
+
+			&:before {
+				content: '';
+				position: absolute;
+				top: -6px;
+				left: 5px;
+				border-left: 7px solid transparent;
+				border-right: 7px solid transparent;
+				border-bottom: 7px solid map-get($colors-map, white);
+			}
+
+			.cat-item {
+				padding-left: map-get($dimensions-map, third-spacing-unit);
+				padding-right: map-get($dimensions-map, third-spacing-unit);
+			}
+		}
+
+		.cat-item:hover > .children {
+			display: block;
+		}
+
+		> .cat-item > .children {
+			position: absolute;
+			border-radius: map-get($dimensions-map, border-radius);
+
+			> .cat-item > a {
+				display: block;
+				font-weight: map-get($typography-map, medium-font-weight);
+				margin-bottom: map-get($dimensions-map, quarter-spacing-unit) /2;
+			}
+		}
+
+		.cat-item .cat-item > .children {
+			position: absolute;
+			top: 0;
+			left: 100%;
+			min-width: 100%;;
+			min-height: 100%;
+			margin-left: -#{map-get($dimensions-map, quarter-spacing-unit) /2};
+			border-radius: 0 map-get($dimensions-map, border-radius) map-get($dimensions-map, border-radius) 0;
+			box-shadow: 5px 1px 9px -5px rgba(map-get($colors-map, blue-zodiac), .3);
+
+			.cat-item > a {
+				display: inline-block;
+				padding-bottom: map-get($dimensions-map, quarter-spacing-unit) /2;
+				margin-bottom: map-get($dimensions-map, quarter-spacing-unit) /2;
+				border-bottom: map-get($visual-enhancements-map, border-primary);
+				font-size: map-get($typography-map, m-font-size);
+			}
+		}
+	
+		.cat-item > a {
+			font-size: map-get($typography-map, l-font-size);
+			color: map-get($colors-map, white);
+			text-decoration: none;
+		}
+
+		.cat-item {
+
+			&:hover,
+			&:active,
+			&:focus {
+
+				> a {
+					text-decoration: underline;
+				}
+			}
+		}
+
+		.cat-item .children .cat-item > a {
+			color: map-get($colors-map, default-text-color);
+		}
+	}
+}
