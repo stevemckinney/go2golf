@@ -298,31 +298,35 @@ get_header( 'shop' ); ?>
 											$reviews = RWP_API::get_reviews_box_users_reviews($post->ID, -1, 'rwp_template_5872271b8991c');
 
 											$overall_average_ratings = [
-												'0.5 - 2' => 0,
-												'2.5 - 4' => 0,
-												'4.5 - 6' => 0,
-												'6.5 - 8' => 0,
-												'8.5 - 10' => 0 
+												'0.1 - 2' => 0,
+												'2.1 - 4' => 0,
+												'4.1 - 6' => 0,
+												'6.1 - 8' => 0,
+												'8.1 - 10' => 0 
 											];
 
 											foreach ($reviews['reviews'] as $review) {
 												if ($review['rating_overall'] <= 2) {
-													$overall_average_ratings['0.5 - 2']++;
-												} else if ($review['rating_overall'] >= 2.5 && $review['rating_overall'] <= 4) {
-													$overall_average_ratings['2.5 - 4']++;
-												} else if ($review['rating_overall'] >= 4.5 && $review['rating_overall'] <= 6) {
-													$overall_average_ratings['4.5 - 6']++;
-												} else if ($review['rating_overall'] >= 6.5 && $review['rating_overall'] <= 8) {
-													$overall_average_ratings['6.5 - 8']++;
-												} else if ($review['rating_overall'] >= 8.5 && $review['rating_overall'] <= 10) {
-													$overall_average_ratings['8.5 - 10']++;
+													$overall_average_ratings['0.1 - 2']++;
+												} else if ($review['rating_overall'] >= 2.1 && $review['rating_overall'] <= 4) {
+													$overall_average_ratings['2.1 - 4']++;
+												} else if ($review['rating_overall'] >= 4.1 && $review['rating_overall'] <= 6) {
+													$overall_average_ratings['4.1 - 6']++;
+												} else if ($review['rating_overall'] >= 6.1 && $review['rating_overall'] <= 8) {
+													$overall_average_ratings['6.1 - 8']++;
+												} else if ($review['rating_overall'] >= 8.1 && $review['rating_overall'] <= 10) {
+													$overall_average_ratings['8.1 - 10']++;
 												}
 											}
 
 											$stars_width = 20;
 											foreach ($overall_average_ratings as $average_rating_range => $average_rating_range_count) {
 												$total_number_of_reviews = $reviews['count'];
-												$percentage_rating_for_range = $average_rating_range_count / $total_number_of_reviews * 100;
+												if($total_number_of_reviews > 0) {
+													$percentage_rating_for_range = $average_rating_range_count / $total_number_of_reviews * 100;
+												} else {
+													$percentage_rating_for_range = 0;
+												}
 
 												echo '<div class="c-reviews__breakdown-of-ratings-spread-item">';
 
