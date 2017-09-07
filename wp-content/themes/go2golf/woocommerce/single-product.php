@@ -268,7 +268,16 @@ get_header( 'shop' ); ?>
 									<a href="#review-form" class="c-reviews__leave-review-prompt">Leave a review</a>
 								</div><!--/.c-reviews__header-strip -->
 								<div class="c-reviews__breakdowns">
-									<div class="c-reviews__breakdown">
+									<div class="c-reviews__breakdown" itemscope itemtype="http://schema.org/LocalBusiness">
+										<span itemprop="name"><?php the_title(); ?></span>
+										<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+											<div class="u-visuallyhidden">
+												<meta itemprop="worstRating" content="1"/>
+												<span itemprop="ratingValue"><?php echo get_user_review_average($post->ID);?></span> out of 
+												<span itemprop="bestRating">10</span> with
+												<span itemprop="ratingCount"><?php echo get_user_review_count($post->ID)?></span> ratings
+											</div>
+										</div>
 										<h2 class="c-reviews__breakdown-heading">Average course rating</h2>
 										<p class="c-reviews__breakdown-average-rating-text"><?php echo get_user_review_average($post->ID);?><span class="c-reviews__breakdown-average-rating-seperator">/</span>10</p>
 										<p class="c-reviews__breakdown-average-rating-count">(<?php echo get_user_review_count($post->ID) . ' review' . (get_user_review_count($post->ID) > 1 ? 's' : ''); ?>)</p>
