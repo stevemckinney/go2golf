@@ -1569,7 +1569,6 @@ a {
   cursor: pointer;
   transition: .5s ease-in-out;
   padding: 10px;
-  margin-right: -10px;
   color: #fff; }
   .c-primary-nav__toggle[data-nav-toggle="active"] {
     color: #102540;
