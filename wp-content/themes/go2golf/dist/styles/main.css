@@ -1575,7 +1575,7 @@ a {
     color: #102540;
     z-index: 4; }
     .c-primary-nav__toggle[data-nav-toggle="active"] > span {
-      background: #102540; }
+      background-color: #102540; }
     .c-primary-nav__toggle[data-nav-toggle="active"] > span:nth-child(1) {
       top: 12px;
       transform: rotate(135deg); }
@@ -1593,12 +1593,14 @@ a {
     position: absolute;
     height: 4px;
     width: 100%;
-    background: #fff;
+    background-color: #fff;
     border-radius: 9px;
     opacity: 1;
     left: 0;
     transform: rotate(0deg);
     transition: .25s ease-in-out; }
+  .c-primary-nav__toggle.c-primary-nav__toggle--dark > span {
+    background-color: #102540; }
   .c-primary-nav__toggle > span:nth-child(1) {
     top: 0px; }
   .c-primary-nav__toggle > span:nth-child(2) {

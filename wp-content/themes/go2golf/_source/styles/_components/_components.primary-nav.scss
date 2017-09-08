@@ -194,7 +194,7 @@
 		z-index: map-get($z-index-map, primary-nav-toggle);
 
 		> span {
-			background: map-get($colors-map, default-text-color);
+			background-color: map-get($colors-map, default-text-color);
 		}
 
 		> span:nth-child(1) {
@@ -222,12 +222,19 @@
 		position: absolute;
 		height: 4px;
 		width: 100%;
-		background: map-get($colors-map, white);
+		background-color: map-get($colors-map, white);
 		border-radius: 9px;
 		opacity: 1;
 		left: 0;
 		transform: rotate(0deg);
 		transition: .25s ease-in-out;
+	}
+
+	&.c-primary-nav__toggle--dark {
+
+		> span {
+			background-color: map-get($colors-map, default-text-color);
+		}
 	}
 
 	> span:nth-child(1) {

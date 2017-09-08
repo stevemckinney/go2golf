@@ -22,7 +22,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					<h1>
 						<img src="<?php echo bloginfo('template_directory'); ?>/_source/images/icons/logo.svg" alt="Go 2 Golf">
 					</h1>
-					<span class="c-primary-nav__toggle" data-nav-toggle="inactive">
+					<span class="c-primary-nav__toggle c-primary-nav__toggle--dark" data-nav-toggle="inactive">
 						<span></span>
 						<span></span>
 						<span></span>
