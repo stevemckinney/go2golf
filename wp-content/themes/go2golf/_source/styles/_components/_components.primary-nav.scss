@@ -5,6 +5,10 @@
 	.c-primary-nav__list {
 		display: flex;
 		list-style: none;
+
+		@include respond-to-min(get-breakpoint(large)) {
+			padding-right: map-get($dimensions-map, double-spacing-unit);
+		}
 	
 		> .cat-item {
 			margin-left: map-get($dimensions-map, quarter-spacing-unit);
