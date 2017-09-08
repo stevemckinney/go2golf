@@ -53,7 +53,15 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 					<h3 class="c-course-result-item__location"><?php echo get_first_product_category_from_id($post->id); ?></h3>
 					<div class="c-course-result-item__average-review-stars">
 						<?php wc_get_template_part( 'single-product/reviews-average', 'stars' ); ?>
-						<p class="c-course-result-item__average-review-stars-text"><?php echo get_user_review_average($post->ID); ?> / 10</p>
+						<p class="c-course-result-item__average-review-stars-text">
+							<?php 
+							if (get_user_review_count($post->ID) > 0) {
+								echo get_user_review_average($post->ID) .' / 10';
+							} else {
+								echo '0 reviews';
+							}
+							?>
+						</p>
 					</div>
 					<span class="o-btn o-btn--primary c-course-result-item__cta">View course</span>
 
