@@ -131,17 +131,17 @@
 
 	@include respond-to-max(get-breakpoint(large)) {
 		display: none;
-	}
 
-	.c-primary-nav__list {
+		.c-primary-nav__list {
 
-		.cat-item > .children {
-			position: relative;
-			display: none;
-	
-			&.is-active {
-				display: block;
-				padding-top: 0;
+			.cat-item > .children {
+				position: relative;
+				display: none;
+		
+				&.is-active {
+					display: block;
+					padding-top: 0;
+				}
 			}
 		}
 	}

@@ -1530,13 +1530,13 @@ a {
 **/
 @media screen and (max-width: 959px) {
   .c-primary-nav {
-    display: none; } }
-.c-primary-nav .c-primary-nav__list .cat-item > .children {
-  position: relative;
-  display: none; }
-  .c-primary-nav .c-primary-nav__list .cat-item > .children.is-active {
-    display: block;
-    padding-top: 0; }
+    display: none; }
+    .c-primary-nav .c-primary-nav__list .cat-item > .children {
+      position: relative;
+      display: none; }
+      .c-primary-nav .c-primary-nav__list .cat-item > .children.is-active {
+        display: block;
+        padding-top: 0; } }
 
 @media screen and (max-width: 959px) {
   .c-primary-nav--active {
