@@ -18,7 +18,7 @@
 <![endif]-->
 
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
-<link rel="shortcut icon" href="<?php echo getBasePath(); ?>/favicon.ico" rel="shortcut icon">
+<link rel="shortcut icon" href="<?php echo getBasePath(); ?>/favicon.png" rel="shortcut icon">
 
 <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600" rel="stylesheet">
 
