@@ -1,7 +1,5 @@
 (function(window) {
-'use strict';
-
-  var listToggle = '<span class="list-toggle"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12.00061 12" fill="currentcolor"><path d="M11.93127,4.18115,6.18274,9.92969a.26038.26038,0,0,1-.36133,0L.07288,4.18115a.26038.26038,0,0,1,0-.36133L1.82239,2.07031a.26038.26038,0,0,1,.36133,0L6.00208,5.90283,9.82043,2.07031a.26038.26038,0,0,1,.36133,0l1.74951,1.74951a.27.27,0,0,1,0,.36133Z"/></svg></span>';
+  'use strict';
 
 	function stickySidebar() {
 		if (window.innerWidth >= 960) {
@@ -73,11 +71,4 @@
 		var subNav = $(this).next('.children');
 		subNav.toggleClass('is-active');
 	});
-	
-	$('.cat-parent').append(listToggle);
-	
-	$('.cat-parent').on('click', '.list-toggle', function() {
-  	$(this).siblings('.children').toggle();
-	});
-
 })(window);

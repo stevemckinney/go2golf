@@ -9,6 +9,7 @@
 	}
 
 	li {
+  	position: relative;
 		list-style: none;
 
 		a {
@@ -154,14 +155,26 @@
 }
 
 
-// Toggle related CSS
-.cat-parent {
-  position: relative;
-}
-  
-.list-toggle {
+// Indicator
+.current-cat-parent,
+.current-cat,
+.current-cat .children li { &:after {
+  content: "";
   position: absolute;
-  top: 0;
   right: 0;
-  padding: map-get($dimensions-map, half-spacing-unit);
-}
+  width: 48px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-image: url(../images/icons/navigatedown.svg);
+  background-position: center center; } }
+  
+.current-cat-parent:after { top: 24px; }
+.current-cat:after,
+.current-cat .children li:after { top: 13px; }
+
+.current-cat .children li:after { transform: rotate(.75turn); }
+
+/*
+.current-cat-parent {
+  background-position: right #{map-get($dimensions-map, half-spacing-unit)} top 26px; }
+*/
