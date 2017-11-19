@@ -109,6 +109,7 @@
 		}
 
 		.children {
+  		display: block;
 			margin: 0;
 			padding: 0;
 			background-color: rgba(map-get($colors-map, mystic), .4);
@@ -158,6 +159,7 @@
 // Indicator
 .current-cat-parent,
 .current-cat,
+.current-cat-parent .cat-item,
 .current-cat .children li { &:after {
   content: "";
   position: absolute;
@@ -169,9 +171,13 @@
   background-position: center center; } }
   
 .current-cat-parent:after { top: 24px; }
-.current-cat:after,
+.current-cat:after { top: 22px; }
+
+.current-cat-parent .cat-item:after,
+.current-cat-parent .current-cat.cat-parent:after,
 .current-cat .children li:after { top: 13px; }
 
+.current-cat-parent .cat-item:after,
 .current-cat .children li:after { transform: rotate(.75turn); }
 
 /*
