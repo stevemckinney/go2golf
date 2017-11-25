@@ -44,7 +44,7 @@ get_header( 'shop' ); ?>
 									<?php wc_get_template_part( 'single-product/product', 'image' ); ?>
 								</div><!--/.o-grid__col -->
 								<div class="o-grid__col o-grid__col--7/12--small">
-									<h2 class="c-course-detail-box__name"><?php the_title(); ?></h2>
+									<h1 class="c-course-detail-box__name"><?php the_title(); ?></h1>
 									<h3 class="c-course-detail-box__location"><?php echo get_first_product_category_from_id($post->ID); ?></h3>
 									<div class="c-course-detail-box__average-review-stars">
 										<?php wc_get_template_part( 'single-product/reviews-average', 'stars' ); ?>
