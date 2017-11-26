@@ -55,7 +55,7 @@
         }
 	});
 
-	$('.product-categories .cat-item').click(function(e) {
+	$('.o-sidebar .product-categories .cat-item').click(function(e) {
   	e.preventDefault();
   	e.stopPropagation();
 		var linkForCategory = $(this).find('> a:eq(0)').attr('href');
