@@ -67,4 +67,11 @@
 		$('body').toggleClass('no-scrolling');
 		($('[data-nav-toggle]').attr('data-nav-toggle') === 'active') ? $('[data-nav-toggle]').attr('data-nav-toggle', 'inactive') : $('[data-nav-toggle]').attr('data-nav-toggle', 'active');
 	});
+
+	$('.c-primary-nav__list > .cat-item > a').click(function () {
+		event.preventDefault();
+		var subNav = $(this).next('.children');
+		subNav.toggleClass('is-active');
+	});
+
 })(window);
