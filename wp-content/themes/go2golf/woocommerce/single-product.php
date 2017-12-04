@@ -124,9 +124,9 @@ get_header( 'shop' ); ?>
 								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#facilities">Facilities</a>
 								</li>
-								<!--<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
+								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
 									<a href="#courseInformation">Course information</a>
-								</li>-->
+								</li>
 								<li class="c-tabs__tab-label">
 									<a href="#reviews">Reviews <span class="o-notification o-notification--small"><?php echo get_user_review_count($post->ID); ?></span></a>
 								</li>
@@ -231,9 +231,9 @@ get_header( 'shop' ); ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
-							<section style="display:none" id="courseInformation" class="o-panel o-panel--double o-panel--has-divider">
+							<section id="courseInformation" class="o-panel o-panel--double o-panel--has-divider">
 								<h1 class="o-heading--secondary">Course information</h1>
-								<div class="o-grid">
+								<div class="o-grid" style="display:none">
 									<div class="o-grid__col o-grid__col--1/2">
 										<p>We don't have course information data in long text form... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam maxime ullam cum obcaecati, minus, magnam dolorem aspernatur iste ex eligendi quam illum, tenetur quod illo velit accusamus omnis voluptatibus, dolores.</p>
 									</div><!--/.o-grid__col -->
@@ -243,7 +243,7 @@ get_header( 'shop' ); ?>
 								</div><!--/.o-grid -->
 								<h2 class="o-heading--secondary">Overview</h2>
 								<div class="o-grid">
-									<div class="o-grid__col o-grid__col--1/2">
+									<div class="o-grid__col o-grid__col--1/2" style="display:none;">
 										<table>
 											<tbody>
 												<tr>
@@ -265,8 +265,8 @@ get_header( 'shop' ); ?>
 											</tbody>
 										</table>
 									</div><!--/.o-grid__col -->
-									<div class="o-grid__col o-grid__col--1/2">
-										<p>We don't have course information data in long text form... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam maxime ullam cum obcaecati, minus, magnam dolorem aspernatur iste ex eligendi quam illum, tenetur quod illo velit accusamus omnis voluptatibus, dolores.</p>
+									<div class="o-grid__col">
+										<?php the_field('course_course_overview'); ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
