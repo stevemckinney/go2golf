@@ -33,6 +33,9 @@ get_header( 'shop' ); ?>
 			</div><!--/.o-grid__col -->
 			<div class="o-grid__col o-grid__col--2/3--x-large">
 				<h1 class="t-push-bottom--half">Golf courses in <?php woocommerce_page_title(); ?></h1>
+				<div class="t-push-bottom--half">
+					<?php do_action( 'woocommerce_archive_description' ); ?>
+				</div><!--/t-psuh-bottom-half -->
 			   <?php if ( have_posts() ) : ?>
 
 			   	<?php
