@@ -144,11 +144,17 @@ if (is_admin()) {
 		else if ($postStatus == 'publish') {
 
 			// New place.
+			$lat = get_field('course_latitude', $postID);
+			$lng = get_field('course_longitude', $postID);
 			$newPlace = array(
 				'ID' => $postID,
-				'latLng'  => array(get_field('course_latitude', $postID), get_field('course_longitude', $postID)),
+				'latLngRadians' => array(
+ 					deg2rad( floatval($lat) ),
+ 					deg2rad( floatval($lng) ),
+ 				),
 				'title'  => get_the_title($postID),
 			);
+
 
 			// If this is an update, find the entry in the option and update it.
 			// Otherwise, add it to the array and update the option.
