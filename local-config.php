@@ -7,7 +7,7 @@ define('PROJECT_NAME', 'go2golf');
 $project_name = PROJECT_NAME;
 
 $environments = array(
-    'local_james' => 'goandgolf.dev',
+    'local_james' => 'goandgolf.local',
     'local_steve' => 'goandgolf.dev',
     'stage' => 'stage.',
     'live' => 'goandgolf.co.uk'
@@ -33,8 +33,8 @@ switch( ENVIRONMENT ) {
         define( 'DB_PASSWORD', 'uB9SNHczbuEmWDJC' );
         define( 'DB_HOST', 'localhost' );
         define( 'WP_DEBUG', true );
-        define( 'WP_SITEURL', 'http://goandgolf.dev' );
-        define( 'WP_HOME', 'http://goandgolf.dev' );
+        define( 'WP_SITEURL', 'http://goandgolf.local' );
+        define( 'WP_HOME', 'http://goandgolf.local' );
         
         define ('JETPACK_DEV_DEBUG', true);
         
