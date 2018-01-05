@@ -98,6 +98,8 @@
 
 	img {
 		max-width: 110px;
+		position: relative;
+		bottom: -#{map-get($dimensions-map, quarter-spacing-unit)};
 	}
 }
 

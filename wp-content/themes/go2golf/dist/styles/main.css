@@ -1190,7 +1190,9 @@ a {
   color: #707c8c; }
 
 .c-course-detail-box__affiliates img {
-  max-width: 110px; }
+  max-width: 110px;
+  position: relative;
+  bottom: -10px; }
 
 @media screen and (max-width: 959px) {
   .c-course-detail__ctas {
