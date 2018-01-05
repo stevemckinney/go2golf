@@ -63,6 +63,16 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 							?>
 						</p>
 					</div>
+					<?php 
+					$course_affiliates = get_the_terms($product->ID, 'pa_affiliates' );
+					foreach ($course_affiliates as $affiliate):
+						if ($affiliate->name == '2fore1'):
+							echo '<div class="c-course-result-item__affiliates">';
+							echo '<img src="' . getImagePath(true) . '/affiliates/2fore1-logo.png">';
+							echo '</div>';
+						endif;
+					endforeach;
+					?>
 					<span class="o-btn o-btn--primary c-course-result-item__cta">View course</span>
 
 				</div><!--/.c-course-result-item__info-section -->

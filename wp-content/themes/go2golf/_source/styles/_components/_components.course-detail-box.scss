@@ -94,6 +94,13 @@
 	color: map-get($colors-map, raven);
 }
 
+.c-course-detail-box__affiliates {
+
+	img {
+		max-width: 110px;
+	}
+}
+
 .c-course-detail__ctas {
 	
 	@include respond-to-max(get-breakpoint(large)) {

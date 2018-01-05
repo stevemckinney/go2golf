@@ -64,6 +64,10 @@
 		float: right;
 		margin-bottom: map-get($dimensions-map, half-spacing-unit);
 	}
+
+	@include respond-to-max(get-breakpoint(small)) {
+		float: none;
+	}
 }
 
 .c-course-result-item__average-review-stars {
@@ -109,4 +113,20 @@
 	white-space: nowrap;
 	overflow: hidden;
 	color: map-get($colors-map, gold);
+}
+
+.c-course-result-item__affiliates {
+
+	img {
+		max-width: 110px;
+
+		@include respond-to-min(get-breakpoint(small)) {
+			position: absolute;
+			bottom: map-get($dimensions-map, half-spacing-unit);
+		}
+
+		@include respond-to-max(get-breakpoint(small)) {
+			margin-bottom: map-get($dimensions-map, half-spacing-unit);
+		}
+	}
 }

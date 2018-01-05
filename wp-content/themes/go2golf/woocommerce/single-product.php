@@ -81,6 +81,16 @@ get_header( 'shop' ); ?>
 											</div><!--/.c-course-detail-box__key-feature-inner -->
 										</div><!--/.c-course-detail-box__key-feature -->
 									</div><!--/.c-course-detail-box__key-features -->
+									<?php 
+									$course_affiliates = get_the_terms($post, 'pa_affiliates' );
+									foreach ($course_affiliates as $affiliate):
+										if ($affiliate->name == '2fore1'):
+											echo '<div class="c-course-detail-box__affiliates">';
+											echo '<img src="' . getImagePath(true) . '/affiliates/2fore1-logo.png">';
+											echo '</div>';
+										endif;
+									endforeach;
+									?>
 									<!--<div class="c-course-detail-box__key-info">
 										<p class="c-course-detail-box__key-info-item"><span class="c-course-detail-box__key-info-description">Description</span> <span class="c-course-detail-box__key-info-value">value</span></p>
 										<p class="c-course-detail-box__key-info-item"><span class="c-course-detail-box__key-info-description">Description</span> <span class="c-course-detail-box__key-info-value">value</span></p>
