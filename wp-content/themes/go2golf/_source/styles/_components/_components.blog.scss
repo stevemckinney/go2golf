@@ -78,4 +78,15 @@
 
 }
 
-.post-thumbnail img { max-width: 100%; }
+.post-thumbnail {
+  display: block;
+  padding: map-get($dimensions-map, half-spacing-unit) 0;
+  
+  img { 
+    max-width: 100%;
+  }
+}
+
+.c-blog-item {
+  padding: #{map-get($dimensions-map, half-spacing-unit) * 2}; 
+}

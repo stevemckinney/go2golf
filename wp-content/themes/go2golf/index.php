@@ -1,4 +1,7 @@
 <?php get_header(); ?>
+  <header class="c-woocommerce-breadcrumb">
+		<div class="o-wrapper"><h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1></div>
+	</header>
   <div class="o-wrapper">
     <div class="o-grid">
       <div class="o-grid__col o-grid__col--2/3--x-large">
@@ -7,9 +10,6 @@
       		if ( have_posts() ) :
       
       			if ( is_home() && ! is_front_page() ) : ?>
-      				<header>
-      					<h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
-      				</header>
       
       			<?php
       			endif;
@@ -22,8 +22,12 @@
       				 * If you want to override this in a child theme, then include a file
       				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
       				 */
-      				get_template_part( 'inc/template-parts/content', get_post_format() );
-      
+      				echo '<div class="c-course-result-item c-blog-item">';
+      				
+      				  get_template_part( 'inc/template-parts/content', get_post_format() );
+              
+              echo '</div>';
+              
       			endwhile;
       
       			the_posts_navigation();
