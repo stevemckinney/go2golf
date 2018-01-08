@@ -40,7 +40,7 @@
       
       	</main>
       </div>
-      <div class="o-grid__col o-grid__col--1/3--x-large"><?php get_sidebar(); ?></div>
+      <div class="o-grid__col o-grid__col--1/3--x-large"><?php get_sidebar('blog'); ?></div>
     </div>
   </div>
 <?php get_footer(); ?>
