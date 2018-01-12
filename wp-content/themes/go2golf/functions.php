@@ -17,6 +17,9 @@ require_once('functions/admin.php');
 require_once('functions/woocommerce.php');
 require_once('functions/helpers.php');
 
+require get_template_directory() . '/functions/template-tags.php';
+require get_template_directory() . '/functions/template-functions.php';
+
 /*------------------------------------*\
 	Theme Support
 \*------------------------------------*/
@@ -33,6 +36,7 @@ if (function_exists('add_theme_support'))
 
     // Add Thumbnail Theme Support
     add_theme_support('post-thumbnails');
+    add_image_size('single', 1280, 640, true); // Large Thumbnail
     add_image_size('large', 700, '', true); // Large Thumbnail
     add_image_size('medium', 250, '', true); // Medium Thumbnail
     add_image_size('small', 120, '', true); // Small Thumbnail
@@ -159,6 +163,16 @@ if (function_exists('register_sidebar'))
         'name' => __('Course search', 'html5blank'),
         'description' => __('Course search', 'html5blank'),
         'id' => 'course-search-wdget',
+        'before_widget' => '<div id="%1$s" class="%2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3>',
+        'after_title' => '</h3>'
+    ));
+    
+    register_sidebar(array(
+        'name' => __('Blog', 'html5blank'),
+        'description' => __('Add widgets that show up on the blog', 'html5blank'),
+        'id' => 'blog-widget',
         'before_widget' => '<div id="%1$s" class="%2$s">',
         'after_widget' => '</div>',
         'before_title' => '<h3>',
