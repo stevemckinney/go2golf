@@ -20,7 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-get_header( 'shop' ); ?>
+get_header( 'shop' );
+
+$term = get_queried_object(); ?>
 
 <?php woocommerce_breadcrumb(array('delimiter' => '<span class="c-woocommerce-breadcrumb__delimiter">&nbsp;&#47;&nbsp;</span>', 'wrap_before' => '<nav class="c-woocommerce-breadcrumb" ' . ( is_single() ? 'itemprop="breadcrumb"' : '' ) . '><div class="c-woocommerce-breadcrumb__inner">', 'wrap_after' => '</div></nav>')); ?>
 
@@ -32,7 +34,11 @@ get_header( 'shop' ); ?>
 				</aside>
 			</div><!--/.o-grid__col -->
 			<div class="o-grid__col o-grid__col--2/3--x-large">
-				<h1 class="t-push-bottom--half">Golf courses in <?php woocommerce_page_title(); ?></h1>
+				<?php if(get_field('category_title_prefix', $term)): ?>
+					<h1 class="t-push-bottom--half"><?php the_field('category_title_prefix', $term); ?></h1>
+				<?php else: ?>
+					<h1 class="t-push-bottom--half">Golf courses in <?php woocommerce_page_title(); ?></h1>
+				<?php endif; ?>
 				<div class="t-push-bottom--half">
 					<?php do_action( 'woocommerce_archive_description' ); ?>
 				</div><!--/t-psuh-bottom-half -->

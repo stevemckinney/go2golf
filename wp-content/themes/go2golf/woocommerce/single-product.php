@@ -135,7 +135,7 @@ get_header( 'shop' ); ?>
 									<a href="#facilities">Facilities</a>
 								</li>
 								<li class="c-tabs__tab-label c-tabs__tab-label--has-sibling">
-									<a href="#courseInformation">Course information</a>
+									<a href="#courseInformation">Course overview</a>
 								</li>
 								<li class="c-tabs__tab-label">
 									<a href="#reviews">Reviews <span class="o-notification o-notification--small"><?php echo get_user_review_count($post->ID); ?></span></a>
@@ -242,7 +242,7 @@ get_header( 'shop' ); ?>
 								</div><!--/.o-grid -->
 							</section>
 							<section id="courseInformation" class="o-panel o-panel--double o-panel--has-divider">
-								<h1 class="o-heading--secondary">Course information</h1>
+								<h1 class="o-heading--secondary">Course overview</h1>
 								<div class="o-grid" style="display:none">
 									<div class="o-grid__col o-grid__col--1/2">
 										<p>We don't have course information data in long text form... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam maxime ullam cum obcaecati, minus, magnam dolorem aspernatur iste ex eligendi quam illum, tenetur quod illo velit accusamus omnis voluptatibus, dolores.</p>
@@ -251,7 +251,6 @@ get_header( 'shop' ); ?>
 										<?php wc_get_template( 'single-product/product-image.php' ); ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
-								<h2 class="o-heading--secondary">Overview</h2>
 								<div class="o-grid">
 									<div class="o-grid__col o-grid__col--1/2" style="display:none;">
 										<table>
@@ -276,7 +275,8 @@ get_header( 'shop' ); ?>
 										</table>
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col">
-										<?php the_field('course_course_overview'); ?>
+										<?php // the_field('course_course_overview'); ?>
+										<?php the_excerpt(); ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
