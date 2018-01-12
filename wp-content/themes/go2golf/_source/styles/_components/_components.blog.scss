@@ -1,92 +1,95 @@
 .post-header {
-  text-align: center;
-  padding: #{map-get($dimensions-map, half-spacing-unit) * 2} 0 0;
-  
-  h1 {
-    font-size: 48px;
-    margin: 0;
-    padding: 0;
-  }
+	text-align: center;
+	padding: #{map-get($dimensions-map, half-spacing-unit) * 2} 0 0;
+	
+	h1 {
+		font-size: 48px;
+		margin: 0;
+		padding: 0;
+	}
 }
 
 .single-post .cms-content {
-  max-width: 640px;
-  margin: auto;
+	max-width: 640px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .single-post img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
+	display: block;
+	width: auto;
+	height: auto;
+	max-width: 100%;
 }
 
 .cms-content {
-  /* Aligns to 60px */
-  // h1 should never feature in a post, but incase it should be treated as h2
-  h1,
-  h2 {
-    font-size: 2em;
-    line-height: 1.25;
-    padding-top: 1em;
-    margin-bottom: 0.5em;
-  }
-  
-  /* Aligns to 48px */
-  h3 {
-    font-size: 1.75em;
-    line-height: 1.238095238;
-    padding-top: 0.7619em;
-    margin-bottom: 0.28571em;
-  }
-  
-  /* Aligns to 48px */
-  h4 {
-    font-size: 1.5em;
-    line-height: 1.222222222;
-    padding-top: 1em;
-    margin-bottom: 0.44444em;
-  }
-  
-  /* Aligns to 48px */
-  h5 {
-    font-size: 1.33333em;
-    line-height: 1.5;
-    padding-top: 1em;
-    margin-bottom: 0.5em;
-  }
-  
-  /* Aligns to 36px */
-  h6 {
-    font-size: 1.16667em;
-    line-height: 1.5;
-    padding-top: 0.64286em;
-    margin-bottom: 0.42857em;
-  }
-  
-  p {
-    margin-bottom: 12px;
-  }
-  
-  img {
-    margin: 24px 0;
-  }
-  
-  h1, h2, h3, h4, h5, h6, p {
-    margin-top: 0;
-  }
+	margin-top: map-get($dimensions-map, base-spacing-unit);
+
+	/* Aligns to 60px */
+	// h1 should never feature in a post, but incase it should be treated as h2
+	h1,
+	h2 {
+		font-size: 2em;
+		line-height: 1.25;
+		padding-top: 1em;
+		margin-bottom: 0.5em;
+	}
+	
+	/* Aligns to 48px */
+	h3 {
+		font-size: 1.75em;
+		line-height: 1.238095238;
+		padding-top: 0.7619em;
+		margin-bottom: 0.28571em;
+	}
+	
+	/* Aligns to 48px */
+	h4 {
+		font-size: 1.5em;
+		line-height: 1.222222222;
+		padding-top: 1em;
+		margin-bottom: 0.44444em;
+	}
+	
+	/* Aligns to 48px */
+	h5 {
+		font-size: 1.33333em;
+		line-height: 1.5;
+		padding-top: 1em;
+		margin-bottom: 0.5em;
+	}
+	
+	/* Aligns to 36px */
+	h6 {
+		font-size: 1.16667em;
+		line-height: 1.5;
+		padding-top: 0.64286em;
+		margin-bottom: 0.42857em;
+	}
+	
+	p {
+		margin-bottom: 12px;
+	}
+	
+	img {
+		margin: 24px 0;
+	}
+	
+	h1, h2, h3, h4, h5, h6, p {
+		margin-top: 0;
+	}
 
 }
 
 .post-thumbnail {
-  display: block;
-  padding: map-get($dimensions-map, half-spacing-unit) 0;
-  
-  img { 
-    max-width: 100%;
-  }
+	display: block;
+	padding: map-get($dimensions-map, half-spacing-unit) 0;
+	
+	img {
+		max-width: 100%;
+	}
 }
 
 .c-blog-item {
-  padding: #{map-get($dimensions-map, half-spacing-unit) * 2}; 
+	padding: #{map-get($dimensions-map, half-spacing-unit) * 2}; 
 }
