@@ -276,7 +276,7 @@ get_header( 'shop' ); ?>
 									</div><!--/.o-grid__col -->
 									<div class="o-grid__col">
 										<?php // the_field('course_course_overview'); ?>
-										<?php the_excerpt(); ?>
+										<?php echo $product->post->post_excerpt; ?>
 									</div><!--/.o-grid__col -->
 								</div><!--/.o-grid -->
 							</section>
