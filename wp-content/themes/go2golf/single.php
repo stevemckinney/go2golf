@@ -22,6 +22,13 @@
           <div class="cms-content">
       			<?php the_content(); ?>
           </div>
+          
+          <div class="social">
+            <h2 class="dib vam">Share this post</h2>
+      			<a href="http://www.facebook.com/sharer/sharer.php?u=<?php the_permalink(); ?>" class="dib vam"><img alt="facebook" src="<?php echo get_template_directory_uri() ?>/dist/images/icon-facebook.svg"></a>
+      			<a href="https://twitter.com/intent/tweet?text=<?php the_title(); ?>&url=<?php the_permalink(); ?>" class="dib vam"><img alt="twitter" src="<?php echo get_template_directory_uri() ?>/dist/images/icon-twitter.svg"></a>
+      			<a href="https://plus.google.com/share?url=<?php the_permalink(); ?>" class="dib vam"><img alt="google+" src="<?php echo get_template_directory_uri() ?>/dist/images/icon-google.svg"></a>
+          </div>
     
     		</article>
     		<!-- /article -->

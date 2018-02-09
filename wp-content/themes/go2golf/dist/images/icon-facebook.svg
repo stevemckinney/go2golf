@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .a {
+        fill: #3d5a98;
+      }
+
+      .b {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <title>icon-facebook</title>
+  <g>
+    <rect class="a" width="24" height="24"/>
+    <path class="b" d="M14.777,8.10255H13.43348a.58482.58482,0,0,0-.535.48471V9.96847h1.87521c-.07544,1.05927-.22947,2.02787-.22947,2.02787H12.88932V18H10.42305V11.99634H9.223V9.97639h1.20009V8.32409C10.42305,8.02124,10.36225,6,12.95012,6H14.777Z"/>
+  </g>
+</svg>

@@ -736,6 +736,18 @@ a {
 
   .o-grid__col--1\/1--x-large {
     width: 100%; } }
+.dib {
+  display: inline-block; }
+
+.vat {
+  vertical-align: top; }
+
+.vam {
+  vertical-align: middle; }
+
+.vab {
+  vertical-align: bottom; }
+
 .o-list--naked {
   padding: 0;
   margin: 0;
@@ -974,6 +986,19 @@ a {
 
 .o-island {
   margin-bottom: 20px; }
+
+.social {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  border-top: 1px solid rgba(16, 37, 64, 0.2);
+  margin-top: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px; }
+  .social h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 12px; }
 
 .c-masthead {
   padding-top: 20px;
