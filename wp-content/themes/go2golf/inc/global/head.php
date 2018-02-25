@@ -30,9 +30,6 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-PD92CDK');</script>
-<!-- End Google Tag Manager -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>(adsbygoogle = window.adsbygoogle || []).push({google_ad_client: "ca-pub-8029730854640272",enable_page_level_ads: true});</script>
 
 <!-- Make our theme path accessible in Javascript -->
 <script>var getThemePath = '<?php echo getThemePath(); ?>';</script>

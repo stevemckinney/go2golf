@@ -30,3 +30,10 @@ function goandgolf_pingback_header() {
 	}
 }
 add_action( 'wp_head', 'goandgolf_pingback_header' );
+
+function goandgolf_adsense()
+{
+  echo '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({google_ad_client: "ca-pub-8029730854640272",enable_page_level_ads: true});</script>';
+}
+
+add_action( 'wp_head', 'goandgolf_adsense' );
