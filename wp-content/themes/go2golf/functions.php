@@ -179,6 +179,16 @@ if (function_exists('register_sidebar'))
         'before_title' => '<h3>',
         'after_title' => '</h3>'
     ));
+    
+    register_sidebar(array(
+        'name' => __('Generic', 'html5blank'),
+        'description' => __('Add widgets that show up on pages which use the generic template', 'html5blank'),
+        'id' => 'generic-widget',
+        'before_widget' => '<div id="%1$s" class="%2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3>',
+        'after_title' => '</h3>'
+    ));
 }
 
 // Remove wp_head() injected Recent Comment styles
