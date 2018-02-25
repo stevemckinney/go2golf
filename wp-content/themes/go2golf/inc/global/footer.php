@@ -1,6 +1,12 @@
 <footer role="contentinfo" class="c-footer">	
 	<div class="o-wrapper">
 		<p class="c-footer__copy">Copyright &copy; Go&Golf <?php echo date("Y"); ?></p>
+		<?php
+  		$defaults = array( 'theme_location' => 'footer-menu', 'echo' => false );
+      $menu = strip_tags(wp_nav_menu($defaults), '<a>');
+      
+      echo '<div class="footer-links">' . $menu . '</ul>';
+		?>
 	</div><!--/.o-wrapper -->
 </footer>
 
